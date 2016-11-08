@@ -13,16 +13,24 @@ function getAction() {
  */
 function handleRequest() {
 	switch (getAction()) {
+		case 'user/list' :
+			sendUserList();
+			break;
 		case 'emotion/list' :
-			sendResult(['asdasd'=>1],201);
+			sendEmotionList();
 			break;
 		default :
+			sendResult(null,404,'Action not found');
 			break;
 	}
 }
 
-function getEmotionList() {
+function sendUserList() {
+	sendResult(dbGetUsers());
+}
 
+function sendEmotionList() {
+	sendResult(dbGetEmotions());
 }
 
 /**
@@ -30,7 +38,16 @@ function getEmotionList() {
  * @param mixed $data
  * @param int $state
  */
-function sendResult($data, $state = 200) {
+function sendResult($data, $state = 200, $stateText = 'SUCCESS') {
+	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+	header("Cache-Control: post-check=0, pre-check=0", false);
+	header("Pragma: no-cache");
 	header('Content-type: application/json');
-	echo json_encode(['state'=>$state, 'data'=>$data]);
+
+	echo json_encode([
+		'state'=>$state,
+		'text'=>$stateText,
+		'count'=>$data !== null ? count($data) : 0,
+		'data'=>$data
+	]);
 }
