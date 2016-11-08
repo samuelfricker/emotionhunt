@@ -14,8 +14,7 @@ function dbGetEmotionById($id) {
 
 /**
  * Creates a new emotion in remote database and returns the inserted object.
- * @return bool|null
- */
+*/
 function dbCreateEmotion() {
 	$db = new Db();
 	$db->connect()->autocommit(false);
@@ -45,8 +44,7 @@ function dbCreateEmotion() {
 	}
 
 	//reaction
-	$expectedReactionValues = [];
-	parse_str($_POST['expectedReaction'], $expectedReactionValues);
+	$expectedReactionValues = $_POST['expectedReaction'];
 
 	//create emotion
 	if (!$db->query("INSERT INTO `emotion` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`) VALUES (" . $lat . "," . $lon . "," . $isPublic . ",NOW()," . $visibilityDuration . "," . $text . ")")) {
@@ -106,11 +104,12 @@ function dbCreateUserEmotion($userId, $emotionId, $isSender=false, $db) {
 
 function dbCreateReaction($userEmotionId, $reactionValues, $isEmpty = false, $db) {
 	if ($db == null) $db = new Db();
-	$userEmotionId = $db->escape($userEmotionId);
-	foreach ($reactionValues as $key=>$value) {
-		$reactionValues[$key] = $db->escape($value);
-	}
-	return $db->query("INSERT INTO `reaction` (`user_emotion_id`,`is_empty`,`anger`,`contempt`,`disgust`,`fear`,`happiness`,`neutral`,`sadness`,`surprise`) VALUES (" . $userEmotionId . "," . $isEmpty ? 1 : 0 . "," . $reactionValues['anger'] . "," . $reactionValues['contempt'] . "," . $reactionValues['disgust'] . "," . $reactionValues['fear'] . ','. $reactionValues['happiness'] . ',' . $reactionValues['neutral'] . $reactionValues['sadness'] . ','. $reactionValues['surprise']. ");");
+	$reactionValues = json_decode($reactionValues);
+
+	$query = "INSERT INTO `reaction` (`user_emotion_id`,`is_empty`,`anger`,`contempt`,`disgust`,`fear`,`happiness`,`neutral`,`sadness`,`surprise`) VALUES 
+(" . $userEmotionId . "," . ($isEmpty ? 1 : 0) . "," . $reactionValues->anger . "," . $reactionValues->contempt . "," . $reactionValues->disgust . "," . $reactionValues->fear . ','. $reactionValues->happiness . ',' . $reactionValues->neutral .',' . $reactionValues->sadness . ','. $reactionValues->surprise . ");";
+
+	return $db->query($query);
 }
 
 function throwDbException($message, $errorTexts) {

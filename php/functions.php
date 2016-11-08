@@ -28,6 +28,21 @@ function handleRequest() {
 	}
 }
 
+/**
+ * Following POST attributes are requested:
+ * - lat
+ * - lon
+ * - isPublic
+ * - visibilityDuration (optional)
+ * - text
+ * - sender (user id)
+ * - recipients (, separated user ids)
+ * - expectedReaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
+ *
+ * Example
+ * Call: localhost/emotionhunt/?action=emotion/create
+ * POST DATA: lat=8.00&lon=43.00&isPublic=0&text=mein text&visibilityDuration=24&recipients=2&sender=1&expectedReaction={"anger":0.99, "contempt":0.0, "disgust":0.0, "fear":0.0, "happiness":0.0, "neutral":0.0, "sadness": 0.0, "surprise":0.0}
+ */
 function createEmotion() {
 	sendResult(dbCreateEmotion());
 }
