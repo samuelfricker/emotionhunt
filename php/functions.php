@@ -16,6 +16,9 @@ function handleRequest() {
 		case 'user/list' :
 			sendUserList();
 			break;
+		case 'emotion/create' :
+			createEmotion();
+			break;
 		case 'emotion/list' :
 			sendEmotionList();
 			break;
@@ -23,6 +26,10 @@ function handleRequest() {
 			sendResult(null,404,'Action not found');
 			break;
 	}
+}
+
+function createEmotion() {
+	sendResult(dbCreateEmotion());
 }
 
 function sendUserList() {
@@ -38,7 +45,8 @@ function sendEmotionList() {
  * @param mixed $data
  * @param int $state
  */
-function sendResult($data, $state = 200, $stateText = 'SUCCESS') {
+function sendResult($data, $state = 200, $stateText = 'SUCCESS', $errorTexts = null) {
+	header('HTTP/1.0 ' . $state);
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
@@ -48,6 +56,7 @@ function sendResult($data, $state = 200, $stateText = 'SUCCESS') {
 		'state'=>$state,
 		'text'=>$stateText,
 		'count'=>$data !== null ? count($data) : 0,
-		'data'=>$data
+		'data'=>$data,
+		'error'=>$errorTexts
 	]);
 }

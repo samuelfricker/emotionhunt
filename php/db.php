@@ -1,13 +1,13 @@
 <?php
 
 class Db {
-	//db connection
+	/** @var mysqli $connection */
 	protected static $connection;
 
 	/**
 	 * Connect to the database
 	 *
-	 * @return bool false on failure / mysqli MySQLi object instance on success
+	 * @return false|mysqli bool false on failure / mysqli MySQLi object instance on success
 	 */
 	public function connect() {
 		// Try and connect to the database
@@ -59,6 +59,11 @@ class Db {
 		return $rows;
 	}
 
+	public function lastId() {
+		$connection = $this -> connect();
+		return $connection->insert_id;
+	}
+
 	/**
 	 * Fetch the last error from the database
 	 *
@@ -78,5 +83,10 @@ class Db {
 	public function quote($value) {
 		$connection = $this -> connect();
 		return "'" . $connection -> real_escape_string($value) . "'";
+	}
+
+	public function escape($value) {
+		$connection = $this -> connect();
+		return $connection->real_escape_string($value);
 	}
 }
