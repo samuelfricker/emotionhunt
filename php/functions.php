@@ -14,45 +14,81 @@ function getAction() {
 function handleRequest() {
 	switch (getAction()) {
 		case 'user/list' :
-			sendUserList();
+			getUsers();
 			break;
 		case 'emotion/create' :
 			createEmotion();
 			break;
 		case 'emotion/list' :
-			sendEmotionList();
+			getEmotions();
+			break;
+		case 'reaction/create' :
+			createReaction();
+			break;
+		case 'emotion/public/create' :
+			createPublicEmotion();
+			break;
+		case 'emotion/public/list' :
+			getPublicEmotions();
 			break;
 		default :
-			sendResult(null,404,'Action not found');
+			printResult(null,404,'Action not found');
 			break;
 	}
 }
 
 /**
- * Following POST attributes are requested:
+ * Creates a new emotion. Following POST attributes are required:
  * - lat
  * - lon
- * - isPublic
  * - visibilityDuration (optional)
  * - text
  * - sender (user id)
  * - recipients (, separated user ids)
  * - expectedReaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
- *
- * Example
- * Call: localhost/emotionhunt/?action=emotion/create
- * POST DATA: lat=8.00&lon=43.00&isPublic=0&text=mein text&visibilityDuration=24&recipients=2&sender=1&expectedReaction={"anger":0.99, "contempt":0.0, "disgust":0.0, "fear":0.0, "happiness":0.0, "neutral":0.0, "sadness": 0.0, "surprise":0.0}
  */
 function createEmotion() {
-	sendResult(dbCreateEmotion());
+	printResult(dbCreateEmotion());
 }
 
-function sendUserList() {
-	sendResult(dbGetUsers());
+/**
+ * Creates a new public emotion. Following POST attributes are required:
+ * - lat
+ * - lon
+ * - visibilityDuration (optional)
+ * - text
+ * - sender (user id)
+ * - expectedReaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
+ */
+function createPublicEmotion() {
+	printResult(dbCreateEmotion(true));
 }
 
-function sendEmotionList() {
-	sendResult(dbGetEmotions());
+/**
+ * Creates a reaction on a received emotion. Following POST attributes are required:
+ * - userEmotionId
+ * - reaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
+ */
+function createReaction() {
+	printResult(dbCreateReaction($_POST['userEmotionId'], $_POST['reaction']));
+}
+
+function getUsers() {
+	printResult(dbGetUsers());
+}
+
+/**
+ * Fetches all public emotions within a radius around a given location (user's current location).
+ * Following POST attributes are required:
+ * - lat
+ * - lon
+ */
+function getPublicEmotions() {
+	printResult(dbGetPublicEmotions());
+}
+
+function getEmotions() {
+	printResult(dbGetEmotions());
 }
 
 /**
@@ -60,7 +96,7 @@ function sendEmotionList() {
  * @param mixed $data
  * @param int $state
  */
-function sendResult($data, $state = 200, $stateText = 'SUCCESS', $errorTexts = null) {
+function printResult($data, $state = 200, $stateText = 'SUCCESS', $errorTexts = null) {
 	header('HTTP/1.0 ' . $state);
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 	header("Cache-Control: post-check=0, pre-check=0", false);

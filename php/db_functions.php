@@ -1,8 +1,34 @@
 <?php
+include('db_base_functions.php');
+
+function dbGetPublicEmotions() {
+	$params = include('_params.php');
+
+	$db = new Db();
+	$lat = $db->escape($_POST['lat']);
+	$lon = $db->escape($_POST['lon']);
+
+	$radius = $params['radius'];
+
+	$query = "SELECT *," . dbDistanceFunction($lat,$lon) . " FROM emotion 
+	WHERE is_public = 1 HAVING distance < $radius ORDER BY distance";
+
+	$rows = $db->select($query);
+	return $rows;
+}
 
 function dbGetEmotions() {
+	$params = include('_params.php');
+
 	$db = new Db();
-	$rows = $db->select('SELECT * FROM emotion');
+	$lat = $db->escape($_POST['lat']);
+	$lon = $db->escape($_POST['lon']);
+
+	$radius = $params['radius'];
+
+	$query = "SELECT *," . dbDistanceFunction($lat,$lon) . " FROM emotion 
+	WHERE is_public = 0 HAVING distance < $radius ORDER BY distance";
+	$rows = $db->select($query);
 	return $rows;
 }
 
@@ -15,7 +41,7 @@ function dbGetEmotionById($id) {
 /**
  * Creates a new emotion in remote database and returns the inserted object.
 */
-function dbCreateEmotion() {
+function dbCreateEmotion($isPublic=false) {
 	$db = new Db();
 	$db->connect()->autocommit(false);
 
@@ -26,7 +52,7 @@ function dbCreateEmotion() {
 	//attributes from emotion object
 	$lat = $db->escape($_POST['lat']);
 	$lon = $db->escape($_POST['lon']);
-	$isPublic = $db->escape($_POST['isPublic']);
+
 	$visibilityDuration = null;
 	if ($db->escape($_POST['visibilityDuration'])) {
 		$visibilityDuration = $db->escape($_POST['visibilityDuration']);
@@ -102,7 +128,7 @@ function dbCreateUserEmotion($userId, $emotionId, $isSender=false, $db) {
 	return $result;
 }
 
-function dbCreateReaction($userEmotionId, $reactionValues, $isEmpty = false, $db) {
+function dbCreateReaction($userEmotionId, $reactionValues, $isEmpty = false, $db=null) {
 	if ($db == null) $db = new Db();
 	$reactionValues = json_decode($reactionValues);
 
