@@ -73,6 +73,9 @@ function createReaction() {
 	printResult(dbCreateReaction($_POST['userEmotionId'], $_POST['reaction']));
 }
 
+/**
+ * Prints all users from the database.
+ */
 function getUsers() {
 	printResult(dbGetUsers());
 }
@@ -87,6 +90,12 @@ function getPublicEmotions() {
 	printResult(dbGetPublicEmotions());
 }
 
+/**
+ * Fetches all private emotions within a radius around a given location (user's current location).
+ * Following POST attributes are required:
+ * - lat
+ * - lon
+ */
 function getEmotions() {
 	printResult(dbGetEmotions());
 }

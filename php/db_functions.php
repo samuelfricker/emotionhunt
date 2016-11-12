@@ -1,6 +1,10 @@
 <?php
 include('db_base_functions.php');
 
+/**
+ * Returns all public emotions.
+ * @return mixed
+ */
 function dbGetPublicEmotions() {
 	$params = include('_params.php');
 
@@ -17,6 +21,10 @@ function dbGetPublicEmotions() {
 	return $rows;
 }
 
+/**
+ * Returns all private emotions.
+ * @return mixed
+ */
 function dbGetEmotions() {
 	$params = include('_params.php');
 
@@ -32,6 +40,11 @@ function dbGetEmotions() {
 	return $rows;
 }
 
+/**
+ * Returns the emotion object by the passed id
+ * @param integer $id emotion-id
+ * @return mixed
+ */
 function dbGetEmotionById($id) {
 	$db = new Db();
 	$rows = $db->select('SELECT * FROM emotion where id = ' . $id);
@@ -40,7 +53,9 @@ function dbGetEmotionById($id) {
 
 /**
  * Creates a new emotion in remote database and returns the inserted object.
-*/
+ * @param bool $isPublic
+ * @return bool validation
+ */
 function dbCreateEmotion($isPublic=false) {
 	$db = new Db();
 	$db->connect()->autocommit(false);
@@ -115,11 +130,24 @@ function dbCreateEmotion($isPublic=false) {
 	}
 }
 
+/**
+ * Returns all users.
+ * @return mixed
+ */
 function dbGetUsers() {
 	$db = new Db();
 	$rows = $db->select('SELECT * FROM user');
 	return $rows;
 }
+
+/**
+ * Creates a user-emotion entry in the database.
+ * @param integer $userId
+ * @param integer $emotionId
+ * @param bool $isSender
+ * @param Db $db
+ * @return mixed
+ */
 function dbCreateUserEmotion($userId, $emotionId, $isSender=false, $db) {
 	if ($db == null) $db = new Db();
 	$emotionId = $db->escape($emotionId);
@@ -128,6 +156,14 @@ function dbCreateUserEmotion($userId, $emotionId, $isSender=false, $db) {
 	return $result;
 }
 
+/**
+ * Creates a new reaction.
+ * @param integer $userEmotionId
+ * @param mixed $reactionValues
+ * @param bool $isEmpty
+ * @param Db $db
+ * @return mixed
+ */
 function dbCreateReaction($userEmotionId, $reactionValues, $isEmpty = false, $db=null) {
 	if ($db == null) $db = new Db();
 	$reactionValues = json_decode($reactionValues);
@@ -138,7 +174,12 @@ function dbCreateReaction($userEmotionId, $reactionValues, $isEmpty = false, $db
 	return $db->query($query);
 }
 
+/**
+ * Throws a db-exception.
+ * @param string $message
+ * @param string $errorTexts
+ */
 function throwDbException($message, $errorTexts) {
-	sendResult(null,500,$message, $errorTexts);
+	printResult(null,500,$message, $errorTexts);
 	die();
 }
