@@ -88,7 +88,7 @@ function dbCreateExperience($isPublic=false) {
 	$expectedEmotionValues = $_POST['expectedEmotion'];
 
 	//create emotion
-	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`) VALUES (" . $lat . "," . $lon . "," . $isPublic . ",NOW()," . $visibilityDuration . "," . $text . ")")) {
+	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . ",NOW()," . $visibilityDuration . "," . $text . ")")) {
 		$validation = false;
 		$errorMessage[] = 'Could not insert new experience';
 		$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
