@@ -16,20 +16,20 @@ function handleRequest() {
 		case 'user/list' :
 			getUsers();
 			break;
+		case 'experience/create' :
+			createExperience();
+			break;
+		case 'experience/list' :
+			getExperiences();
+			break;
+		case 'experience/public/create' :
+			createPublicExperience();
+			break;
+		case 'experience/public/list' :
+			getPublicExperiences();
+			break;
 		case 'emotion/create' :
 			createEmotion();
-			break;
-		case 'emotion/list' :
-			getEmotions();
-			break;
-		case 'reaction/create' :
-			createReaction();
-			break;
-		case 'emotion/public/create' :
-			createPublicEmotion();
-			break;
-		case 'emotion/public/list' :
-			getPublicEmotions();
 			break;
 		default :
 			printResult(null,404,'Action not found');
@@ -38,21 +38,21 @@ function handleRequest() {
 }
 
 /**
- * Creates a new emotion. Following POST attributes are required:
+ * Creates a new experience. Following POST attributes are required:
  * - lat
  * - lon
  * - visibilityDuration (optional)
  * - text
  * - sender (user id)
  * - recipients (, separated user ids)
- * - expectedReaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
+ * - expectedEmotion JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
  */
-function createEmotion() {
-	printResult(dbCreateEmotion());
+function createExperience() {
+	printResult(dbCreateExperience());
 }
 
 /**
- * Creates a new public emotion. Following POST attributes are required:
+ * Creates a new public experience. Following POST attributes are required:
  * - lat
  * - lon
  * - visibilityDuration (optional)
@@ -60,17 +60,37 @@ function createEmotion() {
  * - sender (user id)
  * - expectedReaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
  */
-function createPublicEmotion() {
-	printResult(dbCreateEmotion(true));
+function createPublicExperience() {
+	printResult(dbCreateExperience(true));
+}
+
+/**
+ * Fetches all public experiences within a radius around a given location (user's current location).
+ * Following POST attributes are required:
+ * - lat
+ * - lon
+ */
+function getPublicExperiences() {
+	printResult(dbGetPublicExperiences());
+}
+
+/**
+ * Fetches all private experiences within a radius around a given location (user's current location).
+ * Following POST attributes are required:
+ * - lat
+ * - lon
+ */
+function getExperiences() {
+	printResult(dbGetExperiences());
 }
 
 /**
  * Creates a reaction on a received emotion. Following POST attributes are required:
- * - userEmotionId
- * - reaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
+ * - userExperienceId
+ * - emotion JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
  */
-function createReaction() {
-	printResult(dbCreateReaction($_POST['userEmotionId'], $_POST['reaction']));
+function createEmotion() {
+	printResult(dbCreateEmotion($_POST['userExperienceId'], $_POST['emotion']));
 }
 
 /**
@@ -78,26 +98,6 @@ function createReaction() {
  */
 function getUsers() {
 	printResult(dbGetUsers());
-}
-
-/**
- * Fetches all public emotions within a radius around a given location (user's current location).
- * Following POST attributes are required:
- * - lat
- * - lon
- */
-function getPublicEmotions() {
-	printResult(dbGetPublicEmotions());
-}
-
-/**
- * Fetches all private emotions within a radius around a given location (user's current location).
- * Following POST attributes are required:
- * - lat
- * - lon
- */
-function getEmotions() {
-	printResult(dbGetEmotions());
 }
 
 /**

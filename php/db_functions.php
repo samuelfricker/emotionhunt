@@ -2,10 +2,10 @@
 include('db_base_functions.php');
 
 /**
- * Returns all public emotions.
+ * Returns all public experiences.
  * @return mixed
  */
-function dbGetPublicEmotions() {
+function dbGetPublicExperiences() {
 	$params = include('_params.php');
 
 	$db = new Db();
@@ -14,7 +14,7 @@ function dbGetPublicEmotions() {
 
 	$radius = $params['radius'];
 
-	$query = "SELECT *," . dbDistanceFunction($lat,$lon) . " FROM emotion 
+	$query = "SELECT *," . dbDistanceFunction($lat,$lon) . " FROM experience 
 	WHERE is_public = 1 HAVING distance < $radius ORDER BY distance";
 
 	$rows = $db->select($query);
@@ -22,10 +22,10 @@ function dbGetPublicEmotions() {
 }
 
 /**
- * Returns all private emotions.
+ * Returns all private experiences.
  * @return mixed
  */
-function dbGetEmotions() {
+function dbGetExperiences() {
 	$params = include('_params.php');
 
 	$db = new Db();
@@ -34,29 +34,29 @@ function dbGetEmotions() {
 
 	$radius = $params['radius'];
 
-	$query = "SELECT *," . dbDistanceFunction($lat,$lon) . " FROM emotion 
+	$query = "SELECT *," . dbDistanceFunction($lat,$lon) . " FROM experience 
 	WHERE is_public = 0 HAVING distance < $radius ORDER BY distance";
 	$rows = $db->select($query);
 	return $rows;
 }
 
 /**
- * Returns the emotion object by the passed id
- * @param integer $id emotion-id
+ * Returns the experience object by the passed id
+ * @param integer $id experience-id
  * @return mixed
  */
-function dbGetEmotionById($id) {
+function dbGetExperienceById($id) {
 	$db = new Db();
-	$rows = $db->select('SELECT * FROM emotion where id = ' . $id);
+	$rows = $db->select('SELECT * FROM experience where id = ' . $id);
 	return $rows;
 }
 
 /**
- * Creates a new emotion in remote database and returns the inserted object.
+ * Creates a new experience in remote database and returns the inserted object.
  * @param bool $isPublic
  * @return bool validation
  */
-function dbCreateEmotion($isPublic=false) {
+function dbCreateExperience($isPublic=false) {
 	$db = new Db();
 	$db->connect()->autocommit(false);
 
@@ -80,49 +80,49 @@ function dbCreateEmotion($isPublic=false) {
 
 	if ($isPublic == 0 && count($recipients) == 0) {
 		$validation = false;
-		$errorMessage[] = 'Recipient(s) missing. Please define at least one receipient per non-public emotion';
+		$errorMessage[] = 'Recipient(s) missing. Please define at least one receipient per non-public experience';
 		$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
 	}
 
 	//reaction
-	$expectedReactionValues = $_POST['expectedReaction'];
+	$expectedEmotionValues = $_POST['expectedEmotion'];
 
 	//create emotion
-	if (!$db->query("INSERT INTO `emotion` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`) VALUES (" . $lat . "," . $lon . "," . $isPublic . ",NOW()," . $visibilityDuration . "," . $text . ")")) {
+	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`) VALUES (" . $lat . "," . $lon . "," . $isPublic . ",NOW()," . $visibilityDuration . "," . $text . ")")) {
 		$validation = false;
-		$errorMessage[] = 'Could not insert new emotion';
+		$errorMessage[] = 'Could not insert new experience';
 		$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
 	} else {
-		$emotionId = $db->lastId();
+		$experienceId = $db->lastId();
 	}
 
 	//iterate all receipients
 	if ($isPublic == 0) {
 		foreach ($recipients as $recipient) {
-			if (!dbCreateUserEmotion($recipient, $emotionId, false, $db)) {
+			if (!dbCreateUserExperience($recipient, $experienceId, false, $db)) {
 				$validation = false;
-				$errorMessage[] = 'Could not create new user-emotion with emotionId ' . $emotionId . ' userid ' . $recipient;
+				$errorMessage[] = 'Could not create new user-emotion with experienceId ' . $experienceId . ' userid ' . $recipient;
 				$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
 			}
 		}
 	}
 
 	//create user and expected reaction
-	if (!dbCreateUserEmotion($sender, $emotionId, true, $db)) {
+	if (!dbCreateUserExperience($sender, $experienceId, true, $db)) {
 		$validation = false;
-		$errorMessage[] = 'Could not create new sender-user-emotion with emotionId ' . $emotionId . ' sender ' . $sender;
+		$errorMessage[] = 'Could not create new sender-user-experience with experienceId ' . $experienceId . ' sender ' . $sender;
 	} else {
-		$senderUserEmotionId = $db->lastId();
-		if (!dbCreateReaction($senderUserEmotionId, $expectedReactionValues, false, $db)) {
+		$senderUserExperienceId = $db->lastId();
+		if (!dbCreateEmotion($senderUserExperienceId, $expectedEmotionValues, false, $db)) {
 			$validation = false;
-			$errorMessage[] = 'Could not create new reaction from sender';
+			$errorMessage[] = 'Could not create new emotion from sender';
 			$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
 		}
 	}
 
 	if ($validation) {
 		$db->connect()->commit();
-		return dbGetEmotionById($emotionId);
+		return dbGetExperienceById($experienceId);
 	} else {
 		throwDbException(join('. ', $errorMessage), join('. ', $errorTexts));
 		$db->connect()->rollback();
@@ -141,35 +141,37 @@ function dbGetUsers() {
 }
 
 /**
- * Creates a user-emotion entry in the database.
+ * Creates a user-experience entry in the database.
  * @param integer $userId
- * @param integer $emotionId
+ * @param integer $experienceId
  * @param bool $isSender
  * @param Db $db
  * @return mixed
  */
-function dbCreateUserEmotion($userId, $emotionId, $isSender=false, $db) {
+function dbCreateUserExperience($userId, $experienceId, $isSender=false, $db) {
 	if ($db == null) $db = new Db();
-	$emotionId = $db->escape($emotionId);
+	$experienceId = $db->escape($experienceId);
 	$userId = $db->escape($userId);
-	$result = $db->query("INSERT INTO `user_emotion` (`user_id`,`emotion_id`,`is_sender`) VALUES (" . $userId . "," . $emotionId . "," . ($isSender ? 1 : 0) . ");");
+	$result = $db->query("INSERT INTO `user_experience` (`user_id`,`experience_id`,`is_sender`) VALUES (" . $userId . "," . $experienceId . "," . ($isSender ? 1 : 0) . ");");
 	return $result;
 }
 
 /**
- * Creates a new reaction.
- * @param integer $userEmotionId
- * @param mixed $reactionValues
+ * Creates a new emotion.
+ * @param integer $userExperienceId
+ * @param mixed $emotionValues
  * @param bool $isEmpty
  * @param Db $db
  * @return mixed
  */
-function dbCreateReaction($userEmotionId, $reactionValues, $isEmpty = false, $db=null) {
+function dbCreateEmotion($userExperienceId, $emotionValues, $isEmpty = false, $db=null) {
 	if ($db == null) $db = new Db();
-	$reactionValues = json_decode($reactionValues);
+	$emotionValues = json_decode($emotionValues);
 
-	$query = "INSERT INTO `reaction` (`user_emotion_id`,`is_empty`,`anger`,`contempt`,`disgust`,`fear`,`happiness`,`neutral`,`sadness`,`surprise`) VALUES 
-(" . $userEmotionId . "," . ($isEmpty ? 1 : 0) . "," . $reactionValues->anger . "," . $reactionValues->contempt . "," . $reactionValues->disgust . "," . $reactionValues->fear . ','. $reactionValues->happiness . ',' . $reactionValues->neutral .',' . $reactionValues->sadness . ','. $reactionValues->surprise . ");";
+	$query = "INSERT INTO `emotion` (`user_experience_id`,`is_empty`,`anger`,`contempt`,`disgust`,`fear`,`happiness`,`neutral`,`sadness`,`surprise`) VALUES 
+		(" . $userExperienceId . "," . ($isEmpty ? 1 : 0) . "," . $emotionValues->anger . "," . $emotionValues->contempt . "," .
+		$emotionValues->disgust . "," . $emotionValues->fear . ','. $emotionValues->happiness . ',' .
+		$emotionValues->neutral .',' . $emotionValues->sadness . ','. $emotionValues->surprise . ");";
 
 	return $db->query($query);
 }
