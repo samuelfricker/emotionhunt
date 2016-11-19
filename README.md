@@ -35,6 +35,9 @@ Erstellt eine neue Experience.
 	sender, //user id des senders
 	recipients, //komma-getrennte user ids sämtlicher empfänger
 	expectedEmotions //erwartete Emotion (JSON serialisiert)
+	
+	Example-Call: experience/create
+	Post-Data (raw): lat=8.00&lon=43.00&text=blabla&visibilityDuration=24&recipients=2&sender=1&expectedEmotion={"anger":0.99,"contempt":0.0,"disgust":0.0,"fear":0.0,"happiness":0.0,"neutral":0.0,"sadness":0.0,"surprise":0.0}
 
 ####experience/public/create
 Erstellt eine neue öffentliche Experience.
