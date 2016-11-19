@@ -22,15 +22,11 @@ Passe nun die neue Datei mit deinen eigenen Parametern an.
 ###User
 ####user/list
 Liste aller User in der DB.
-<code>GET</code>
-<code>keine Parameter notwendig</code>
 
 ###Experience
 ####experience/create
 Erstellt eine neue Experience.
-<code>POST</code>
 
-<code>	
 	Params: 
 	
 	lat, //position
@@ -39,13 +35,10 @@ Erstellt eine neue Experience.
 	sender, //user id des senders
 	recipients, //komma-getrennte user ids sämtlicher empfänger
 	expectedEmotions //erwartete Emotion (JSON serialisiert)
-</code>
 
 ####experience/public/create
 Erstellt eine neue öffentliche Experience.
-<code>POST</code>
 
-<code>	
 	Params: 
 	
 	lat, //position
@@ -54,38 +47,28 @@ Erstellt eine neue öffentliche Experience.
 	tex, //text
 	sender, //user id des senders
 	expectedEmotions //erwartete Emotion (JSON serialisiert)
-</code>
 
 ###experience/list
 Liste aller Experiences in der DB.
-<code>POST</code>
 
-<code>	
 	Params: 
 	
 	lat, //position
 	lon, //position
-</code>
 
 ###experience/public/list
 Liste aller öffentlichen Experiences in der DB.
-<code>POST</code>
 
-<code>	
 	Params: 
 	
 	lat, //position
 	lon, //position
-</code>
 
 ##Emotion
 ###emotion/create
 Erstellt eine neue Emotion als eine Art Reaktion bzw. "gelesen" einer Experience.
-<code>POST</code>
 
-<code>	
 	Params: 
 	
 	userExperienceId, //User-Experience Id
 	emotion, //emotion beim betrachten der experience (JSON serialisiert)
-</code>
