@@ -48,7 +48,7 @@ Erstellt eine neue öffentliche Experience.
 	sender, //user id des senders
 	expectedEmotions //erwartete Emotion (JSON serialisiert)
 
-###experience/list
+####experience/list
 Liste aller Experiences in der DB.
 
 	Params: 
@@ -56,7 +56,7 @@ Liste aller Experiences in der DB.
 	lat, //position
 	lon, //position
 
-###experience/public/list
+####experience/public/list
 Liste aller öffentlichen Experiences in der DB.
 
 	Params: 
@@ -64,8 +64,8 @@ Liste aller öffentlichen Experiences in der DB.
 	lat, //position
 	lon, //position
 
-##Emotion
-###emotion/create
+###Emotion
+####emotion/create
 Erstellt eine neue Emotion als eine Art Reaktion bzw. "gelesen" einer Experience.
 
 	Params: 
