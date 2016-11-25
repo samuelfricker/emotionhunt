@@ -25,7 +25,8 @@ Liste aller User in der DB.
 
 ###Experience
 ####experience/create
-Erstellt eine neue Experience.
+Erstellt eine neue Experience.<br/>
+<b>WICHTIG:</b> Content-Type: multipart/form-data
 
 	Params: 
 	
@@ -34,13 +35,15 @@ Erstellt eine neue Experience.
 	tex, //text
 	sender, //user id des senders
 	recipients, //komma-getrennte user ids sämtlicher empfänger
-	expectedEmotions //erwartete Emotion (JSON serialisiert)
+	expectedEmotions, //erwartete Emotion (JSON serialisiert)
+	media // File-Upload
 	
 	Example-Call: experience/create
 	Post-Data (raw): lat=8.00&lon=43.00&text=blabla&visibilityDuration=24&recipients=2&sender=1&expectedEmotion={"anger":0.99,"contempt":0.0,"disgust":0.0,"fear":0.0,"happiness":0.0,"neutral":0.0,"sadness":0.0,"surprise":0.0}
 
 ####experience/public/create
-Erstellt eine neue öffentliche Experience.
+Erstellt eine neue öffentliche Experience.<br/>
+<b>WICHTIG:</b> Content-Type: multipart/form-data
 
 	Params: 
 	
@@ -49,7 +52,8 @@ Erstellt eine neue öffentliche Experience.
 	visibilityDuration, //dauer der sichtbarkeit
 	tex, //text
 	sender, //user id des senders
-	expectedEmotions //erwartete Emotion (JSON serialisiert)
+	expectedEmotions, //erwartete Emotion (JSON serialisiert)
+	media // File-Upload
 
 ####experience/list
 Liste aller Experiences in der DB.
