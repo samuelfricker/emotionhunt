@@ -57,6 +57,10 @@ function dbGetExperienceById($id) {
  * @return bool validation
  */
 function dbCreateExperience($isPublic=false) {
+	//ensure that the media file is sent and is not corrupt and move file
+	$filename = validateAndMoveMediaFile();
+
+	/** @var Db $db */
 	$db = new Db();
 	$db->connect()->autocommit(false);
 
@@ -67,6 +71,7 @@ function dbCreateExperience($isPublic=false) {
 	//attributes from emotion object
 	$lat = $db->escape($_POST['lat']);
 	$lon = $db->escape($_POST['lon']);
+	$filename = $db->escape($filename);
 
 	$visibilityDuration = null;
 	if ($db->escape($_POST['visibilityDuration'])) {
@@ -88,7 +93,7 @@ function dbCreateExperience($isPublic=false) {
 	$expectedEmotionValues = $_POST['expectedEmotion'];
 
 	//create emotion
-	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . ",NOW()," . $visibilityDuration . "," . $text . ")")) {
+	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`, `filename`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . ",NOW()," . $visibilityDuration . "," . $text . ",'". $filename ."')")) {
 		$validation = false;
 		$errorMessage[] = 'Could not insert new experience';
 		$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
@@ -177,11 +182,65 @@ function dbCreateEmotion($userExperienceId, $emotionValues, $isEmpty = false, $d
 }
 
 /**
+ * Validates an uploaded media file.
+ */
+function validateAndMoveMediaFile() {
+	$params = include('_params.php');
+	$errorMessage = [];
+
+	if (!isset($_FILES['media']['error']) || is_array($_FILES['media']['error'])) {
+		$errorMessage[] = 'Corrupt request.';
+	}
+
+	switch ($_FILES['media']['error']) {
+		case UPLOAD_ERR_OK:
+			break;
+		case UPLOAD_ERR_NO_FILE:
+			$errorMessage[] = 'Missing file.';
+			break;
+		case UPLOAD_ERR_INI_SIZE:
+		case UPLOAD_ERR_FORM_SIZE:
+			$errorMessage[] = 'File exceeded filesize limit.';
+			break;
+		default:
+			$errorMessage[] = 'Unknown error.';
+	}
+
+	if ($_FILES['media']['size'] > $params['maxFileSize']) {
+		$errorMessage[] = 'Exceeded filesize limit.';
+	}
+
+	$imageInfo = getimagesize($_FILES['media']['tmp_name']);
+	if (false === $ext = array_search($imageInfo['mime'], $params['supportedMimes'], true)) {
+		$errorMessage[] = 'Invalid file format. Supported formats: ' . join(', ', $params['supportedMimes']);
+	}
+
+	if (count($errorMessage) > 0) {
+		throwDbException('Media file validation error:', join('. ', $errorMessage), 415);
+	}
+
+	return moveMediaFile($ext);
+}
+
+/**
+ * @param $ext
+ * @return string filename of moved file
+ */
+function moveMediaFile($ext) {
+	$params = include('_params.php');
+	$filename = sprintf('%s.%s', sha1_file($_FILES['media']['tmp_name']), $ext);
+	if (!move_uploaded_file($_FILES['media']['tmp_name'], sprintf('./' . $params['uploadDir'] . '/%s', $filename))) {
+		throwDbException('Media Upload.','Failed to move uploaded file.');
+	}
+	return $filename;
+}
+
+/**
  * Throws a db-exception.
  * @param string $message
  * @param string $errorTexts
  */
-function throwDbException($message, $errorTexts) {
-	printResult(null,500,$message, $errorTexts);
+function throwDbException($message, $errorTexts, $errCode=500) {
+	printResult(null,$errCode,$message, $errorTexts);
 	die();
 }
