@@ -16,6 +16,9 @@ function handleRequest() {
 		case 'user/list' :
 			getUsers();
 			break;
+		case 'experience/media' :
+			getMedia();
+			break;
 		case 'experience/create' :
 			createExperience();
 			break;
@@ -39,6 +42,27 @@ function handleRequest() {
 
 /**
  * Creates a new experience. Following POST attributes are required:
+ * - filename
+ */
+function getMedia() {
+	$filename = $_POST['media'];
+
+	if (!preg_match('/^[a-f0-9]+\.[a-z]{3,4}$/', $filename)) {
+		return printResult([],405,'Not allowed call: Invalid request value for media: ' . $filename);
+	}
+
+	$params = include('_params.php');
+	$filename = './' .$params['uploadDir'] . '/' . $filename;
+
+	if (file_exists($filename)) {
+		return printMedia($filename);
+	} else {
+		return printResult([],404,'Media not found');
+	}
+}
+
+/**
+ * Creates a new experience. Following POST attributes are required:
  * - lat
  * - lon
  * - visibilityDuration (optional)
@@ -46,6 +70,7 @@ function handleRequest() {
  * - sender (user id)
  * - recipients (, separated user ids)
  * - expectedEmotion JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
+ * - media
  */
 function createExperience() {
 	printResult(dbCreateExperience());
@@ -59,6 +84,7 @@ function createExperience() {
  * - text
  * - sender (user id)
  * - expectedReaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
+ * - media
  */
 function createPublicExperience() {
 	printResult(dbCreateExperience(true));
@@ -107,6 +133,7 @@ function getUsers() {
  */
 function printResult($data, $state = 200, $stateText = 'SUCCESS', $errorTexts = null) {
 	header('HTTP/1.0 ' . $state);
+	header("Access-Control-Allow-Origin: *");
 	header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
@@ -119,4 +146,17 @@ function printResult($data, $state = 200, $stateText = 'SUCCESS', $errorTexts = 
 		'data'=>$data,
 		'error'=>$errorTexts
 	]);
+}
+
+/**
+ * Returns a media file.
+ * @param $file
+ * @param $mediaType
+ */
+function printMedia($file, $mediaType) {
+	//TODO add support for multiple media types depending on the file located on the server
+	header('HTTP/1.0 200');
+	header("Access-Control-Allow-Origin: *");
+	header('Content-type: image/png');
+	readfile($file);
 }

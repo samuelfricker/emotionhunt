@@ -63,6 +63,13 @@ Liste aller Experiences in der DB.
 	lat, //position
 	lon, //position
 
+####experience/media
+Lädt ein Foto einer Experience.
+
+	Params: 
+	
+	media //filename for download (e.g. media=e81732458bda9a61300cd63162686b5cdb80b2c6.png)
+
 ####experience/public/list
 Liste aller öffentlichen Experiences in der DB.
 
