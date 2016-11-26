@@ -19,6 +19,11 @@ selbst definiert. Kopiere hierfür die Datei <code>_config.php</code> und benenn
 Passe nun die neue Datei mit deinen eigenen Parametern an.
 
 ##2. Abfragen
+<b>WICHTIG: </b> Für sämtliche Abfragen wird der <u>apiKey</u> entweder als POST oder GET Parameter mit folgendem Inhalt benötigt:
+
+	bENFnP63CqNFDSucAFguwj7p685Z2eh3
+
+
 ###User
 ####user/list
 Liste aller User in der DB.

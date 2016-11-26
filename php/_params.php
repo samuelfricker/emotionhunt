@@ -1,5 +1,7 @@
 <?php
 return [
+	//api key which is required for each API call either as POST or GET param
+	'apiKey' => 'bENFnP63CqNFDSucAFguwj7p685Z2eh3',
 	//radius within experiences can be fetched
 	'radius'=>1000,
 	//upload directory for uploaded media files

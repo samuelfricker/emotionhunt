@@ -5,7 +5,13 @@
  * @return string
  */
 function getAction() {
+	if (!validateApiKey()) throwDbException('Unauthorized','Invalid API key.','403');
 	return $_GET['action'] != null ? strtolower($_GET['action']) : '';
+}
+
+function validateApiKey() {
+	$params = include('_params.php');
+	return strcmp($params['apiKey'],$_REQUEST['apiKey']) === 0;
 }
 
 /**
