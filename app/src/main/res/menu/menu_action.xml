@@ -7,4 +7,9 @@
         android:icon="@drawable/ic_user_white_24dp"
         balloonberry:showAsAction="always"
         android:title="@string/profile"/>
+    <item
+        android:id="@+id/btn_main_experience_list"
+        android:icon="@drawable/ic_experience_list_white_24dp"
+        balloonberry:showAsAction="always"
+        android:title="@string/experience_list"/>
 </menu>
