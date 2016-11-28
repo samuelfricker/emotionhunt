@@ -19,7 +19,7 @@ public abstract class RestTask extends AsyncTask<String, Void, Boolean> {
     public static final String HTTP_RESPONSE = "httpResponse";
     public static final String API_KEY = "bENFnP63CqNFDSucAFguwj7p685Z2eh3";
 
-    private Context mContext;
+    protected Context mContext;
     protected String mUrl;
     protected List<NameValuePair> mNameValuePairs;
 

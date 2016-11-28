@@ -1,8 +1,17 @@
 package ch.fhnw.ip5.emotionhunt.models;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
+import android.util.Log;
+
+import com.google.gson.Gson;
+import com.google.gson.annotations.SerializedName;
+
+import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
+import ch.fhnw.ip5.emotionhunt.helper.DbHelper;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.models
@@ -11,9 +20,36 @@ import android.provider.BaseColumns;
  */
 
 public abstract class Experience{
+    private static final String TAG = MainActivity.class.getSimpleName();
 
-    public abstract Experience findById(SQLiteDatabase db, int id);
+    @SerializedName("id")
+    public long id;
+    @SerializedName("is_sent")
+    public boolean isSent;
+    @SerializedName("is_public")
+    public boolean isPublic;
+    public double lat;
+    public double lon;
+    @SerializedName("created_at")
+    public int createdAt;
+    @SerializedName("visibility_duration")
+    public int visibilityDuration;
+    public String text;
+    public String filename;
+
+    public static Experience findById(Context context, int id) { return null; };
     public static void loadExperiencesFromApi(Context context, boolean isPublic) { }
+
+    public abstract boolean saveDb (Context context);
+
+    public static Experience loadFromCursor (Cursor c, Experience e) {
+        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
+        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
+        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
+        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
+        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
+        return e;
+    }
 
     /**
      * This is the db contract to persist this model in the sqlite db.
