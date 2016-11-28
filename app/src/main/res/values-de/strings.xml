@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Emotion Hunt</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Einstellungen</string>
+    <string name="title_activity_scrolling">ScrollingActivity</string>
+    <string name="title_activity_main">Karte</string>
+    <string name="profile">Profile</string>
+    <string name="experience_private">Private</string>
+    <string name="experience_public">Public</string>
+    <string name="my_experiences">My Experiences</string>
+</resources>
