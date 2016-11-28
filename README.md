@@ -67,6 +67,7 @@ Liste aller Experiences in der DB.
 	
 	lat, //position
 	lon, //position
+	imei, //the user's device IMEI
 
 ####experience/media
 Lädt ein Foto einer Experience.

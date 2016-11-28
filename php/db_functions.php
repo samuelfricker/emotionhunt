@@ -29,13 +29,20 @@ function dbGetExperiences() {
 	$params = include('_params.php');
 
 	$db = new Db();
+	if (empty($_POST['lat'])) throwDbException("Invalid Call","Missing lat param.");
 	$lat = $db->escape($_POST['lat']);
+	if (empty($_POST['lon'])) throwDbException("Invalid Call","Missing lon param.");
 	$lon = $db->escape($_POST['lon']);
+	if (empty($_POST['imei'])) throwDbException("Invalid Call","Missing imei param.");
+	$imei = $db->escape($_POST['imei']);
 
 	$radius = $params['radius'];
 
-	$query = "SELECT *," . dbDistanceFunction($lat,$lon) . " FROM experience 
-	WHERE is_public = 0 HAVING distance < $radius ORDER BY distance";
+	$query = "SELECT e.*," . dbDistanceFunction($lat,$lon) . " FROM experience e
+	LEFT JOIN user_experience ue on ue.experience_id = e.id
+	LEFT JOIN user u on u.id = ue.user_id
+	WHERE e.is_public = 0 AND u.android_id = '" . $imei . "'" .
+		" HAVING distance < $radius ORDER BY distance";
 	$rows = $db->select($query);
 	return $rows;
 }
