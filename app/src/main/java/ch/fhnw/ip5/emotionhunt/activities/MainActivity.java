@@ -11,6 +11,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -25,11 +27,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private GoogleMap mMap;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -81,12 +84,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         try{
             switch (item.getItemId()) {
                 case R.id.btn_main_profile:
-                    Intent intentList = new Intent(getApplicationContext(), ExperienceListActivity.class);
-                    startActivity(intentList);
+                    Intent intentDetail = new Intent(getApplicationContext(), SettingsActivity.class);
+                    startActivity(intentDetail);
                     return true;
                 case R.id.btn_main_experience_list:
-                    Intent intentDetail = new Intent(getApplicationContext(), ExperienceDetailActivity.class);
-                    startActivity(intentDetail);
+                    Intent intentList = new Intent(getApplicationContext(), ExperienceListActivity.class);
+                    startActivity(intentList);
                     return true;
                 default:
                     throw new IllegalArgumentException("Invalid Action Menu Item");
@@ -96,4 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         return true;
     }
+
+
+
 }
