@@ -101,4 +101,5 @@
     <string name="experience_public">Public</string>
     <string name="my_experiences">My Experiences</string>
     <string name="service_name">EmotionHuntAPIService</string>
+    <string name="experience_list">Experience List</string>
 </resources>

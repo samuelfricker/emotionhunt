@@ -2,12 +2,10 @@ package ch.fhnw.ip5.emotionhunt.activities;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -24,8 +22,10 @@ import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.services.ApiService;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
-
+    private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,14 +73,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.action_menu, menu);
+        inflater.inflate(R.menu.menu_action, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(getApplicationContext(), ExperienceListActivity.class);
-        startActivity(intent);
+        try{
+            switch (item.getItemId()) {
+                case R.id.btn_main_profile:
+                    Intent intentList = new Intent(getApplicationContext(), ExperienceListActivity.class);
+                    startActivity(intentList);
+                    return true;
+                case R.id.btn_main_experience_list:
+                    Intent intentDetail = new Intent(getApplicationContext(), ExperienceDetailActivity.class);
+                    startActivity(intentDetail);
+                    return true;
+                default:
+                    throw new IllegalArgumentException("Invalid Action Menu Item");
+            }
+        } catch (Exception e) {
+            Log.d(TAG, "Could not found appropriate Menu Action. Error Message: "+e.getMessage());
+        }
         return true;
     }
 
