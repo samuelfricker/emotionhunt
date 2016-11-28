@@ -228,6 +228,7 @@ function validateAndMoveMediaFile() {
  */
 function moveMediaFile($ext) {
 	$params = include('_params.php');
+	//TODO resize picture for performance reasons
 	$filename = sprintf('%s.%s', sha1_file($_FILES['media']['tmp_name']), $ext);
 	if (!move_uploaded_file($_FILES['media']['tmp_name'], sprintf('./' . $params['uploadDir'] . '/%s', $filename))) {
 		throwDbException('Media Upload.','Failed to move uploaded file.');
