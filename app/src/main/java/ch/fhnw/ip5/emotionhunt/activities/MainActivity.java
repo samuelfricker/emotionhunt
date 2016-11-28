@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import ch.fhnw.ip5.emotionhunt.R;
+import ch.fhnw.ip5.emotionhunt.services.ApiService;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -81,5 +82,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Intent intent = new Intent(getApplicationContext(), ExperienceListActivity.class);
         startActivity(intent);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Intent intent= new Intent(this, ApiService.class);
+        startService(intent);
     }
 }
