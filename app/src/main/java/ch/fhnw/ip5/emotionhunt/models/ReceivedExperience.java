@@ -109,6 +109,7 @@ public class ReceivedExperience extends Experience {
     public static void showNotification(Context context, int id) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setContentTitle("new experience " + id + " available")
                 .setContentText("There's a new experience to discover. Check it out now!");
         //creates an explicit intent for an Activity in your app
