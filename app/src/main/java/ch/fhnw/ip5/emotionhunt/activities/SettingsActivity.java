@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import ch.fhnw.ip5.emotionhunt.R;
+import ch.fhnw.ip5.emotionhunt.helper.DeviceHelper;
 
 import java.util.List;
 
@@ -191,7 +192,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             // Bind the summaries of EditText/List/Dialog/Ringtone preferences
             // to their values. When their values change, their summaries are
             // updated to reflect the new value, per the Android Design
-            // guidelines.
+            // guidelines
+            Preference pref = findPreference("android_id");
+            pref.setTitle("Android ID: " + DeviceHelper.getDeviceId(getActivity()));
+            pref.setDefaultValue(DeviceHelper.getDeviceId(getActivity()));
+            bindPreferenceSummaryToValue(findPreference("android_id"));
             bindPreferenceSummaryToValue(findPreference("example_text"));
             bindPreferenceSummaryToValue(findPreference("example_list"));
         }
