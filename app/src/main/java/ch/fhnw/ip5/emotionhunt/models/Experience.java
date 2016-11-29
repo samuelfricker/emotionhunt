@@ -1,17 +1,11 @@
 package ch.fhnw.ip5.emotionhunt.models;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.provider.BaseColumns;
-import android.util.Log;
 
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
-import ch.fhnw.ip5.emotionhunt.helper.DbHelper;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.models
@@ -44,10 +38,14 @@ public abstract class Experience{
 
     public static Experience loadFromCursor (Cursor c, Experience e) {
         e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
-        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
-        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
-        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
-        e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
+        e.lat = c.getDouble(c.getColumnIndex(ExperienceDbContract.COL_LAT));
+        e.lon = c.getDouble(c.getColumnIndex(ExperienceDbContract.COL_LON));
+        e.isSent = e instanceof SentExperience;
+        e.isPublic = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_IS_PUBLIC)) == 1;
+        e.createdAt = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_CREATED_AT));
+        e.visibilityDuration = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_VISIBILITY_DURATION));
+        e.text = c.getString(c.getColumnIndex(ExperienceDbContract.COL_TEXT));
+        e.filename = c.getString(c.getColumnIndex(ExperienceDbContract.COL_FILENAME));
         return e;
     }
 
@@ -80,5 +78,6 @@ public abstract class Experience{
                         "  PRIMARY KEY (`" + COL_ID + "`))";
 
         public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
+        public static final String SQL_COUNT_ITEMS = "SELECT COUNT(*) FROM " + TABLE_NAME;
     }
 }

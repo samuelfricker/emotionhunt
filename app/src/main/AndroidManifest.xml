@@ -97,7 +97,14 @@
             android:name=".services.ApiService"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/service_name"
-            android:process="ch.fhnw.ip5.emotionhunt.service"
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
+        <service
+            android:name=".services.LocationService"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/service_name"
             android:enabled="true"
             android:exported="true">
         </service>

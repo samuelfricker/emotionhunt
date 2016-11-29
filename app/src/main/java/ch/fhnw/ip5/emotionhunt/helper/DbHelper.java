@@ -1,6 +1,7 @@
 package ch.fhnw.ip5.emotionhunt.helper;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -49,5 +50,19 @@ public class DbHelper  extends SQLiteOpenHelper {
         db.execSQL(Experience.ExperienceDbContract.SQL_DROP_TABLE);
         db.execSQL(LocationHistory.LocationDbContract.SQL_DROP_TABLE);
         onUpgrade(db, oldVersion, newVersion);
+    }
+
+    public static void getStatus(SQLiteDatabase db) {
+        //count experiences
+        Cursor mCount = db.rawQuery(Experience.ExperienceDbContract.SQL_COUNT_ITEMS, null);
+        mCount.moveToFirst();
+        Log.d(TAG, Experience.ExperienceDbContract.TABLE_NAME + ": " + mCount.getInt(0));
+        mCount.close();
+
+        //count locations
+        mCount = db.rawQuery(LocationHistory.LocationDbContract.SQL_COUNT_ITEMS, null);
+        mCount.moveToFirst();
+        Log.d(TAG, LocationHistory.LocationDbContract.TABLE_NAME + ": " + mCount.getInt(0));
+        mCount.close();
     }
 }

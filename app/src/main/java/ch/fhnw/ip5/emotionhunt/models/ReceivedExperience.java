@@ -11,11 +11,10 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
 
-import com.google.gson.Gson;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,14 +59,33 @@ public class ReceivedExperience extends Experience {
         return null;
     }
 
+    /**
+     * Returns all ReceivedExperience instances from the experience sql lite database.
+     * @param context
+     * @return List of experiences
+     */
+    public static ArrayList<ReceivedExperience> getAll(Context context) {
+        ArrayList<ReceivedExperience> receivedExperiences = new ArrayList<>();
+        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+        Cursor c = db.rawQuery("SELECT * FROM " + ExperienceDbContract.TABLE_NAME , null);
+        if(c.moveToFirst()){
+            do{
+                ReceivedExperience experience = new ReceivedExperience();
+                experience = (ReceivedExperience) loadFromCursor(c, experience);
+                receivedExperiences.add(experience);
+            }while(c.moveToNext());
+        }
+        c.close();
+        db.close();
+        return receivedExperiences;
+    }
+
     public boolean saveDb(Context context) {
-        if (ReceivedExperience.findById(context, this.id) != null) {
+        ReceivedExperience experience = ReceivedExperience.findById(context, this.id);
+        if (experience != null) {
             Log.d(TAG, "received experience with id " + id + " already stored into sql db.");
             return false;
         }
-
-        //show notification if this is a new experience
-        ReceivedExperience.showNotification(context);
 
         Log.d(TAG, "saveDb");
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
@@ -82,13 +100,16 @@ public class ReceivedExperience extends Experience {
         contentValues.put(ExperienceDbContract.COL_CREATED_AT, createdAt);
         contentValues.put(ExperienceDbContract.COL_VISIBILITY_DURATION, visibilityDuration);
 
+        //show notification if this is a new experience
+        ReceivedExperience.showNotification(context, (int) id);
+
         return db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
     }
 
-    public static void showNotification(Context context) {
+    public static void showNotification(Context context, int id) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle("new experience available")
+                .setContentTitle("new experience " + id + " available")
                 .setContentText("There's a new experience to discover. Check it out now!");
         //creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
@@ -101,15 +122,19 @@ public class ReceivedExperience extends Experience {
         mBuilder.setContentIntent(resultPendingIntent);
         NotificationManager mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         //mId allows you to update the notification later on.
-        mNotificationManager.notify(1231, mBuilder.build());
+        mNotificationManager.notify(id, mBuilder.build());
     }
 
     public static void loadExperiencesFromApi(Context context, boolean isPublic) {
         String url = Params.getApiActionUrl(context, "experience.get");
 
         List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("lat", "8.00"));
-        nameValuePairs.add(new BasicNameValuePair("lon", "43.00"));
+        LocationHistory lh = LocationHistory.getLastPositionHistory(context);
+        if (lh == null) return;
+        String lat = String.valueOf(lh.lat);
+        String lon = String.valueOf(lh.lon);
+        nameValuePairs.add(new BasicNameValuePair("lat", lat));
+        nameValuePairs.add(new BasicNameValuePair("lon", lon));
         nameValuePairs.add(new BasicNameValuePair("imei", DeviceHelper.getDeviceId(context)));
 
         RestTask task = new RestExperienceListTask(context, url, nameValuePairs, isPublic);
