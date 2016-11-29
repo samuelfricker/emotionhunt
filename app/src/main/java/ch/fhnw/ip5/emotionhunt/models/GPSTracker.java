@@ -102,7 +102,7 @@ public class GPSTracker extends ContextCompat implements LocationListener {
         locationValues.put(LocationHistory.LocationDbContract.COL_LAT, location.getLatitude());
         locationValues.put(LocationHistory.LocationDbContract.COL_LON, location.getLongitude());
         locationValues.put(LocationHistory.LocationDbContract.COL_CREATED_AT, System.currentTimeMillis() / 1000L);
-        boolean validation = db.insert(LocationHistory.LocationDbContract.TABLE_NAME, null, locationValues) != -1;
+        boolean validation = db.insertWithOnConflict(LocationHistory.LocationDbContract.TABLE_NAME, null, locationValues, SQLiteDatabase.CONFLICT_IGNORE) != -1;
 
         if (validation) {
             Log.d(TAG, "location stored into sql lite db.");
