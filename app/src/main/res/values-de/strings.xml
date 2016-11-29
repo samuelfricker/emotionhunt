@@ -16,4 +16,5 @@
     <string name="mark_as_spam">Mark as Spam</string>
     <string name="reactions">Reactions</string>
     <string name="experience_detail">Experience Detail</string>
+    <string name="location_service">EmotionHuntLocationService</string>
 </resources>
