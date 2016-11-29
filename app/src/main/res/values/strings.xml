@@ -180,4 +180,6 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
     <string name="location_service">EmotionHuntLocationService</string>
+    <string name="send">send</string>
+    <string name="experience_successfully_created">Experience successfully created.</string>
 </resources>

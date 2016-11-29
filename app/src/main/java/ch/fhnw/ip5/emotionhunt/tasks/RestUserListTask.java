@@ -24,11 +24,13 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.zip.Inflater;
 
 import ch.fhnw.ip5.emotionhunt.R;
+import ch.fhnw.ip5.emotionhunt.helpers.UserList;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.models.User;
@@ -76,6 +78,9 @@ public class RestUserListTask extends RestTask {
                 final Activity activity = mWeakActivity.get();
                 final LinearLayout linearLayout = (LinearLayout) activity.findViewById(R.id.layout_experience_private);
 
+                UserList userList = UserList.getInstance();
+                userList.users = new ArrayList<>();
+
                 //save all received experiences into db
                 for (final User user : users) {
                     activity.runOnUiThread(new Runnable() {
@@ -84,6 +89,10 @@ public class RestUserListTask extends RestTask {
                             View v = activity.getLayoutInflater().inflate(R.layout.activity_experience_create_contact_item, null);
                             CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
                             checkBox.setText(user.name);
+
+                            UserList userList = UserList.getInstance();
+                            userList.users.add(user);
+
                             linearLayout.addView(v);
                         }
                     });

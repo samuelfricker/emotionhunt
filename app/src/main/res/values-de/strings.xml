@@ -17,4 +17,6 @@
     <string name="reactions">Reactions</string>
     <string name="experience_detail">Experience Detail</string>
     <string name="location_service">EmotionHuntLocationService</string>
+    <string name="send">send</string>
+    <string name="experience_successfully_created">Experience successfully created.</string>
 </resources>

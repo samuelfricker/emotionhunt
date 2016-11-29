@@ -14,8 +14,10 @@ import ch.fhnw.ip5.emotionhunt.helper.DbHelper;
  */
 
 public class LocationHistory {
-    double lat;
-    double lon;
+    //TODO remove entries from db after 500 inserts !
+
+    public double lat;
+    public double lon;
     int createdAt;
 
     /**

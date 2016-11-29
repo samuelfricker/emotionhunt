@@ -62,7 +62,14 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activities.ExperienceCreateActivity" />
+        <activity android:name=".activities.ExperienceCreateActivity"
+                  android:parentActivityName=".activities.MainActivity"
+                  android:theme="@style/AppTheme.NoActionBar" >
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity" />
+        </activity>
         <activity
             android:name=".activities.ExperienceListActivity"
             android:label="@string/my_experiences"

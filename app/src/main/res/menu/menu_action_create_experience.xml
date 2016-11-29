@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:balloonberry="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/btn_create_experience_send"
+        android:icon="@drawable/ic_send_white_24dp"
+        balloonberry:showAsAction="always"
+        android:title="@string/send"/>
+</menu>
