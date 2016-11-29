@@ -36,6 +36,9 @@
         <meta-data
             android:name="api.action.media"
             android:value="experience/media"/>
+        <meta-data
+            android:name="api.action.user.get"
+            android:value="user/list"/>
 
         <activity
             android:name=".activities.MainActivity"

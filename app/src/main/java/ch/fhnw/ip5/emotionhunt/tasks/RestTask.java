@@ -5,6 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,6 +29,9 @@ public abstract class RestTask extends AsyncTask<String, Void, Boolean> {
     {
         mContext = context;
         mUrl = url;
+        if (nameValuePairs == null) {
+            nameValuePairs = new ArrayList<>();
+        }
         mNameValuePairs = nameValuePairs;
         mNameValuePairs.add(new BasicNameValuePair("apiKey", API_KEY));
     }
@@ -34,6 +39,5 @@ public abstract class RestTask extends AsyncTask<String, Void, Boolean> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-
     }
 }

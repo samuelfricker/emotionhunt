@@ -2,29 +2,28 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-<ImageView
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:srcCompat="@drawable/img_experience_example"
-    android:id="@+id/imageView"
-    android:layout_weight="1"/>
-
-<TextView
-    android:text="TextView"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/textView"
-    android:layout_weight="1"/>
-
-<ImageView
-    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:srcCompat="@drawable/img_emoticon_example"
-    android:id="@+id/imageView2"
-    android:layout_weight="1"/>
+    android:layout_marginBottom="15dp">
+
+    <ImageView
+    android:layout_width="match_parent"
+    app:srcCompat="@drawable/ic_menu_camera"
+    android:id="@+id/img_experience_preview"
+    android:scaleType="center"
+    android:background="#ddd"
+    android:layout_height="150dp"
+    android:layout_weight="1"
+    />
+
+    <ImageView
+        app:srcCompat="@drawable/img_emoticon_example"
+        android:id="@+id/img_experience_icon"
+        android:layout_gravity="center_vertical"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:padding="5dp"/>
 
 </LinearLayout>
