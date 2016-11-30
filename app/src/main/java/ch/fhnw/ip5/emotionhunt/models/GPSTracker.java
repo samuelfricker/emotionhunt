@@ -102,6 +102,9 @@ public class GPSTracker extends ContextCompat implements LocationListener {
         locationValues.put(LocationHistory.LocationDbContract.COL_LAT, location.getLatitude());
         locationValues.put(LocationHistory.LocationDbContract.COL_LON, location.getLongitude());
         locationValues.put(LocationHistory.LocationDbContract.COL_CREATED_AT, System.currentTimeMillis() / 1000L);
+
+        // TODO Save only 100 entreis to DB dp.getStatus. if more than 100 delete the last 80
+
         boolean validation = db.insertWithOnConflict(LocationHistory.LocationDbContract.TABLE_NAME, null, locationValues, SQLiteDatabase.CONFLICT_IGNORE) != -1;
 
         if (validation) {

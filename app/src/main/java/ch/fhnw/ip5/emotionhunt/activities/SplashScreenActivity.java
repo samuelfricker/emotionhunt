@@ -32,6 +32,7 @@ public class SplashScreenActivity extends AppCompatActivity {
     ArrayList<User> users;
     private View mContentView;
     private String androidId;
+    private final static long sleepTime = 1000*15;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,11 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        try {
+            Thread.sleep(sleepTime);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         checkUserId();
 
