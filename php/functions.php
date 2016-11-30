@@ -79,7 +79,7 @@ function getMedia() {
  * - media
  */
 function createExperience() {
-	printResult(dbCreateExperience());
+	printResult(dbCreateExperience(), 201);
 }
 
 /**
@@ -93,7 +93,7 @@ function createExperience() {
  * - media
  */
 function createPublicExperience() {
-	printResult(dbCreateExperience(true));
+	printResult(dbCreateExperience(true), 201);
 }
 
 /**

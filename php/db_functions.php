@@ -41,7 +41,7 @@ function dbGetExperiences() {
 	$query = "SELECT e.*," . dbDistanceFunction($lat,$lon) . " FROM experience e
 	LEFT JOIN user_experience ue on ue.experience_id = e.id
 	LEFT JOIN user u on u.id = ue.user_id
-	WHERE e.is_public = 0 AND u.android_id = '" . $imei . "'" .
+	WHERE e.is_public = 0 AND u.android_id = '" . $imei . "' AND ue.is_sender = 0" .
 		" HAVING distance < $radius ORDER BY distance";
 	$rows = $db->select($query);
 	return $rows;
@@ -99,8 +99,10 @@ function dbCreateExperience($isPublic=false) {
 	//reaction
 	$expectedEmotionValues = $_POST['expectedEmotion'];
 
+	$timestamp = time();
+
 	//create emotion
-	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`, `filename`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . ",NOW()," . $visibilityDuration . "," . $text . ",'". $filename ."')")) {
+	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`, `filename`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . "," . $timestamp . "," . $visibilityDuration . "," . $text . ",'". $filename ."')")) {
 		$validation = false;
 		$errorMessage[] = 'Could not insert new experience';
 		$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
