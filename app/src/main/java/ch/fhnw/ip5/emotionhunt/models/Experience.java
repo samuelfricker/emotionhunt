@@ -36,6 +36,22 @@ public abstract class Experience{
 
     public abstract boolean saveDb (Context context);
 
+    @Override
+    public boolean equals(Object object)
+    {
+        boolean isEqual = false;
+        if (object != null && object instanceof Experience) {
+            isEqual = this.id == ((Experience) object).id;
+        }
+        return isEqual;
+    }
+
+    /**
+     * Loads all params from a cursor into a given Experience Instance.
+     * @param c Cursor (sql lite row)
+     * @param e Experience instance
+     * @return Experience Object with loaded attributes
+     */
     public static Experience loadFromCursor (Cursor c, Experience e) {
         e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
         e.lat = c.getDouble(c.getColumnIndex(ExperienceDbContract.COL_LAT));

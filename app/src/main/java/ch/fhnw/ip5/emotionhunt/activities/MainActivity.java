@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
+    private ArrayList<ReceivedExperience> mExperiences;
     public static final int ONBAORDING_CODE = 1;
 
     LocationRequest mLocationRequest;
@@ -131,7 +132,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 return;
             }
-
             // other 'case' lines to check for other
             // permissions this app might request
         }
@@ -238,6 +238,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     /**
+     * Adds a marker to the array list and on the google maps screen if not yet added.
+     * @param experience new experience
+     * @return successfully added
+     */
+    public boolean addExperience(ReceivedExperience experience) {
+        if (mExperiences == null) mExperiences = new ArrayList<>();
+        if (mExperiences.contains(experience)) {
+            //already added
+            return false;
+        }
+        mExperiences.add(experience);
+        LatLng marker = new LatLng(experience.lat, experience.lon);
+        mMap.addMarker(new MarkerOptions().position(marker).title(experience.text));
+        Log.d(TAG, "Experience " + experience.id + " successfully added on map.");
+        return true;
+    }
+
+    /**
      * Starts the experience listener and update or initializes the marker.
      */
     public void startExperienceListener() {
@@ -251,21 +269,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         } catch (InterruptedException e) { }
                         continue;
                     }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            mMap.clear();
-                        }
-                    });
 
                     ArrayList<ReceivedExperience> receivedExperiences = ReceivedExperience.getAll(getApplicationContext());
                     for (final ReceivedExperience receivedExperience : receivedExperiences) {
-                        //add a marker in Sydney and move the camera
-                        final LatLng marker = new LatLng(receivedExperience.lat, receivedExperience.lon);
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                mMap.addMarker(new MarkerOptions().position(marker).title(receivedExperience.text));
+                                addExperience(receivedExperience);
                             }
                         });
                     }
