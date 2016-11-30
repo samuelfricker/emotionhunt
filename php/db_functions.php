@@ -2,6 +2,41 @@
 include('db_base_functions.php');
 
 /**
+ * Returns the user row from db by a given android id
+ * @return string[]
+ */
+function dbCreateUser() {
+	$db = new Db();
+	if (empty($_POST['androidId']) || empty($_POST['name']) || empty($_POST['phoneNumber'])) return [];
+
+	$phoneNumber = $db->quote($_POST['phoneNumber']);
+	$androidId = $db->quote($_POST['androidId']);
+	$name = $db->quote($_POST['name']);
+
+	$userId = null;
+	if (!$db->query("INSERT INTO `user` (`phone_number`,`android_id`,`name`) VALUES (" . $phoneNumber . "," . $androidId . "," . $name . ")")) {
+		$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
+		throwDbException('Could not insert new user', join('. ', $errorTexts));
+	}
+
+	return dbGetUserByAndroidId();
+}
+
+/**
+ * Returns the user row from db by a given android id
+ * @return string[]
+ */
+function dbGetUserByAndroidId() {
+	$db = new Db();
+	if (empty($_POST['androidId'])) return [];
+
+	$androidId = $db->quote($_POST['androidId']);
+	$query = "SELECT * FROM `user` WHERE android_id = " . $androidId . " LIMIT 1";
+	$rows = $db->select($query);
+	return $rows;
+}
+
+/**
  * Returns all public experiences.
  * @return mixed
  */

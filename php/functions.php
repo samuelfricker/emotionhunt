@@ -19,6 +19,12 @@ function validateApiKey() {
  */
 function handleRequest() {
 	switch (getAction()) {
+		case 'user/login' :
+			login();
+			break;
+		case 'user/register' :
+			register();
+			break;
 		case 'user/list' :
 			getUsers();
 			break;
@@ -43,6 +49,34 @@ function handleRequest() {
 		default :
 			printResult(null,404,'Action not found');
 			break;
+	}
+}
+
+/**
+ * Registers a new user. following params are required: androidId, name, phoneNumber
+ * Either returns HTTP 201 on success or 403 on fail.
+ */
+function register() {
+	$user = dbCreateUser();
+	if (!empty($user)) {
+		printResult($user, 201);
+	} else {
+		printResult(null, 403);
+	}
+}
+
+/**
+ * Tries to login a user with a given android id.
+ * HTTP response will be either 200 or 403 if android id is not yet registered
+ */
+function login() {
+	/** @var string[] $user */
+	$user = dbGetUserByAndroidId();
+
+	if (!empty($user)) {
+		printResult($user, 200);
+	} else {
+		printResult(null, 403);
 	}
 }
 
@@ -144,6 +178,13 @@ function printResult($data, $state = 200, $stateText = 'SUCCESS', $errorTexts = 
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	header("Pragma: no-cache");
 	header('Content-type: application/json');
+
+	if ($state >= 400 && $state < 500) {
+		$stateText = "Client Error";
+	}
+	if ($state >= 500 && $state < 600) {
+		$stateText = "Server Error";
+	}
 
 	echo json_encode([
 		'state'=>$state,
