@@ -32,7 +32,7 @@ public abstract class Experience{
     public String text;
     public String filename;
 
-    public static Experience findById(Context context, int id) { return null; };
+    public static Experience findById(Context context, long id) { return null; };
     public static void loadExperiencesFromApi(Context context, boolean isPublic) { }
 
     public abstract boolean saveDb (Context context);

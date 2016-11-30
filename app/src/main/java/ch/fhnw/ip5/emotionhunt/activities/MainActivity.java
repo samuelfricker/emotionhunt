@@ -40,15 +40,17 @@ import java.util.ArrayList;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helper.DbHelper;
 import ch.fhnw.ip5.emotionhunt.helper.PermissionHelper;
+import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.services.ApiService;
 import ch.fhnw.ip5.emotionhunt.services.LocationService;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
     private ArrayList<ReceivedExperience> mExperiences;
+    private ArrayList<Marker> mMarkers;
     private Thread mExperienceListenerThread;
     private FloatingActionButton fabToggle;
     public static final int ONBAORDING_CODE = 1;
@@ -111,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG,"onMapReady");
         mMap = googleMap;
+        mMap.setOnMarkerClickListener(this);
         mMap.getUiSettings().setMapToolbarEnabled(false);
 
         startExperienceListener();
@@ -255,13 +258,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     public boolean addExperience(ReceivedExperience experience) {
         if (mExperiences == null) mExperiences = new ArrayList<>();
+        if (mMarkers == null) mMarkers = new ArrayList<>();
         if (mExperiences.contains(experience)) {
             //already added
             return false;
         }
-        mExperiences.add(experience);
         LatLng marker = new LatLng(experience.lat, experience.lon);
-        mMap.addMarker(new MarkerOptions().position(marker).title(experience.text));
+        MarkerOptions options = new MarkerOptions().position(marker).title(experience.text);
+        Marker m = mMap.addMarker(options);
+        mExperiences.add(experience);
+        mMarkers.add(m);
         Log.d(TAG, "Experience " + experience.id + " successfully added on map.");
         return true;
     }
@@ -271,6 +277,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     public void startExperienceListener() {
         mExperiences = new ArrayList<>();
+        mMarkers = new ArrayList<>();
         mExperienceListenerThread = new Thread(new Runnable() {
             public void run() {
                 while (true) {
@@ -330,5 +337,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             fabToggle.setImageResource(R.drawable.ic_private_white_24dp);
             Toast.makeText(this, R.string.show_private_experiences, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker m) {
+        int index = mMarkers.indexOf(m);
+        Marker marker = mMarkers.get(index);
+        Experience experience = mExperiences.get(index);
+
+        Log.d(TAG, "Experience '" + experience.id + "' clicked.");
+        Intent intent = new Intent(getApplicationContext(), ExperienceDetailActivity.class);
+        intent.putExtra(ExperienceDetailActivity.EXTRA_EXPERIENCE_ID, experience.id);
+        startActivity(intent);
+
+        return true;
     }
 }
