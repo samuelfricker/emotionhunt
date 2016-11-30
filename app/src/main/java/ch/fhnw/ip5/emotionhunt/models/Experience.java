@@ -21,6 +21,7 @@ public abstract class Experience{
     @SerializedName("is_sent")
     public boolean isSent;
     @SerializedName("is_public")
+    public int isPublicApi;
     public boolean isPublic;
     public double lat;
     public double lon;

@@ -37,12 +37,9 @@ import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 
 public class RestExperienceListTask extends RestTask {
 
-    boolean isPublic;
-
-    public RestExperienceListTask(Context context, String url, List<NameValuePair> nameValuePairs, boolean isPublic)
+    public RestExperienceListTask(Context context, String url, List<NameValuePair> nameValuePairs)
     {
         super(context, url, nameValuePairs);
-        this.isPublic = isPublic;
     }
 
     @Override
@@ -72,6 +69,8 @@ public class RestExperienceListTask extends RestTask {
 
                 //save all received experiences into db
                 for (Experience experience : experiences) {
+                    //convert int to boolean from API
+                    experience.isPublic = experience.isPublicApi == 1;
                     experience.saveDb(mContext);
                 }
 

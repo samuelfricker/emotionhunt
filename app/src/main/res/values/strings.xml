@@ -205,4 +205,6 @@
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="show_public_experiences">show public experiences</string>
+    <string name="show_private_experiences">show private experiences</string>
 </resources>

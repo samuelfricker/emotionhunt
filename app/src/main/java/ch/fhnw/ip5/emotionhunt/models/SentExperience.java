@@ -52,14 +52,14 @@ public class SentExperience extends Experience {
         return db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
     }
 
-    public static void loadExperiencesFromApi(Context context, boolean isPublic) {
+    public static void loadExperiencesFromApi(Context context) {
         String url = Params.getApiActionUrl(context, "experience.get");
 
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("lat", "8.00"));
         nameValuePairs.add(new BasicNameValuePair("lon", "43.00"));
 
-        RestTask task = new RestExperienceListTask(context, url, nameValuePairs, isPublic);
+        RestTask task = new RestExperienceListTask(context, url, nameValuePairs);
         task.execute();
     }
 

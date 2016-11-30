@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.common.ConnectionResult;
@@ -48,6 +49,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
     private ArrayList<ReceivedExperience> mExperiences;
+    private Thread mExperienceListenerThread;
+    private FloatingActionButton fabToggle;
     public static final int ONBAORDING_CODE = 1;
 
     LocationRequest mLocationRequest;
@@ -55,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LatLng latLng;
     boolean isCameraMoved = false;
+    boolean isPublic = true;
 
 
     @Override
@@ -76,6 +80,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
+        fabToggle = (FloatingActionButton) findViewById(R.id.btn_toggle_public_private);
+        fabToggle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                togglePublicPrivate();
+            }
+        });
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.btn_main_add);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,7 +270,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * Starts the experience listener and update or initializes the marker.
      */
     public void startExperienceListener() {
-        new Thread(new Runnable() {
+        mExperiences = new ArrayList<>();
+        mExperienceListenerThread = new Thread(new Runnable() {
             public void run() {
                 while (true) {
                     if (mMap == null) {
@@ -275,7 +287,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                addExperience(receivedExperience);
+                                if (receivedExperience.isPublic == isPublic) {
+                                    addExperience(receivedExperience);
+                                }
                             }
                         });
                     }
@@ -285,6 +299,36 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 }
             }
-        }).start();
+        });
+        mExperienceListenerThread.start();
+    }
+
+    /**
+     * Stops the experience listener thread.
+     */
+    public void stopExperienceListener() {
+        mExperienceListenerThread.interrupt();
+        //remove all markers
+        mMap.clear();
+    }
+
+    /**
+     * Toggles the markers by the visibility of the experience (public / private).
+     */
+    private void togglePublicPrivate() {
+        //stop listener
+        stopExperienceListener();
+        //invert public-private flag
+        this.isPublic = !this.isPublic;
+        //start listener again
+        startExperienceListener();
+
+        if (isPublic) {
+            fabToggle.setImageResource(R.drawable.ic_public_white_24dp);
+            Toast.makeText(this, R.string.show_public_experiences, Toast.LENGTH_SHORT).show();
+        } else {
+            fabToggle.setImageResource(R.drawable.ic_private_white_24dp);
+            Toast.makeText(this, R.string.show_private_experiences, Toast.LENGTH_SHORT).show();
+        }
     }
 }

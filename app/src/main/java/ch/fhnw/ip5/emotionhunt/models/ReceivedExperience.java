@@ -126,7 +126,7 @@ public class ReceivedExperience extends Experience {
         mNotificationManager.notify(id, mBuilder.build());
     }
 
-    public static void loadExperiencesFromApi(Context context, boolean isPublic) {
+    public static void loadExperiencesFromApi(Context context) {
         String url = Params.getApiActionUrl(context, "experience.get");
 
         List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -138,7 +138,7 @@ public class ReceivedExperience extends Experience {
         nameValuePairs.add(new BasicNameValuePair("lon", lon));
         nameValuePairs.add(new BasicNameValuePair("imei", DeviceHelper.getDeviceId(context)));
 
-        RestTask task = new RestExperienceListTask(context, url, nameValuePairs, isPublic);
+        RestTask task = new RestExperienceListTask(context, url, nameValuePairs);
         task.execute();
     }
 }

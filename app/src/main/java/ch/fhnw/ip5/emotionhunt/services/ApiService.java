@@ -34,6 +34,6 @@ public class ApiService extends IntentService {
      */
     private void loadExperiences() {
         Log.i(TAG, "load experiences");
-        ReceivedExperience.loadExperiencesFromApi(getApplicationContext(), false);
+        ReceivedExperience.loadExperiencesFromApi(getApplicationContext());
     }
 }
