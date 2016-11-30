@@ -9,6 +9,9 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
 
     <application
         android:allowBackup="true"
@@ -20,25 +23,25 @@
         <!-- API URLs -->
         <meta-data
             android:name="api.url"
-            android:value="http://emotionhunt.com/api/?action="/>
+            android:value="http://emotionhunt.com/api/?action=" />
         <meta-data
             android:name="api.action.experience.create"
-            android:value="experience/create"/>
+            android:value="experience/create" />
         <meta-data
             android:name="api.action.experience.get"
-            android:value="experience/list"/>
+            android:value="experience/list" />
         <meta-data
             android:name="api.action.experience.public.create"
-            android:value="experience/public/create"/>
+            android:value="experience/public/create" />
         <meta-data
             android:name="api.action.experience.public.get"
-            android:value="experience/public/get"/>
+            android:value="experience/public/get" />
         <meta-data
             android:name="api.action.media"
-            android:value="experience/media"/>
+            android:value="experience/media" />
         <meta-data
             android:name="api.action.user.get"
-            android:value="user/list"/>
+            android:value="user/list" />
 
         <activity
             android:name=".activities.MainActivity"
@@ -62,9 +65,11 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activities.ExperienceCreateActivity"
-                  android:parentActivityName=".activities.MainActivity"
-                  android:theme="@style/AppTheme.NoActionBar" >
+        <activity
+            android:name=".activities.ExperienceCreateActivity"
+            android:parentActivityName=".activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -81,7 +86,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
-
         <activity
             android:name=".activities.ExperienceDetailActivity"
             android:label="@string/experience_detail"
@@ -93,7 +97,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activities.MainActivity" />
         </activity>
-
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
@@ -105,25 +108,26 @@
 
         <service
             android:name=".services.ApiService"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name"
             android:enabled="true"
-            android:exported="true">
-        </service>
-
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/service_name"></service>
         <service
             android:name=".services.LocationService"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/service_name"></service>
 
         <receiver android:name=".receivers.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".OnBoardActivity"
+            android:label="@string/title_activity_on_board"></activity>
     </application>
 
 </manifest>

@@ -182,4 +182,23 @@
     <string name="location_service">EmotionHuntLocationService</string>
     <string name="send">send</string>
     <string name="experience_successfully_created">Experience successfully created.</string>
+    <string name="title_activity_on_board">Sign in</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="empty_name">Name is Empty</string>
+    <string name="empty_phonenumber">Phone Number is Empty</string>
+    <string name="pref_previous_started">Previous Started</string>
 </resources>

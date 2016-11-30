@@ -51,7 +51,7 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_experience_create);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_experience_create);
         setSupportActionBar(toolbar);
 
         // Get a support ActionBar corresponding to this toolbar

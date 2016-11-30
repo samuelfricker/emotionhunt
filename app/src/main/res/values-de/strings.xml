@@ -19,4 +19,9 @@
     <string name="location_service">EmotionHuntLocationService</string>
     <string name="send">send</string>
     <string name="experience_successfully_created">Experience successfully created.</string>
+    <string name="name">Name</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="empty_name">Name is Empty</string>
+    <string name="empty_phonenumber">Phone Number is Empty</string>
+    <string name="pref_previous_started">Pref Previous Started</string>
 </resources>

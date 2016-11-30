@@ -2,9 +2,11 @@ package ch.fhnw.ip5.emotionhunt.activities;
 
 import android.Manifest;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.os.Bundle;
@@ -45,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
+    public static final int ONBAORDING_CODE = 1;
 
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -96,6 +99,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         Log.d(TAG,"onMapReady");
         mMap = googleMap;
+        mMap.getUiSettings().setMapToolbarEnabled(false);
 
         startExperienceListener();
 
