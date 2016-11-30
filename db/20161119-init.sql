@@ -29,7 +29,10 @@ CREATE TABLE IF NOT EXISTS `emotion_hunt`.`user` (
   `android_id` VARCHAR(255) NOT NULL,
   `name` VARCHAR(255) NULL,
   `profile_picture` VARCHAR(255) NULL,
-  PRIMARY KEY (`id`))
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `phone_number_UNIQUE` (`phone_number` ASC),
+  UNIQUE INDEX `android_id_UNIQUE` (`android_id` ASC),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC))
 ENGINE = InnoDB;
 
 
