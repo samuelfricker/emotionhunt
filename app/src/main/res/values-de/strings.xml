@@ -20,9 +20,9 @@
     <string name="send">senden</string>
     <string name="experience_successfully_created">Erlebnisse erfolgreich erstellt.</string>
     <string name="name">Name</string>
-    <string name="phone_number">Telefonnummer</string>
+    <string name="phone_number">Telefonnummer (0791234567)</string>
     <string name="empty_name">Name ist leer</string>
-    <string name="empty_phonenumber">Telefonnummer ist leer</string>
+    <string name="empty_phonenumber">Telefonnummer ist falsch</string>
     <string name="pref_previous_started">Pref Previous Started</string>
     <string name="show_public_experiences">öffentliche Erlebnisse</string>
     <string name="show_private_experiences">private Erlebnisse</string>

@@ -42,7 +42,6 @@ public class RestUserLoginTask extends RestTask {
             int status = response.getStatusLine().getStatusCode();
 
             Log.d(TAG, "Status: " + status);
-
             if (status == 200) {
                 Intent intent = new Intent(mContext, MainActivity.class);
                 mContext.startActivity(intent);
