@@ -20,7 +20,7 @@ import ch.fhnw.ip5.emotionhunt.R;
  * A login screen that offers login via name/phonenumber.
  */
 public class OnBoardActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = OnBoardActivity.class.getSimpleName();
 
     /**
      * A dummy authentication store containing known user names and passwords.
@@ -38,6 +38,7 @@ public class OnBoardActivity extends AppCompatActivity implements LoaderCallback
     // UI references.
     private TextView mName;
     private TextView mPhoneNumber;
+    private Button mLoginButton;
 
 
     @Override
@@ -49,7 +50,7 @@ public class OnBoardActivity extends AppCompatActivity implements LoaderCallback
         mName = (TextView) findViewById(R.id.text_login_name);
         mPhoneNumber = (TextView) findViewById(R.id.text_login_phone_number);
 
-        Button mLoginButton = (Button) findViewById(R.id.login_button);
+        mLoginButton = (Button) findViewById(R.id.login_button);
         mLoginButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
