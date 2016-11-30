@@ -201,4 +201,8 @@
     <string name="empty_name">Name is Empty</string>
     <string name="empty_phonenumber">Phone Number is Empty</string>
     <string name="pref_previous_started">Previous Started</string>
+
+    <string name="title_activity_splash_screen">SplashScreenActivity</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 </resources>

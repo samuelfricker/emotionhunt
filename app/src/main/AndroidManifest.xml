@@ -106,10 +106,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ch.fhnw.ip5.emotionhunt.activities.MainActivity" />
         </activity>
-
         <activity
             android:name=".activities.OnBoardActivity"
             android:label="@string/title_activity_on_board">
+        </activity>
+
+        <activity
+            android:name=".activities.SplashScreenActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:label="@string/title_activity_splash_screen"
+            android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -121,19 +127,21 @@
             android:enabled="true"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name"></service>
+            android:label="@string/service_name" />
         <service
             android:name=".services.LocationService"
             android:enabled="true"
             android:exported="true"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name"></service>
+            android:label="@string/service_name" />
 
         <receiver android:name=".receivers.BootBroadcastReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
+
+
     </application>
 
 </manifest>

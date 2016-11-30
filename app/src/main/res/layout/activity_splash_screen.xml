@@ -1,0 +1,21 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/colorPrimary"
+    android:orientation="horizontal"
+    tools:context="ch.fhnw.ip5.emotionhunt.activities.SplashScreenActivity">
+
+
+    <ImageView
+        android:layout_width="180dip"
+        android:layout_height="180dip"
+        android:layout_gravity="center_horizontal"
+        android:keepScreenOn="true"
+        app:srcCompat="@drawable/ic_logo_medium"
+        android:id="@+id/fullscreen_content"
+        android:layout_marginTop="150dp" />
+
+
+</FrameLayout>
