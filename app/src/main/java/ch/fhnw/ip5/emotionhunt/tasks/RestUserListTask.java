@@ -2,10 +2,12 @@ package ch.fhnw.ip5.emotionhunt.tasks;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -31,8 +33,6 @@ import java.util.zip.Inflater;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.UserList;
-import ch.fhnw.ip5.emotionhunt.models.Experience;
-import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.models.User;
 
 /**
@@ -49,6 +49,8 @@ public class RestUserListTask extends RestTask {
         super(context, url, nameValuePairs);
         mWeakActivity = new WeakReference<Activity>(activity);
     }
+
+
 
     @Override
     protected Boolean doInBackground(String... urls) {

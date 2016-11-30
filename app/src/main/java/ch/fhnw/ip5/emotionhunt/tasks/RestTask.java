@@ -16,7 +16,7 @@ import java.util.List;
  * @author Benjamin Bur
  */
 
-public abstract class RestTask extends AsyncTask<String, Void, Boolean> {
+public abstract class RestTask extends AsyncTask<String, Integer, Boolean> {
     public static final String TAG = "RestTask";
     public static final String HTTP_RESPONSE = "httpResponse";
     public static final String API_KEY = "bENFnP63CqNFDSucAFguwj7p685Z2eh3";

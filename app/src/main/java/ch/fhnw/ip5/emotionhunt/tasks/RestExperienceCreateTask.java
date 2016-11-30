@@ -2,6 +2,7 @@ package ch.fhnw.ip5.emotionhunt.tasks;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.provider.SyncStateContract;
 import android.util.Log;
 import android.widget.Toast;
@@ -52,6 +53,28 @@ public class RestExperienceCreateTask extends RestTask {
     }
 
     @Override
+    protected void onProgressUpdate(Integer... progress) {
+        super.onProgressUpdate(progress);
+        if(progress[0] == 1){
+            Handler handler =  new Handler(mContext.getMainLooper());
+            handler.post( new Runnable(){
+                public void run(){
+                    Toast.makeText(mContext, R.string.experience_successfully_created, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        if(progress[0] == 2){
+            Handler handler =  new Handler(mContext.getMainLooper());
+            handler.post( new Runnable(){
+                public void run(){
+                    Toast.makeText(mContext, R.string.network_problem, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
+
+    @Override
     protected Boolean doInBackground(String... urls) {
         try {
             Log.d(TAG, "Execute: " + mUrl);
@@ -77,7 +100,8 @@ public class RestExperienceCreateTask extends RestTask {
             Log.d(TAG, "Status: " + status);
 
             if (status == 201 || status == 200) {
-                Toast.makeText(mContext, R.string.experience_successfully_created, Toast.LENGTH_LONG).show();
+                //TODO create update onProgressUpdate function for Toast
+                publishProgress(1);
                 HttpEntity hentity = response.getEntity();
                 JSONObject jsonObject = new JSONObject(EntityUtils.toString(hentity));
                 JSONArray jData = jsonObject.getJSONArray("data");
@@ -102,10 +126,8 @@ public class RestExperienceCreateTask extends RestTask {
                 HttpEntity hentity = response.getEntity();
                 JSONObject jsonObject = new JSONObject(EntityUtils.toString(hentity));
                 JSONArray jData = jsonObject.getJSONArray("data");
-
                 String data = jData.toString();
-                //TODO: remove toast (only for debug!)
-                Toast.makeText(mContext, "ERROR " + data, Toast.LENGTH_LONG).show();
+                publishProgress(2);
                 Log.e(TAG, "ERROR " + data);
             }
         } catch (IOException e) {

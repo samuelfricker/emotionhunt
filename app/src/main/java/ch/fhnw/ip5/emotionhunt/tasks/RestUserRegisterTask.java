@@ -2,6 +2,7 @@ package ch.fhnw.ip5.emotionhunt.tasks;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,6 +37,20 @@ public class RestUserRegisterTask extends RestTask {
     }
 
     @Override
+    protected void onProgressUpdate(Integer... progress) {
+        super.onProgressUpdate(progress);
+        if(progress[0] == 2){
+            Handler handler =  new Handler(mContext.getMainLooper());
+            handler.post( new Runnable(){
+                public void run(){
+                    Toast.makeText(mContext, "Username already exists", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
+
+    @Override
     protected Boolean doInBackground(String... urls) {
         try {
             Log.d(TAG, "Execute: " + mUrl);
@@ -57,10 +72,9 @@ public class RestUserRegisterTask extends RestTask {
             } else if ( status == 500 ) {
                 // TODO Add functionality for already existing Users who changed their Phone (new Android I)
                 // TODO Teas doesnt show up
-                CharSequence text = "Hello toast!";
-                int duration = Toast.LENGTH_SHORT;
-                Toast toast = Toast.makeText(mContext, text, duration);
-                toast.show();
+
+
+                publishProgress(2);
 
             } else {
                 Log.e(TAG, "Error while login. Status: " + status);

@@ -26,4 +26,5 @@
     <string name="pref_previous_started">Pref Previous Started</string>
     <string name="show_public_experiences">öffentliche Erlebnisse</string>
     <string name="show_private_experiences">private Erlebnisse</string>
+    <string name="network_problem">Network Problem occured</string>
 </resources>

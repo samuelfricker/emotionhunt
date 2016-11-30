@@ -79,7 +79,7 @@ public class SentExperience extends Experience {
         //TODO change recipient - load from selected checkboxes
         nameValuePairs.add(new BasicNameValuePair("recipients", "1"));
         //TODO change backend to accept imei instead of sender id
-        nameValuePairs.add(new BasicNameValuePair("sender", "2"));
+        nameValuePairs.add(new BasicNameValuePair("sender", DeviceHelper.getDeviceId(context)));
         nameValuePairs.add(new BasicNameValuePair("expectedEmotion", "{\"anger\":0.00,\"contempt\":0.0,\"disgust\":0.0,\"fear\":0.0,\"happiness\":0.99,\"neutral\":0.0,\"sadness\":0.0,\"surprise\":0.0}"));
 
         RestExperienceCreateTask experienceCreateTask = new RestExperienceCreateTask(context, url,nameValuePairs, this);

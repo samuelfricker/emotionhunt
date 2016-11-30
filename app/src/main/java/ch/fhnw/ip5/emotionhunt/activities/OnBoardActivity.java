@@ -31,6 +31,7 @@ public class OnBoardActivity extends AppCompatActivity {
     private String androidId;
     public String name;
     public String phoneNumber;
+    public RestUserRegisterTask restTask;
 
 
 
@@ -103,9 +104,10 @@ public class OnBoardActivity extends AppCompatActivity {
 
         String url = Params.getApiActionUrl(getApplicationContext(), "user.register");
         mLoginButton.setClickable(false);
-        RestUserRegisterTask restTask = new RestUserRegisterTask(this,url,nameValuePairs);
+        restTask = new RestUserRegisterTask(this,url,nameValuePairs);
         restTask.execute();
     }
+
 
     private boolean isPhoneNumberValid(String phonenumber) {
         return phonenumber.length() > 10;
