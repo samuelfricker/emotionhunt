@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nguyenhoanglam.imagepicker.activity.ImagePicker;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
+import ch.fhnw.ip5.emotionhunt.helpers.UserList;
+import ch.fhnw.ip5.emotionhunt.models.Emotion;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.LocationHistory;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
@@ -42,6 +45,7 @@ public class ExperienceCreateActivity extends AppCompatActivity {
     ArrayList<User> users;
     TextView textView;
     Bitmap experienceImage;
+    boolean isPublic = false;
 
     public static final int REQUEST_CODE_IMAGE_PICKER = 1;
     public static final String TAG = "ExperienceCreateAct";
@@ -67,6 +71,13 @@ public class ExperienceCreateActivity extends AppCompatActivity {
 
         mTabHost.setCurrentTab(0);
 
+        mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
+            @Override
+            public void onTabChanged(String s) {
+                isPublic = mTabHost.getCurrentTab() == 1;
+            }
+        });
+
         initView();
     }
 
@@ -83,7 +94,10 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         try{
             switch (item.getItemId()) {
                 case R.id.btn_create_experience_send:
-                    sendExperience();
+                    if (validateExperience()) {
+                        sendExperience();
+                    }
+
                     return true;
                 default:
                     throw new IllegalArgumentException("Invalid Action Menu Item");
@@ -144,6 +158,9 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initializes the user list (checkbox list)
+     */
     private void initUserList() {
         users = new ArrayList<>();
         Context context = getApplicationContext();
@@ -152,18 +169,89 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         restTask.execute();
     }
 
+    /**
+     * Validates the experience form and returns if the validation was successful or not.
+     * @return validation
+     */
+    private boolean validateExperience() {
+        boolean validation = true;
+        ArrayList<String> toastErrorMessages = new ArrayList<>();
+
+        //validate text input
+        if (textView.getText().toString().length() == 0) {
+            textView.setError(getString(R.string.text_is_empty));
+            validation = false;
+        } else {
+            textView.setError(null);
+        }
+
+        //validate recipients
+        if (!isPublic && getRecipients().size() == 0) {
+            toastErrorMessages.add(getString(R.string.recipients_are_empty));
+        }
+
+        //validate expected emotion
+        if (getExpectedEmotion() == null) {
+            toastErrorMessages.add(getString(R.string.expected_emotion_is_empty));
+        }
+
+        //validate media
+        if (experienceImage == null) {
+            toastErrorMessages.add(getString(R.string.media_is_empty));
+        }
+
+        if (toastErrorMessages.size() > 0) {
+            Toast.makeText(this, android.text.TextUtils.join(" ", toastErrorMessages), Toast.LENGTH_SHORT).show();
+            validation = false;
+        }
+
+        return validation;
+    }
+
+    /**
+     * Sends the experience trough the Server API
+     */
     private void sendExperience() {
         SentExperience sentExperience = new SentExperience();
+        //TODO add option for visibility duration
         sentExperience.visibilityDuration = 24;
         sentExperience.createdAt = (int) (System.currentTimeMillis() / 1000L);
         sentExperience.text = textView.getText().toString();
+        sentExperience.recipients = getRecipients();
 
         //get location from last stored location
         LocationHistory location = LocationHistory.getLastPositionHistory(getApplicationContext());
         sentExperience.lat = location.lat;
         sentExperience.lon = location.lon;
-        sentExperience.isPublic = false;
+        sentExperience.isPublic = isPublic;
         sentExperience.image = experienceImage;
-        sentExperience.sendApi(getApplicationContext());
+        //set expected emotion
+        sentExperience.expectedEmotion = getExpectedEmotion();
+        sentExperience.sendApi(this);
+    }
+
+    /**
+     * Returns an array with the selected recipient user ids.
+     * @return recipients
+     */
+    private ArrayList<Integer> getRecipients() {
+        ArrayList<Integer> recipients = new ArrayList<>();
+        UserList userList = UserList.getInstance();
+        for (User user : userList.recipients) {
+            recipients.add((int) user.id);
+        }
+
+        return recipients;
+    }
+
+    /**
+     * Returns the expected emotion set by the emotion in the header part.
+     * @return expected emotion object
+     */
+    private Emotion getExpectedEmotion() {
+        Emotion emotion = new Emotion();
+        //TODO replace with real expected emotion
+        emotion.setHappiness(0.9999999);
+        return emotion;
     }
 }

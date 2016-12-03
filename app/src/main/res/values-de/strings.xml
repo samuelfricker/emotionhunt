@@ -8,8 +8,8 @@
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="title_activity_main">Karte</string>
     <string name="profile">Profile</string>
-    <string name="experience_private">Private</string>
-    <string name="experience_public">Public</string>
+    <string name="experience_private">Privat</string>
+    <string name="experience_public">Öffentlich</string>
     <string name="my_experiences">My Experiences</string>
     <string name="experience_list">Experience List</string>
     <string name="please_do_yur_dishes">Please do yur Dishes!</string>
@@ -27,4 +27,10 @@
     <string name="show_public_experiences">öffentliche Erlebnisse</string>
     <string name="show_private_experiences">private Erlebnisse</string>
     <string name="network_problem">Network Problem occured</string>
+    <string name="text_is_empty">Text ist leer.</string>
+    <string name="recipients_are_empty">Keine Empfänger ausgewählt.</string>
+    <string name="expected_emotion_is_empty">Expected emotion is empty.</string>
+    <string name="media_is_empty">Media is empty.</string>
+    <string name="experience_public_notice">This experience will be visible for all emotionhunt users.</string>
+    <string name="please_wait">Bitte warten...</string>
 </resources>

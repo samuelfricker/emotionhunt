@@ -1,6 +1,9 @@
 package ch.fhnw.ip5.emotionhunt.tasks;
 
+import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Handler;
 import android.provider.SyncStateContract;
@@ -32,6 +35,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
+import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
@@ -43,45 +47,60 @@ import ch.fhnw.ip5.emotionhunt.models.SentExperience;
  */
 
 public class RestExperienceCreateTask extends RestTask {
-
+    private static final String TAG = RestExperienceCreateTask.class.getSimpleName();
+    private static final int STATE_SHOW_PROGRESS_DIALOG = 1;
+    private static final int STATE_SUCCESSFULL = 2;
+    private static final int STATE_FAIL = 3;
     SentExperience experience;
+    private ProgressDialog mProgressDialog;
 
     public RestExperienceCreateTask(Context context, String url, List<NameValuePair> nameValuePairs, SentExperience experience)
     {
         super(context, url, nameValuePairs);
         this.experience = experience;
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setMessage(mContext.getString(R.string.please_wait));
     }
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
-        super.onProgressUpdate(progress);
-        if(progress[0] == 1){
-            Handler handler =  new Handler(mContext.getMainLooper());
-            handler.post( new Runnable(){
-                public void run(){
-                    Toast.makeText(mContext, R.string.experience_successfully_created, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
-        if(progress[0] == 2){
-            Handler handler =  new Handler(mContext.getMainLooper());
-            handler.post( new Runnable(){
-                public void run(){
-                    Toast.makeText(mContext, R.string.network_problem, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }
+        Log.d(TAG, "onProgressUpdate " + progress[0]);
+        Handler handler =  new Handler(mContext.getMainLooper());
+        switch (progress[0]) {
+            case STATE_SHOW_PROGRESS_DIALOG:
+                handler.post(new Runnable() {
+                    public void run() {
+                        mProgressDialog.show();
+                    }
+                });
 
+                break;
+            case STATE_SUCCESSFULL:
+                handler.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(mContext, R.string.experience_successfully_created, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+            case STATE_FAIL:
+                handler.post(new Runnable() {
+                    public void run() {
+                        Toast.makeText(mContext, R.string.network_problem, Toast.LENGTH_SHORT).show();
+                    }
+                });
+                break;
+        }
     }
 
     @Override
     protected Boolean doInBackground(String... urls) {
+        //show progress dialog
+        publishProgress(STATE_SHOW_PROGRESS_DIALOG);
+
+        Log.d(TAG, "Execute: " + mUrl);
         try {
-            Log.d(TAG, "Execute: " + mUrl);
             MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
-
             HttpPost httppost = new HttpPost(mUrl);
-
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
             experience.image.compress(Bitmap.CompressFormat.JPEG, 50, bao);
             byte [] ba = bao.toByteArray();
@@ -101,7 +120,7 @@ public class RestExperienceCreateTask extends RestTask {
 
             if (status == 201 || status == 200) {
                 //TODO create update onProgressUpdate function for Toast
-                publishProgress(1);
+                publishProgress(STATE_SUCCESSFULL);
                 HttpEntity hentity = response.getEntity();
                 JSONObject jsonObject = new JSONObject(EntityUtils.toString(hentity));
                 JSONArray jData = jsonObject.getJSONArray("data");
@@ -111,24 +130,36 @@ public class RestExperienceCreateTask extends RestTask {
                 //read json values from response
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
-                //TODO: Implement logic to save sent experience in local db
-                /*List<SentExperience> experiences = Arrays.asList(gson.fromJson(data, SentExperience[].class));
+                List<SentExperience> experiences = Arrays.asList(gson.fromJson(data, SentExperience[].class));
 
                 //save all received experiences into db
                 for (Experience experience : experiences) {
                     experience.saveDb(mContext);
-                }*/
+                }
+
+                ((Activity)mContext).finish();
 
                 //TODO redirect user to mainactivity
 
                 return true;
             } else if (status == 415) {
+                publishProgress(STATE_FAIL);
                 HttpEntity hentity = response.getEntity();
                 JSONObject jsonObject = new JSONObject(EntityUtils.toString(hentity));
                 JSONArray jData = jsonObject.getJSONArray("data");
                 String data = jData.toString();
-                publishProgress(2);
-                Log.e(TAG, "ERROR " + data);
+                Log.e(TAG, "REST ERROR " + data);
+            } else {
+                publishProgress(STATE_FAIL);
+                HttpEntity hentity = response.getEntity();
+                String json = EntityUtils.toString(hentity);
+                try {
+                    JSONObject jsonObject = new JSONObject(json);
+                    json = jsonObject.toString();
+                } catch (Exception e) {
+
+                }
+                Log.e(TAG, "REST ERROR " + json);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -137,6 +168,17 @@ public class RestExperienceCreateTask extends RestTask {
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         return false;
+    }
+
+    @Override
+    protected void onPreExecute() {
+       mProgressDialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        if (mProgressDialog.isShowing()) mProgressDialog.dismiss();
     }
 }

@@ -47,6 +47,7 @@ public class RestExperienceListTask extends RestTask {
         try {
             Log.d(TAG, "Execute: " + mUrl);
             HttpPost httppost = new HttpPost(mUrl);
+            httppost.addHeader("Cache-Control", "no-cache");
             httppost.setEntity(new UrlEncodedFormEntity(mNameValuePairs));
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response = httpclient.execute(httppost);

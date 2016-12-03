@@ -6,6 +6,7 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -80,8 +81,9 @@ public class RestUserListTask extends RestTask {
                 final Activity activity = mWeakActivity.get();
                 final LinearLayout linearLayout = (LinearLayout) activity.findViewById(R.id.layout_experience_private);
 
-                UserList userList = UserList.getInstance();
+                final UserList userList = UserList.getInstance();
                 userList.users = new ArrayList<>();
+                userList.recipients = new ArrayList<>();
 
                 //save all received experiences into db
                 for (final User user : users) {
@@ -91,6 +93,20 @@ public class RestUserListTask extends RestTask {
                             View v = activity.getLayoutInflater().inflate(R.layout.activity_experience_create_contact_item, null);
                             CheckBox checkBox = (CheckBox) v.findViewById(R.id.checkBox);
                             checkBox.setText(user.name);
+                            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                                @Override
+                                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                                    if (b) {
+                                        userList.recipients.add(user);
+                                    } else {
+                                        try {
+                                            userList.recipients.remove(user);
+                                        } catch (Exception e) {
+                                            Log.e(TAG, "Could not remove user from recipients ... \n" + e.toString());
+                                        }
+                                    }
+                                }
+                            });
 
                             UserList userList = UserList.getInstance();
                             userList.users.add(user);

@@ -208,4 +208,10 @@
     <string name="show_public_experiences">show public experiences</string>
     <string name="show_private_experiences">show private experiences</string>
     <string name="network_problem">Network Problem occured</string>
+    <string name="text_is_empty">Text is empty.</string>
+    <string name="recipients_are_empty">Recipients are empty.</string>
+    <string name="expected_emotion_is_empty">Expected emotion is empty.</string>
+    <string name="media_is_empty">Media is empty.</string>
+    <string name="experience_public_notice">This experience will be visible for all emotionhunt users.</string>
+    <string name="please_wait">Please wait...</string>
 </resources>

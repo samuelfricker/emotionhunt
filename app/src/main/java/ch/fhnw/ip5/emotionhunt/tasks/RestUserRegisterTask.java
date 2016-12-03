@@ -38,9 +38,8 @@ public class RestUserRegisterTask extends RestTask {
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
-        super.onProgressUpdate(progress);
-        if(progress[0] == 2){
-            Handler handler =  new Handler(mContext.getMainLooper());
+        Handler handler =  new Handler(mContext.getMainLooper());
+        if (progress[0] == 2) {
             handler.post( new Runnable(){
                 public void run(){
                     Toast.makeText(mContext, "Username already exists", Toast.LENGTH_SHORT).show();

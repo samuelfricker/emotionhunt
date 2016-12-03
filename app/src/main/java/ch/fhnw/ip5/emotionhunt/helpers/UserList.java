@@ -11,6 +11,7 @@ import ch.fhnw.ip5.emotionhunt.models.User;
  */
 public class UserList {
     public ArrayList<User> users;
+    public ArrayList<User> recipients;
     private static UserList ourInstance = new UserList();
 
     public static UserList getInstance() {

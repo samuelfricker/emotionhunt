@@ -1,13 +1,19 @@
 package ch.fhnw.ip5.emotionhunt.tasks;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.widget.Toast;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import ch.fhnw.ip5.emotionhunt.R;
 
 
 /**

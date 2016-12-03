@@ -4,10 +4,10 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
+
     <TextView
-        android:id="@+id/helloworld1"
+        android:text="@string/experience_public_notice"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="asdasdasd 1">
-    </TextView>
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"/>
 </LinearLayout>

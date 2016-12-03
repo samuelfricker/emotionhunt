@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
@@ -27,9 +29,15 @@ import ch.fhnw.ip5.emotionhunt.tasks.RestTask;
  */
 
 public class SentExperience extends Experience {
-    public Bitmap image;
+    private static final String TAG = SentExperience.class.getSimpleName();
 
-    private static final String TAG = MainActivity.class.getSimpleName();
+    public Bitmap image;
+    public ArrayList<Integer> recipients;
+    public Emotion expectedEmotion;
+
+    public SentExperience() {
+        recipients = new ArrayList<>();
+    }
 
     public static SentExperience findById(Context context, int id) {
         return null;
@@ -66,21 +74,33 @@ public class SentExperience extends Experience {
     public void sendApi(Context context) {
         String url = Params.getApiActionUrl(context, "experience.create");
         List<NameValuePair> nameValuePairs = new ArrayList<>();
+
+        //set current location for this experience
         LocationHistory lh = LocationHistory.getLastPositionHistory(context);
         if (lh == null) return;
         String lat = String.valueOf(lh.lat);
         String lon = String.valueOf(lh.lon);
         nameValuePairs.add(new BasicNameValuePair("lat", lat));
         nameValuePairs.add(new BasicNameValuePair("lon", lon));
+
+        //set the experience's text
         nameValuePairs.add(new BasicNameValuePair("text", text));
-        //TODO make visibilityduration optional for private experiences
-        nameValuePairs.add(new BasicNameValuePair("visibilityDuration", String.valueOf(visibilityDuration)));
-        nameValuePairs.add(new BasicNameValuePair("imei", DeviceHelper.getDeviceId(context)));
-        //TODO change recipient - load from selected checkboxes
-        nameValuePairs.add(new BasicNameValuePair("recipients", "1"));
-        //TODO change backend to accept imei instead of sender id
-        nameValuePairs.add(new BasicNameValuePair("sender", DeviceHelper.getDeviceId(context)));
-        nameValuePairs.add(new BasicNameValuePair("expectedEmotion", "{\"anger\":0.00,\"contempt\":0.0,\"disgust\":0.0,\"fear\":0.0,\"happiness\":0.99,\"neutral\":0.0,\"sadness\":0.0,\"surprise\":0.0}"));
+
+        if (isPublic) {
+            //set the duration of visibility
+            nameValuePairs.add(new BasicNameValuePair("visibilityDuration", String.valueOf(visibilityDuration)));
+        } else {
+            //set the selected recipients
+            nameValuePairs.add(new BasicNameValuePair("recipients", android.text.TextUtils.join(",", recipients)));
+        }
+
+        //android id (sender)
+        nameValuePairs.add(new BasicNameValuePair("androidId", DeviceHelper.getDeviceId(context)));
+
+        //expected emotion
+        Gson gson = new Gson();
+        String sExpectedEmotion = gson.toJson(expectedEmotion);
+        nameValuePairs.add(new BasicNameValuePair("expectedEmotion", sExpectedEmotion));
 
         RestExperienceCreateTask experienceCreateTask = new RestExperienceCreateTask(context, url,nameValuePairs, this);
         experienceCreateTask.execute();
