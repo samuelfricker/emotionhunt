@@ -40,9 +40,6 @@ function handleRequest() {
 		case 'experience/public/create' :
 			createPublicExperience();
 			break;
-		case 'experience/public/list' :
-			getPublicExperiences();
-			break;
 		case 'emotion/create' :
 			createEmotion();
 			break;
@@ -107,7 +104,7 @@ function getMedia() {
  * - lon
  * - visibilityDuration (optional)
  * - text
- * - sender (user id)
+ * - androidId (android device id)
  * - recipients (, separated user ids)
  * - expectedEmotion JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
  * - media
@@ -122,7 +119,7 @@ function createExperience() {
  * - lon
  * - visibilityDuration (optional)
  * - text
- * - sender (user id)
+ * - androidId (android device id)
  * - expectedReaction JSON-serialized Reaction Object {"anger":1.0, "fear":0.0, ...}
  * - media
  */
@@ -147,7 +144,7 @@ function getPublicExperiences() {
  * - lon
  */
 function getExperiences() {
-	printResult(dbGetExperiences());
+	printResult(array_merge(dbGetExperiences(), dbGetPublicExperiences()));
 }
 
 /**

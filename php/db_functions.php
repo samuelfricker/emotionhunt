@@ -26,13 +26,19 @@ function dbCreateUser() {
  * Returns the user row from db by a given android id
  * @return string[]
  */
-function dbGetUserByAndroidId() {
+function dbGetUserByAndroidId($androidId = null) {
 	$db = new Db();
-	if (empty($_POST['androidId'])) return [];
 
-	$androidId = $db->quote($_POST['androidId']);
+	if (isset($_POST['androidId'])) {
+		$androidId = $db->quote($_POST['androidId']);
+	} else {
+		if (empty($androidId)) return [];
+		$androidId = $db->quote($androidId);
+	}
+
 	$query = "SELECT * FROM `user` WHERE android_id = " . $androidId . " LIMIT 1";
 	$rows = $db->select($query);
+
 	return $rows;
 }
 
@@ -122,7 +128,7 @@ function dbCreateExperience($isPublic=false) {
 	$text = $db->quote($_POST['text']);
 
 	//attributes from related object (e.g. user)
-	$sender = $db->escape($_POST['sender']);
+	$sender = $db->escape($_POST['androidId']);
 	$recipients = $isPublic == 0 ? explode(',', $db->escape($_POST['recipients'])) : [];
 
 	if ($isPublic == 0 && count($recipients) == 0) {
@@ -154,6 +160,15 @@ function dbCreateExperience($isPublic=false) {
 				$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
 			}
 		}
+	}
+
+	$rows = dbGetUserByAndroidId($sender);
+	if (empty($rows)) {
+		$validation = false;
+		$errorMessage[] = 'Sender not found.';
+		$errorTexts[] = sprintf("Sender not found by android id: %s", $sender);
+	} else {
+		$sender = $rows[0]['id'];
 	}
 
 	//create user and expected reaction
@@ -273,7 +288,7 @@ function validateAndMoveMediaFile() {
 function moveMediaFile($ext) {
 	$params = include('_params.php');
 	//TODO resize picture for performance reasons
-	$filename = sprintf('%s.%s', sha1_file($_FILES['media']['tmp_name']), $ext);
+	$filename = sprintf('%s.%s', sha1($_FILES['media']['tmp_name'] . time()), $ext);
 	if (!move_uploaded_file($_FILES['media']['tmp_name'], sprintf('./' . $params['uploadDir'] . '/%s', $filename))) {
 		throwDbException('Media Upload.','Failed to move uploaded file.');
 	}

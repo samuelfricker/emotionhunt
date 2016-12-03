@@ -38,7 +38,7 @@ Erstellt eine neue Experience.<br/>
 	lat, //position
 	lon, //position
 	tex, //text
-	sender, //user id des senders
+	androidId, //android device id
 	recipients, //komma-getrennte user ids sämtlicher empfänger
 	expectedEmotions, //erwartete Emotion (JSON serialisiert)
 	media // File-Upload
@@ -56,7 +56,7 @@ Erstellt eine neue öffentliche Experience.<br/>
 	lon, //position
 	visibilityDuration, //dauer der sichtbarkeit
 	tex, //text
-	sender, //user id des senders
+	androidId, //android device id
 	expectedEmotions, //erwartete Emotion (JSON serialisiert)
 	media // File-Upload
 
@@ -75,14 +75,6 @@ Lädt ein Foto einer Experience.
 	Params: 
 	
 	media //filename for download (e.g. media=e81732458bda9a61300cd63162686b5cdb80b2c6.png)
-
-####experience/public/list
-Liste aller öffentlichen Experiences in der DB.
-
-	Params: 
-	
-	lat, //position
-	lon, //position
 
 ###Emotion
 ####emotion/create
