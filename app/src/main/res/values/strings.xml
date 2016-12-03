@@ -214,4 +214,5 @@
     <string name="media_is_empty">Media is empty.</string>
     <string name="experience_public_notice">This experience will be visible for all emotionhunt users.</string>
     <string name="please_wait">Please wait...</string>
+    <string name="what_reaction_do_you_expect">What reaction do you expect?</string>
 </resources>

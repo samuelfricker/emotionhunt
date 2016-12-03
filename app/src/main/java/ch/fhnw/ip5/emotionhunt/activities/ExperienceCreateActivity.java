@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.emotionhunt.activities;
 
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -27,6 +28,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import ch.fhnw.ip5.emotionhunt.R;
+import ch.fhnw.ip5.emotionhunt.helpers.EmotionPickerDialog;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
 import ch.fhnw.ip5.emotionhunt.helpers.UserList;
 import ch.fhnw.ip5.emotionhunt.models.Emotion;
@@ -46,6 +48,8 @@ public class ExperienceCreateActivity extends AppCompatActivity {
     TextView textView;
     Bitmap experienceImage;
     boolean isPublic = false;
+
+    private Emotion mExpectedEmotion;
 
     public static final int REQUEST_CODE_IMAGE_PICKER = 1;
     public static final String TAG = "ExperienceCreateAct";
@@ -117,7 +121,53 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         imgIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Dialog dialog = new EmotionPickerDialog(ExperienceCreateActivity.this) {
+                    @Override
+                    public void onImgClick(int emotion) {
+                        mExpectedEmotion = new Emotion();
+                        double expValue = 0.9999999999999;
+                        switch (emotion) {
+                            case EmotionPickerDialog.EMOTION_ANGER :
+                                mExpectedEmotion.setAnger(expValue);
+                                imgIcon.setImageResource(R.drawable.img_emotion_anger);
+                                break;
+                            case EmotionPickerDialog.EMOTION_CONTEMPT :
+                                mExpectedEmotion.setContempt(expValue);
+                                imgIcon.setImageResource(R.drawable.img_emotion_contempt);
+                                break;
+                            case EmotionPickerDialog.EMOTION_DISGUST :
+                                mExpectedEmotion.setDisgust(expValue);
+                                imgIcon.setImageResource(R.drawable.img_emotion_disgust);
+                                break;
+                            case EmotionPickerDialog.EMOTION_FEAR :
+                                mExpectedEmotion.setFear(expValue);
+                                imgIcon.setImageResource(R.drawable.img_emotion_fear);
+                                break;
+                            case EmotionPickerDialog.EMOTION_HAPPINESS :
+                                mExpectedEmotion.setHappiness(expValue);
+                                imgIcon.setImageResource(R.drawable.img_emotion_happiness);
+                                break;
+                            case EmotionPickerDialog.EMOTION_NEUTRAL :
+                                mExpectedEmotion.setNeutral(expValue);
+                                imgIcon.setImageResource(R.drawable.img_emotion_neutral);
+                                break;
+                            case EmotionPickerDialog.EMOTION_SADNESS :
+                                imgIcon.setImageResource(R.drawable.img_emotion_sadness);
+                                mExpectedEmotion.setSadness(expValue);
+                                break;
+                            case EmotionPickerDialog.EMOTION_SURPRISE :
+                                imgIcon.setImageResource(R.drawable.img_emotion_surprise);
+                                mExpectedEmotion.setSurprise(expValue);
+                                break;
+                            default:
+                                imgIcon.setImageResource(R.drawable.img_questionmark);
+                                mExpectedEmotion = null;
+                                break;
+                        }
+                        dismiss();
+                    }
+                };
+                dialog.show();
             }
         });
         imgPreview.setOnClickListener(new View.OnClickListener() {

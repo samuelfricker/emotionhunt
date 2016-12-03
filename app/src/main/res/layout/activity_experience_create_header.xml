@@ -9,21 +9,37 @@
     android:layout_marginBottom="15dp">
 
     <ImageView
-    android:layout_width="match_parent"
+    android:layout_width="150dp"
     app:srcCompat="@drawable/ic_menu_camera"
     android:id="@+id/img_experience_preview"
     android:scaleType="center"
-    android:background="#ddd"
+    android:background="#eee"
     android:layout_height="150dp"
-    android:layout_weight="1"
-    />
+        />
 
-    <ImageView
-        app:srcCompat="@drawable/img_emoticon_example"
-        android:id="@+id/img_experience_icon"
-        android:layout_gravity="center_vertical"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:padding="5dp"/>
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical|center_horizontal"
+        >
+
+        <TextView
+            android:text="@string/what_reaction_do_you_expect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            />
+
+        <ImageView
+            app:srcCompat="@drawable/img_questionmark"
+            android:id="@+id/img_experience_icon"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:padding="15dp"
+            android:background="#eee"
+            android:layout_margin="5dp"/>
+    </LinearLayout>
 
 </LinearLayout>
