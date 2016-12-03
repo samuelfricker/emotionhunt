@@ -2,21 +2,19 @@ package ch.fhnw.ip5.emotionhunt.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Toast;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 import ch.fhnw.ip5.emotionhunt.R;
-import ch.fhnw.ip5.emotionhunt.helper.DeviceHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
 import ch.fhnw.ip5.emotionhunt.tasks.RestUserRegisterTask;
 

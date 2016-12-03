@@ -1,4 +1,4 @@
-package ch.fhnw.ip5.emotionhunt.helper;
+package ch.fhnw.ip5.emotionhunt.helpers;
 
 import android.content.Context;
 import android.database.Cursor;

@@ -14,14 +14,13 @@ import android.util.Log;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
-import ch.fhnw.ip5.emotionhunt.helper.DbHelper;
-import ch.fhnw.ip5.emotionhunt.helper.DeviceHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
 import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceListTask;
 import ch.fhnw.ip5.emotionhunt.tasks.RestTask;

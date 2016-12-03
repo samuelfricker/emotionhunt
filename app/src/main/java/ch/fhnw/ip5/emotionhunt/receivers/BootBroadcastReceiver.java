@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.content.WakefulBroadcastReceiver;
 
-import ch.fhnw.ip5.emotionhunt.helper.PermissionHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.PermissionHelper;
 import ch.fhnw.ip5.emotionhunt.services.ApiService;
 import ch.fhnw.ip5.emotionhunt.services.LocationService;
 

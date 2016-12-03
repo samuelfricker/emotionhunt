@@ -11,8 +11,8 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
-import ch.fhnw.ip5.emotionhunt.helper.DbHelper;
-import ch.fhnw.ip5.emotionhunt.helper.PermissionHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.PermissionHelper;
 
 /**
  * Created by dimitri on 28.11.2016.

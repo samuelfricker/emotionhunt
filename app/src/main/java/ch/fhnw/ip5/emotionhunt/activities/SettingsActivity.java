@@ -22,7 +22,7 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import ch.fhnw.ip5.emotionhunt.R;
-import ch.fhnw.ip5.emotionhunt.helper.DeviceHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 
 import java.util.List;
 

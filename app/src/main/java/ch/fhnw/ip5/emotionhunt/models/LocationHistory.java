@@ -5,7 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import ch.fhnw.ip5.emotionhunt.helper.DbHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.models
