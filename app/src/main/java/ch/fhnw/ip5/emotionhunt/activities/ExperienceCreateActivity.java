@@ -299,9 +299,6 @@ public class ExperienceCreateActivity extends AppCompatActivity {
      * @return expected emotion object
      */
     private Emotion getExpectedEmotion() {
-        Emotion emotion = new Emotion();
-        //TODO replace with real expected emotion
-        emotion.setHappiness(0.9999999);
-        return emotion;
+        return mExpectedEmotion;
     }
 }
