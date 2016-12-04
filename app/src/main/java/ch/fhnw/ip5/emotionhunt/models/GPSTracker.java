@@ -2,6 +2,7 @@ package ch.fhnw.ip5.emotionhunt.models;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationListener;
@@ -103,16 +104,30 @@ public class GPSTracker extends ContextCompat implements LocationListener {
         locationValues.put(LocationHistory.LocationDbContract.COL_LON, location.getLongitude());
         locationValues.put(LocationHistory.LocationDbContract.COL_CREATED_AT, System.currentTimeMillis() / 1000L);
 
-        // TODO Save only 100 entreis to DB dp.getStatus. if more than 100 delete the last 80
+        // TODO Save only 100 entries to DB dp.getStatus. if more than 100 delete the last 80
 
         boolean validation = db.insertWithOnConflict(LocationHistory.LocationDbContract.TABLE_NAME, null, locationValues, SQLiteDatabase.CONFLICT_IGNORE) != -1;
 
         if (validation) {
             Log.d(TAG, "location stored into sql lite db.");
+            cleanUpEntries(db);
         } else {
             Log.d(TAG, "location couldn't be stored into sql lite db.");
         }
 
         return validation;
+    }
+
+    /**
+     * Delete last 50 entries if there are more than 80 entries stored in sqlite db.
+     * @param db
+     */
+    public void cleanUpEntries(SQLiteDatabase db) {
+        Cursor cursor = db.rawQuery(LocationHistory.LocationDbContract.SQL_COUNT_ITEMS, null);
+        cursor.moveToFirst();
+        int count = cursor.getInt(0);
+        if (count > 80) {
+            db.execSQL(LocationHistory.LocationDbContract.SQL_DELETE_LAST_50);
+        }
     }
 }

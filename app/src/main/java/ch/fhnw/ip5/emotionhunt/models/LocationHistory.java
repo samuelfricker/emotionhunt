@@ -78,6 +78,7 @@ public class LocationHistory {
 
         public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String SQL_COUNT_ITEMS = "SELECT COUNT(*) FROM " + TABLE_NAME;
-
+        public static final String SQL_DELETE_LAST_50 = "DELETE FROM " + TABLE_NAME + " WHERE " + COL_CREATED_AT +
+                " IN (SELECT " + COL_CREATED_AT + " FROM " + TABLE_NAME + " ORDER BY " + COL_CREATED_AT + " ASC LIMIT 50";
     }
 }
