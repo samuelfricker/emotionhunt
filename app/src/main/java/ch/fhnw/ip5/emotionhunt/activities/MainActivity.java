@@ -263,6 +263,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         LatLng marker = new LatLng(experience.lat, experience.lon);
         MarkerOptions options = new MarkerOptions().position(marker).title(experience.text);
         Marker m = mMap.addMarker(options);
+        m.setTitle(String.valueOf(experience.id));
+
         mExperiences.add(experience);
         mMarkers.add(m);
         Log.d(TAG, "Experience " + experience.id + " successfully added on map.");
@@ -338,9 +340,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public boolean onMarkerClick(Marker m) {
-        int index = mMarkers.indexOf(m);
-        Marker marker = mMarkers.get(index);
-        Experience experience = mExperiences.get(index);
+        int index = Integer.valueOf(m.getTitle());
+        Experience experience = ReceivedExperience.findById(this,index);
 
         Log.d(TAG, "Experience '" + experience.id + "' clicked.");
         Intent intent = new Intent(getApplicationContext(), ExperienceDetailActivity.class);
