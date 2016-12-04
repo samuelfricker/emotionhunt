@@ -37,7 +37,7 @@
             android:name="api.action.experience.public.get"
             android:value="experience/public/get" />
         <meta-data
-            android:name="api.action.media"
+            android:name="api.action.experience.media"
             android:value="experience/media" />
         <meta-data
             android:name="api.action.user.get"

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -21,7 +22,6 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:srcCompat="@drawable/img_experience_example"
         android:id="@+id/img_experience_preview"
         android:scaleType="center"/>
 
@@ -34,7 +34,7 @@
         android:background="#aa000000">
 
             <TextView
-                android:text="@string/please_do_yur_dishes"
+                android:text=""
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_experience_detail_comment"

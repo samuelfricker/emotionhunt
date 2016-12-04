@@ -6,9 +6,18 @@ import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.widget.TextView;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.fhnw.ip5.emotionhunt.R;
+import ch.fhnw.ip5.emotionhunt.helpers.Params;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
+import ch.fhnw.ip5.emotionhunt.models.LocationHistory;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
+import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceMediaTask;
 
 public class ExperienceDetailActivity extends AppCompatActivity {
     public static final String EXTRA_EXPERIENCE_ID = "EXTRA_EXPERIENCE_ID";
@@ -48,6 +57,13 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         if (mExperience != null) {
             mTxtExperienceText.setText(mExperience.text);
         }
+
+        //execute async task to load media file
+        String url = Params.getApiActionUrl(getApplicationContext(), "experience.media");
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("media", mExperience.filename));
+        RestExperienceMediaTask restExperienceMediaTask = new RestExperienceMediaTask(this,url,nameValuePairs);
+        restExperienceMediaTask.execute();
     }
 
 }
