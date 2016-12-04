@@ -27,6 +27,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -262,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         LatLng marker = new LatLng(experience.lat, experience.lon);
         MarkerOptions options = new MarkerOptions().position(marker).title(experience.text);
+        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.img_marker));
         Marker m = mMap.addMarker(options);
         m.setTitle(String.valueOf(experience.id));
 
