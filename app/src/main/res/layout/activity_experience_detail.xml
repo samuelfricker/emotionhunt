@@ -23,15 +23,14 @@
         android:layout_height="match_parent"
         app:srcCompat="@drawable/img_experience_example"
         android:id="@+id/img_experience_preview"
-        android:scaleType="centerCrop"/>
+        android:scaleType="center"/>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="94dp"
         android:padding="15dp"
-        android:paddingTop="64dp"
         android:background="#aa000000">
 
             <TextView
