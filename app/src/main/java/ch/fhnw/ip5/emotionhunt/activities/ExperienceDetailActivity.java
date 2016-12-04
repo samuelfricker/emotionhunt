@@ -4,6 +4,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MenuItem;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
@@ -39,10 +41,8 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         // Get a support ActionBar corresponding to this toolbar
-        ActionBar ab = getSupportActionBar();
-
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         initView();
     }
@@ -64,6 +64,16 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         nameValuePairs.add(new BasicNameValuePair("media", mExperience.filename));
         RestExperienceMediaTask restExperienceMediaTask = new RestExperienceMediaTask(this,url,nameValuePairs);
         restExperienceMediaTask.execute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return true;
     }
 
 }

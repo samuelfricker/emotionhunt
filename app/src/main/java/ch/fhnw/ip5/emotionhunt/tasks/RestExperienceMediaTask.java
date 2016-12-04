@@ -8,10 +8,6 @@ import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
 import org.apache.http.HttpEntity;
@@ -21,19 +17,13 @@ import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.util.EntityUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
-import ch.fhnw.ip5.emotionhunt.models.Experience;
-import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
@@ -74,7 +64,6 @@ public class RestExperienceMediaTask extends RestTask {
         try {
             Log.d(TAG, "Execute: " + mUrl);
             HttpPost httppost = new HttpPost(mUrl);
-            httppost.addHeader("Cache-Control", "no-cache");
             httppost.setEntity(new UrlEncodedFormEntity(mNameValuePairs));
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response = httpclient.execute(httppost);
@@ -93,7 +82,6 @@ public class RestExperienceMediaTask extends RestTask {
                     byte[] buffer = new byte[bufferSize];
                     int len = 0;
                     try {
-                        // instream is content got from httpentity.getContent()
                         while ((len = instream.read(buffer)) != -1) {
                             baos.write(buffer, 0, len);
                         }
@@ -102,6 +90,7 @@ public class RestExperienceMediaTask extends RestTask {
                         e.printStackTrace();
                     }
                     byte[] b = baos.toByteArray();
+                    //TODO save bitmap on sd card for better performance on further calls
                     mImg = BitmapFactory.decodeByteArray(b, 0, b.length);
                     publishProgress(STATE_BITMAP_READY);
                     return true;

@@ -63,9 +63,8 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         // Get a support ActionBar corresponding to this toolbar
-        ActionBar ab = getSupportActionBar();
-        // Enable the Up button
-        ab.setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         mTabHost = (TabHost)findViewById(R.id.tab_host_experience);
         mTabHost.setup();
@@ -101,7 +100,9 @@ public class ExperienceCreateActivity extends AppCompatActivity {
                     if (validateExperience()) {
                         sendExperience();
                     }
-
+                    return true;
+                case android.R.id.home:
+                    finish();
                     return true;
                 default:
                     throw new IllegalArgumentException("Invalid Action Menu Item");
