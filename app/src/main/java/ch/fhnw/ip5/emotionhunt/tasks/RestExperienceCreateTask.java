@@ -36,6 +36,7 @@ import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
+import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
@@ -119,7 +120,6 @@ public class RestExperienceCreateTask extends RestTask {
             Log.d(TAG, "Status: " + status);
 
             if (status == 201 || status == 200) {
-                //TODO create update onProgressUpdate function for Toast
                 publishProgress(STATE_SUCCESSFULL);
                 HttpEntity hentity = response.getEntity();
                 JSONObject jsonObject = new JSONObject(EntityUtils.toString(hentity));
@@ -133,14 +133,16 @@ public class RestExperienceCreateTask extends RestTask {
                 List<SentExperience> experiences = Arrays.asList(gson.fromJson(data, SentExperience[].class));
 
                 //save all received experiences into db
-                for (Experience experience : experiences) {
-                    experience.saveDb(mContext);
+                for (Experience e : experiences) {
+                    if (experience.isPublic) e.isPublic = true;
+                    e.saveDb(mContext);
+                    try {
+                        DeviceHelper.saveBitmap(experience.image,mContext,e.filename);
+                    } catch (Exception ex) {
+                        ex.printStackTrace();
+                    }
                 }
-
                 ((Activity)mContext).finish();
-
-                //TODO redirect user to mainactivity
-
                 return true;
             } else if (status == 415) {
                 publishProgress(STATE_FAIL);

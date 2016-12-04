@@ -72,7 +72,7 @@ public class SentExperience extends Experience {
     }
 
     public void sendApi(Context context) {
-        String url = Params.getApiActionUrl(context, "experience.create");
+        String url = Params.getApiActionUrl(context, isPublic ? "experience.public.create" : "experience.create");
         List<NameValuePair> nameValuePairs = new ArrayList<>();
 
         //set current location for this experience

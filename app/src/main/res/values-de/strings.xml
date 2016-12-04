@@ -31,7 +31,12 @@
     <string name="recipients_are_empty">Keine Empfänger ausgewählt.</string>
     <string name="expected_emotion_is_empty">Expected emotion is empty.</string>
     <string name="media_is_empty">Media is empty.</string>
-    <string name="experience_public_notice">This experience will be visible for all emotionhunt users.</string>
+    <string name="experience_public_notice">Dieser Beitrag wird sämtlichen Emotionhunt Nutzern zugänglich gemacht.</string>
     <string name="please_wait">Bitte warten...</string>
     <string name="what_reaction_do_you_expect">Deine Erwartung:</string>
+    <string name="take_photo">Kamera</string>
+    <string name="choose_from_library">Galerie</string>
+    <string name="add_photo">Foto auswählen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="enter_text">Beschreibung...</string>
 </resources>

@@ -2,10 +2,14 @@ package ch.fhnw.ip5.emotionhunt.activities;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -20,6 +24,9 @@ import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mikelau.croperino.Croperino;
+import com.mikelau.croperino.CroperinoConfig;
+import com.mikelau.croperino.CroperinoFileUtil;
 import com.nguyenhoanglam.imagepicker.activity.ImagePicker;
 import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
 import com.nguyenhoanglam.imagepicker.model.Image;
@@ -182,20 +189,69 @@ public class ExperienceCreateActivity extends AppCompatActivity {
     }
 
     private void callImagePicker() {
-        ImagePicker.create(this)
-                .folderMode(true) // folder mode (false by default)
-                .folderTitle("Folder") // folder selection title
-                .imageTitle("Tap to select") // image selection title
-                .single() // single mode
-                .limit(1) // max images can be selected (99 by default)
-                .showCamera(true) // show camera or not (true by default)
-                .imageDirectory("Camera") // directory name for captured image  ("Camera" folder by default)
-                .start(REQUEST_CODE_IMAGE_PICKER);
+        new CroperinoConfig("IMG_" + System.currentTimeMillis() + ".jpg", "/emotionhunt/Pictures", "/sdcard/emotionhunt/Pictures");
+        CroperinoFileUtil.verifyStoragePermissions(ExperienceCreateActivity.this);
+        CroperinoFileUtil.setupDirectory(ExperienceCreateActivity.this);
+
+        final CharSequence[] items = {
+                getString(R.string.take_photo),
+                getString(R.string.choose_from_library),
+                getString(R.string.cancel)
+        };
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(ExperienceCreateActivity.this);
+        builder.setTitle(R.string.add_photo);
+        builder.setItems(items, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int item) {
+                if (items[item].equals(getString(R.string.take_photo))) {
+                    //Prepare Camera
+                    try {
+                        Croperino.prepareCamera(ExperienceCreateActivity.this);
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                } else if (items[item].equals(getString(R.string.choose_from_library))) {
+                    //Prepare Gallery
+                    Croperino.prepareGallery(ExperienceCreateActivity.this);
+                } else {
+                    dialog.dismiss();
+                }
+            }
+        });
+        builder.show();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE_IMAGE_PICKER && resultCode == RESULT_OK && data != null) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case CroperinoConfig.REQUEST_TAKE_PHOTO:
+                if (resultCode == ExperienceCreateActivity.RESULT_OK) {
+                    /* Parameters of runCropImage = File, Activity Context, Image is Scalable or Not, Aspect Ratio X, Aspect Ratio Y, Button Bar Color, Background Color */
+                    Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), ExperienceCreateActivity.this, true, 1, 1, 0, 0);
+                }
+                break;
+            case CroperinoConfig.REQUEST_PICK_FILE:
+                if (resultCode == ExperienceCreateActivity.RESULT_OK) {
+                    CroperinoFileUtil.newGalleryFile(data, ExperienceCreateActivity.this);
+                    Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), ExperienceCreateActivity.this, true, 1, 1, 0, 0);
+                }
+                break;
+            case CroperinoConfig.REQUEST_CROP_PHOTO:
+                if (resultCode == ExperienceCreateActivity.RESULT_OK) {
+                    File imageFile = CroperinoFileUtil.getmFileTemp();
+                    BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                    Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(),bmOptions);
+                    experienceImage = bitmap;
+                    imgPreview.setImageBitmap(bitmap);
+                }
+                break;
+            default:
+                break;
+        }
+
+        /*if (requestCode == REQUEST_CODE_IMAGE_PICKER && resultCode == RESULT_OK && data != null) {
             Log.d(TAG, "onActivityResult");
             ArrayList<Image> images = data.getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES);
             for (Image image : images) {
@@ -206,7 +262,7 @@ public class ExperienceCreateActivity extends AppCompatActivity {
                 imgPreview.setImageBitmap(bitmap);
             }
             // do your logic ....
-        }
+        }*/
     }
 
     /**

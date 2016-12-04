@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
+import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
@@ -35,12 +36,14 @@ public class RestExperienceMediaTask extends RestTask {
     private static final int STATE_BITMAP_READY = 1;
     private Bitmap mImg = null;
     private ProgressDialog mProgressDialog;
+    private String mFilename;
 
-    public RestExperienceMediaTask(Context context, String url, List<NameValuePair> nameValuePairs)
+    public RestExperienceMediaTask(Context context, String url, List<NameValuePair> nameValuePairs, String filename)
     {
         super(context, url, nameValuePairs);
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage(mContext.getString(R.string.please_wait));
+        mFilename = filename;
     }
 
     @Override
@@ -90,8 +93,8 @@ public class RestExperienceMediaTask extends RestTask {
                         e.printStackTrace();
                     }
                     byte[] b = baos.toByteArray();
-                    //TODO save bitmap on sd card for better performance on further calls
                     mImg = BitmapFactory.decodeByteArray(b, 0, b.length);
+                    DeviceHelper.saveBitmap(mImg, mContext, mFilename);
                     publishProgress(STATE_BITMAP_READY);
                     return true;
                 }

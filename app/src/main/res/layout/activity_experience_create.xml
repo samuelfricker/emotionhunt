@@ -47,7 +47,7 @@
             android:inputType="textMultiLine"
             android:ems="10"
             android:id="@+id/txt_experience_create_text"
-            android:hint="Enter text ..."/>
+            android:hint="@string/enter_text"/>
 
         <TabHost
             android:id="@+id/tab_host_experience"
@@ -67,6 +67,7 @@
 
                 <FrameLayout
                     android:id="@android:id/tabcontent"
+                    android:paddingTop="16dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
                     <include layout="@layout/activity_experience_create_private"
