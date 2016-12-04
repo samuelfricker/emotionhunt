@@ -8,29 +8,54 @@
     android:orientation="horizontal" >
 
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/img_emoticon_example"
-            android:id="@+id/imageView4" />
+            android:layout_height="60dp"
+            android:layout_width="60dp"
+            app:srcCompat="@drawable/img_emotion_anger"
+            android:paddingRight="5dp"
+            android:paddingBottom="5dp"
+            android:paddingTop="5dp"
+            android:id="@+id/imageView4"/>
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/img_emoticon_example"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            app:srcCompat="@drawable/img_emotion_contempt"
             android:id="@+id/imageView5" />
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/img_emoticon_example"
-            android:id="@+id/imageView6" />
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/img_emoticon_example"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            app:srcCompat="@drawable/img_emotion_happiness"
             android:id="@+id/imageView7" />
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/img_emoticon_example"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            app:srcCompat="@drawable/img_emotion_happiness"
             android:id="@+id/imageView8" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            app:srcCompat="@drawable/img_emotion_happiness"
+            android:id="@+id/imageView9" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            app:srcCompat="@drawable/img_emotion_happiness"
+            android:id="@+id/imageView10" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            app:srcCompat="@drawable/img_emotion_happiness"
+            android:id="@+id/imageView11" />
+        <ImageView
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:padding="5dp"
+            app:srcCompat="@drawable/img_emotion_happiness"
+            android:id="@+id/imageView12" />
 
 </LinearLayout>
