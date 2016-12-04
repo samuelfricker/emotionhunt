@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.RingtoneManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.TaskStackBuilder;
 import android.util.Log;
@@ -100,7 +101,7 @@ public class ReceivedExperience extends Experience {
         contentValues.put(ExperienceDbContract.COL_VISIBILITY_DURATION, visibilityDuration);
 
         //show notification if this is a new experience
-        ReceivedExperience.showNotification(context, (int) id);
+        if (!isPublic) ReceivedExperience.showNotification(context, (int) id);
 
         return db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
     }
@@ -109,7 +110,8 @@ public class ReceivedExperience extends Experience {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
-                .setContentTitle("new experience " + id + " available")
+                .setContentTitle(context.getString(R.string.new_experience_available))
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentText("There's a new experience to discover. Check it out now!");
         //creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
