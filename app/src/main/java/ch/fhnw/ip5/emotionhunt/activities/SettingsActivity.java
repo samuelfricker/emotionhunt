@@ -4,6 +4,8 @@ package ch.fhnw.ip5.emotionhunt.activities;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
@@ -196,9 +198,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             Preference pref = findPreference("android_id");
             pref.setTitle("Android ID: " + DeviceHelper.getDeviceId(getActivity()));
             pref.setDefaultValue(DeviceHelper.getDeviceId(getActivity()));
+
+            try {
+                PackageManager manager = getActivity().getPackageManager();
+                PackageInfo info = manager.getPackageInfo(getActivity().getPackageName(), 0);
+                String version = info.versionName;
+                Preference pref2 = findPreference("app_version");
+                pref2.setTitle("App Version: " + version);
+                pref2.setDefaultValue(version);
+                bindPreferenceSummaryToValue(pref2);
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
             bindPreferenceSummaryToValue(findPreference("android_id"));
-            bindPreferenceSummaryToValue(findPreference("example_text"));
-            bindPreferenceSummaryToValue(findPreference("example_list"));
+            /*bindPreferenceSummaryToValue(findPreference("example_text"));
+            bindPreferenceSummaryToValue(findPreference("example_list"));*/
         }
 
         @Override
