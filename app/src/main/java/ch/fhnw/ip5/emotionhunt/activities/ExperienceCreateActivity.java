@@ -1,9 +1,11 @@
 package ch.fhnw.ip5.emotionhunt.activities;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -46,6 +48,7 @@ import ch.fhnw.ip5.emotionhunt.models.User;
 import ch.fhnw.ip5.emotionhunt.tasks.RestUserListTask;
 
 public class ExperienceCreateActivity extends AppCompatActivity {
+    final private int REQUEST_CODE_ASK_PERMISSIONS = 123;
 
     TabHost mTabHost;
     ImageView imgPreview;
@@ -188,6 +191,40 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         initUserList();
     }
 
+    private void prepareCamera() {
+        int hasWriteCameraPermission = 0;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+            hasWriteCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
+            if (hasWriteCameraPermission != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
+                return;
+            }
+        }
+
+        try {
+            Croperino.prepareCamera(ExperienceCreateActivity.this);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case REQUEST_CODE_ASK_PERMISSIONS: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    prepareCamera();
+
+                } else {
+                    Toast.makeText(this, "Nice try ;) This doesn't work!", Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+        }
+    }
+
     private void callImagePicker() {
         new CroperinoConfig("IMG_" + System.currentTimeMillis() + ".jpg", "/emotionhunt/Pictures", "/sdcard/emotionhunt/Pictures");
         CroperinoFileUtil.verifyStoragePermissions(ExperienceCreateActivity.this);
@@ -206,11 +243,7 @@ public class ExperienceCreateActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int item) {
                 if (items[item].equals(getString(R.string.take_photo))) {
                     //Prepare Camera
-                    try {
-                        Croperino.prepareCamera(ExperienceCreateActivity.this);
-                    } catch(Exception e) {
-                        e.printStackTrace();
-                    }
+                    prepareCamera();
                 } else if (items[item].equals(getString(R.string.choose_from_library))) {
                     //Prepare Gallery
                     Croperino.prepareGallery(ExperienceCreateActivity.this);
