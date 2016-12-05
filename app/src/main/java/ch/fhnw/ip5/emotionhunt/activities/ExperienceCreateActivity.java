@@ -104,22 +104,18 @@ public class ExperienceCreateActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        try{
-            switch (item.getItemId()) {
-                case R.id.btn_create_experience_send:
-                    if (validateExperience()) {
-                        sendExperience();
-                    }
-                    return true;
-                case android.R.id.home:
-                    finish();
-                    return true;
-                default:
-                    throw new IllegalArgumentException("Invalid Action Menu Item");
-            }
-        } catch (Exception e) {
-            Log.d(TAG, "Could not found appropriate Menu Action. Error Message: "+e.getMessage());
+
+        switch (item.getItemId()) {
+            case R.id.btn_create_experience_send:
+                if (validateExperience()) {
+                    sendExperience();
+                }
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
         }
+
         return true;
     }
 
@@ -361,10 +357,16 @@ public class ExperienceCreateActivity extends AppCompatActivity {
 
         //get location from last stored location
         LocationHistory location = LocationHistory.getLastPositionHistory(getApplicationContext());
-        sentExperience.lat = location.lat;
-        sentExperience.lon = location.lon;
-        sentExperience.isPublic = isPublic;
-        sentExperience.image = experienceImage;
+        try{
+            sentExperience.lat = location.lat;
+            sentExperience.lon = location.lon;
+            sentExperience.isPublic = isPublic;
+            sentExperience.image = experienceImage;
+        } catch (Exception e){
+            Log.e(TAG, e.getMessage());
+            return;
+        }
+
         //set expected emotion
         sentExperience.expectedEmotion = getExpectedEmotion();
         sentExperience.sendApi(this);
