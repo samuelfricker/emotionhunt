@@ -207,6 +207,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //place marker at current position
         latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
+        try {
+            LocationService.insertLocation(location, getApplicationContext());
+        } catch (Exception e) {
+            Log.e(TAG, e.getMessage());
+        }
+
         //zoom to current position:
         if (!isCameraMoved) {
             CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(16).build();

@@ -62,7 +62,7 @@ public class LocationService extends Service implements LocationListener {
             //try go get last known position first
             if (locationManager != null) {
                 this.location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-                insertLocation();
+                LocationService.insertLocation(location, mContext);
             }
             Log.d(TAG, "Listener initialized");
         }
@@ -72,20 +72,20 @@ public class LocationService extends Service implements LocationListener {
      * Inserts a new location entry into sql lite db.
      * @return successful state
      */
-    public boolean insertLocation () {
-        if (location == null) return false;
+    public static boolean insertLocation (Location loc, Context context) {
+        if (loc == null) return false;
 
-        SQLiteDatabase db = new DbHelper(mContext).getWritableDatabase();
+        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
         ContentValues locationValues = new ContentValues();
-        locationValues.put(LocationHistory.LocationDbContract.COL_LAT, location.getLatitude());
-        locationValues.put(LocationHistory.LocationDbContract.COL_LON, location.getLongitude());
+        locationValues.put(LocationHistory.LocationDbContract.COL_LAT, loc.getLatitude());
+        locationValues.put(LocationHistory.LocationDbContract.COL_LON, loc.getLongitude());
         locationValues.put(LocationHistory.LocationDbContract.COL_CREATED_AT, System.currentTimeMillis() / 1000L);
 
         boolean validation = db.insertWithOnConflict(LocationHistory.LocationDbContract.TABLE_NAME, null, locationValues, SQLiteDatabase.CONFLICT_IGNORE) != -1;
 
         if (validation) {
             Log.d(TAG, "location stored into sql lite db.");
-            cleanUpEntries(db);
+            LocationService.cleanUpEntries(db);
         } else {
             db.close();
             Log.d(TAG, "location couldn't be stored into sql lite db.");
@@ -98,7 +98,7 @@ public class LocationService extends Service implements LocationListener {
      * Delete last 50 entries if there are more than 80 entries stored in sqlite db.
      * @param db
      */
-    public void cleanUpEntries(SQLiteDatabase db) {
+    public static void cleanUpEntries(SQLiteDatabase db) {
         Cursor cursor = db.rawQuery(LocationHistory.LocationDbContract.SQL_COUNT_ITEMS, null);
         cursor.moveToFirst();
         int count = cursor.getInt(0);
@@ -120,7 +120,7 @@ public class LocationService extends Service implements LocationListener {
         if (PermissionHelper.checkLocationPermission(mContext)) {
             this.location = location;
             Log.i(TAG, "Location " + location.getLatitude() + ", " + location.getLongitude());
-            insertLocation();
+            insertLocation(location, mContext);
         }
     }
 
