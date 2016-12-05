@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.emotionhunt.tasks;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
@@ -18,6 +19,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.IOException;
 import java.util.List;
 
+import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 import ch.fhnw.ip5.emotionhunt.activities.OnBoardActivity;
 
@@ -30,10 +32,13 @@ import ch.fhnw.ip5.emotionhunt.activities.OnBoardActivity;
 public class RestUserRegisterTask extends RestTask {
 
     public static final String TAG = RestUserRegisterTask.class.getSimpleName();
+    private ProgressDialog mProgressDialog;
 
     public RestUserRegisterTask(Context context, String url, List<NameValuePair> nameValuePairs)
     {
         super(context, url, nameValuePairs);
+        mProgressDialog = new ProgressDialog(mContext);
+        mProgressDialog.setMessage(mContext.getString(R.string.please_wait));
     }
 
     @Override
@@ -42,11 +47,19 @@ public class RestUserRegisterTask extends RestTask {
         if (progress[0] == 2) {
             handler.post( new Runnable(){
                 public void run(){
-                    Toast.makeText(mContext, "Username already exists", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext, R.string.username_already_exists, Toast.LENGTH_SHORT).show();
+                }
+            });
+        } else if (progress[0] == 1) {
+            handler.post( new Runnable(){
+                public void run(){
+                    // User succsesfully Created
+                    Toast.makeText(mContext, R.string.user_has_been_successfully_created, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(mContext, MainActivity.class);
+                    mContext.startActivity(intent);
                 }
             });
         }
-
     }
 
     @Override
@@ -63,18 +76,9 @@ public class RestUserRegisterTask extends RestTask {
             Log.d(TAG, "Status: " + status);
 
             if ( status == 201 ) {
-                // User succsesfully Created
-                Toast.makeText(mContext,"User has been successfully created", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, MainActivity.class);
-                mContext.startActivity(intent);
-
+                publishProgress(1);
             } else if ( status == 500 ) {
-                // TODO Add functionality for already existing Users who changed their Phone (new Android I)
-                // TODO Teas doesnt show up
-
-
                 publishProgress(2);
-
             } else {
                 Log.e(TAG, "Error while login. Status: " + status);
             }
@@ -86,5 +90,15 @@ public class RestUserRegisterTask extends RestTask {
             e.printStackTrace();
         }
         return false;
+    }
+
+    @Override
+    protected void onPreExecute() {
+        mProgressDialog.show();
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        if (mProgressDialog.isShowing()) mProgressDialog.dismiss();
     }
 }

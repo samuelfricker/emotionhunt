@@ -220,4 +220,6 @@
     <string name="add_photo">Add Photo!</string>
     <string name="enter_text">Enter text...</string>
     <string name="new_experience_available">new experience available</string>
+    <string name="username_already_exists">Username already exists</string>
+    <string name="user_has_been_successfully_created">User has been successfully created</string>
 </resources>
