@@ -50,16 +50,6 @@ public class LocationHistory {
         return l;
     }
 
-    public static void dummyInsert(Context context) {
-        //TODO REMOVE THIS
-        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
-        ContentValues locationValues = new ContentValues();
-        locationValues.put(LocationDbContract.COL_LAT, 41.00);
-        locationValues.put(LocationDbContract.COL_LON, 41.00);
-        locationValues.put(LocationDbContract.COL_CREATED_AT, System.currentTimeMillis() / 1000L);
-        db.insert(LocationDbContract.TABLE_NAME, null, locationValues);
-    }
-
     /**
      * This is the db contract to persist this model in the sqlite db.
      */

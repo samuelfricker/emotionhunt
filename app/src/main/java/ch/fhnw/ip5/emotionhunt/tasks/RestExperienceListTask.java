@@ -45,7 +45,7 @@ public class RestExperienceListTask extends RestTask {
     @Override
     protected Boolean doInBackground(String... urls) {
         try {
-            Log.d(TAG, "Execute: " + mUrl);
+            Log.d(TAG, "API Experience Call - Execute: " + mUrl);
             HttpPost httppost = new HttpPost(mUrl);
             httppost.addHeader("Cache-Control", "no-cache");
             httppost.setEntity(new UrlEncodedFormEntity(mNameValuePairs));
@@ -78,10 +78,13 @@ public class RestExperienceListTask extends RestTask {
                 return true;
             }
         } catch (IOException e) {
+            Log.e(TAG, "API Experience Call - Error: " + e.toString());
             e.printStackTrace();
         } catch (JsonParseException e) {
+            Log.e(TAG, "API Experience Call - Error: " + e.toString());
             e.printStackTrace();
         } catch (Exception e) {
+            Log.e(TAG, "API Experience Call - Error: " + e.toString());
             e.printStackTrace();
         }
         return false;

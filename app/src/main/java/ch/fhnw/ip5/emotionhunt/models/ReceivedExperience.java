@@ -103,7 +103,10 @@ public class ReceivedExperience extends Experience {
         //show notification if this is a new experience
         if (!isPublic) ReceivedExperience.showNotification(context, (int) id);
 
-        return db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
+        boolean validation = db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
+        db.close();
+
+        return validation;
     }
 
     public static void showNotification(Context context, int id) {

@@ -57,7 +57,11 @@ public class SentExperience extends Experience {
         contentValues.put(Experience.ExperienceDbContract.COL_CREATED_AT, createdAt);
         contentValues.put(Experience.ExperienceDbContract.COL_VISIBILITY_DURATION, visibilityDuration);
 
-        return db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
+        boolean validation = db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
+
+        db.close();
+
+        return validation;
     }
 
     public static void loadExperiencesFromApi(Context context) {

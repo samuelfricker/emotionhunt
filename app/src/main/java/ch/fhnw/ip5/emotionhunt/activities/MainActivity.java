@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         SQLiteDatabase db = new DbHelper(getApplicationContext()).getWritableDatabase();
         DbHelper.getStatus(db);
+        db.close();
 
         //check permission for location listener and require its permissions if necessary
         if (!PermissionHelper.checkLocationPermission(this)) {
