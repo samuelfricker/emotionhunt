@@ -135,6 +135,7 @@ public class RestExperienceCreateTask extends RestTask {
                 //save all received experiences into db
                 for (Experience e : experiences) {
                     if (experience.isPublic) e.isPublic = true;
+                    e.isSent = true;
                     e.saveDb(mContext);
                     try {
                         DeviceHelper.saveBitmap(experience.image,mContext,e.filename);
