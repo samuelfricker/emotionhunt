@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         SQLiteDatabase db = new DbHelper(getApplicationContext()).getWritableDatabase();
         DbHelper.getStatus(db);
         db.close();
@@ -82,6 +83,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setIcon(R.drawable.ic_logo_medium_main);
+
 
         fabToggle = (FloatingActionButton) findViewById(R.id.btn_toggle_public_private);
         fabToggle.setOnClickListener(new View.OnClickListener() {

@@ -44,6 +44,7 @@ import ch.fhnw.ip5.emotionhunt.models.User;
 
 public class RestUserListTask extends RestTask {
     WeakReference<Activity> mWeakActivity;
+    public static final String TAG = "RestUserListTask";
 
     public RestUserListTask(Context context, String url, List<NameValuePair> nameValuePairs, Activity activity)
     {
