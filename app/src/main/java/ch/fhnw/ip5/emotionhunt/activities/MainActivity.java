@@ -276,15 +276,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     /**
-     * Set marker depending on the state of the experience
-     * @param marker
-     * @param experience
-     */
-    public void setMarker(Marker marker, Experience experience) {
-        //TODO add logic for marker handling
-    }
-
-    /**
      * Update the marker's icon and returns whether there was an update possible or not.
      * @param experience
      * @return
@@ -298,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //assert that there is a matching marker found
         if (marker == null) return false;
-        setMarker(marker,experience);
+        marker.setIcon(experience.getMarkerIcon());
         return true;
     }
 
@@ -310,7 +301,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean addExperience(ReceivedExperience experience) {
         if (mExperiences == null) mExperiences = new ArrayList<>();
 
-        updateMarkerIcon(experience);
+        //return if marker was updated
+        if (updateMarkerIcon(experience)) {
+            return false;
+        }
 
         //prevent adding duplicates or sent experiences
         if (mExperiences.contains(experience) || (experience.isSent && !experience.isPublic)) {
@@ -322,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         LatLng marker = new LatLng(experience.lat, experience.lon);
         MarkerOptions options = new MarkerOptions().position(marker).title(experience.text);
-        options.icon(BitmapDescriptorFactory.fromResource(R.drawable.img_marker));
+        options.icon(experience.getMarkerIcon());
         Marker m = mMap.addMarker(options);
         m.setTitle(String.valueOf(experience.id));
 
