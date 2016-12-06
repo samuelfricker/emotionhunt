@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ch.fhnw.ip5.emotionhunt">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -29,7 +31,7 @@
         <!-- API URLs -->
         <meta-data
             android:name="api.url"
-            android:value="http://emotionhunt.com/api/?action=" />
+            android:value="http://emotionhunt.yourwebsolution.ch/api/?action=" />
         <meta-data
             android:name="api.action.experience.create"
             android:value="experience/create" />

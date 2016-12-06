@@ -115,7 +115,7 @@ public class ReceivedExperience extends Experience {
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setContentTitle(context.getString(R.string.new_experience_available))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentText("There's a new experience to discover. Check it out now!");
+                .setContentText("XY " + context.getString(R.string.has_left_something_for_you));
         //creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
 

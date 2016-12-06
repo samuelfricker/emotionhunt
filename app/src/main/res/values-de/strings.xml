@@ -39,7 +39,8 @@
     <string name="add_photo">Foto auswählen</string>
     <string name="cancel">Abbrechen</string>
     <string name="enter_text">Beschreibung...</string>
-    <string name="new_experience_available">Neues Erlebnis in deiner Umgebung entdeckt!</string>
+    <string name="new_experience_available">Erlebnis entdeckt</string>
     <string name="username_already_exists">Benutzername bereits vergeben</string>
     <string name="user_has_been_successfully_created">Registrierung erfolgreich.</string>
+    <string name="has_left_something_for_you">hat dir etwas hinterlegt.</string>
 </resources>
