@@ -101,7 +101,7 @@ public abstract class Experience{
     public BitmapDescriptor getMarkerIcon(Context context) {
         if(this.isRead()){
             return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_isread);
-        }else if(!this.isRead() && this.isCatchable(context)){
+        }else if(this.isCatchable(context)){
             return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_iscatchable);
         } else if (!this.isRead() && !this.isCatchable(context)){
             return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_ishuntable);
