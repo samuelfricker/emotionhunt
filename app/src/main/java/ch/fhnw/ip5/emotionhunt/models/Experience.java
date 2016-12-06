@@ -104,7 +104,7 @@ public abstract class Experience{
         }else if(!this.isRead() && this.isCatchable(context)){
             return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_iscatchable);
         } else if (!this.isRead() && !this.isCatchable(context)){
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker);
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_ishuntable);
         } else{
             return BitmapDescriptorFactory.fromResource(R.drawable.img_marker);
         }
