@@ -52,6 +52,8 @@ public class SentExperience extends Experience {
         contentValues.put(Experience.ExperienceDbContract.COL_LON, lon);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_PUBLIC, isPublic);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_SENT, true);
+        contentValues.put(Experience.ExperienceDbContract.COL_IS_READ, true);
+        contentValues.put(Experience.ExperienceDbContract.COL_EMOTION, getExpectedEmotionJSON());
         contentValues.put(Experience.ExperienceDbContract.COL_TEXT, text);
         contentValues.put(Experience.ExperienceDbContract.COL_FILENAME, filename);
         contentValues.put(Experience.ExperienceDbContract.COL_CREATED_AT, createdAt);
@@ -102,11 +104,15 @@ public class SentExperience extends Experience {
         nameValuePairs.add(new BasicNameValuePair("androidId", DeviceHelper.getDeviceId(context)));
 
         //expected emotion
-        Gson gson = new Gson();
-        String sExpectedEmotion = gson.toJson(expectedEmotion);
-        nameValuePairs.add(new BasicNameValuePair("expectedEmotion", sExpectedEmotion));
+        nameValuePairs.add(new BasicNameValuePair("expectedEmotion", getExpectedEmotionJSON()));
 
         RestExperienceCreateTask experienceCreateTask = new RestExperienceCreateTask(context, url,nameValuePairs, this);
         experienceCreateTask.execute();
+    }
+
+    public String getExpectedEmotionJSON() {
+        Gson gson = new Gson();
+        String sExpectedEmotion = gson.toJson(expectedEmotion);
+        return sExpectedEmotion;
     }
 }

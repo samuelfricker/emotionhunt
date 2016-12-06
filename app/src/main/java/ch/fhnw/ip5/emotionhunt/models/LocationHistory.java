@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
 
 import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
 
@@ -48,6 +49,13 @@ public class LocationHistory {
         l.lon = c.getDouble(c.getColumnIndex(Experience.ExperienceDbContract.COL_LON));
         l.createdAt = c.getInt(c.getColumnIndex(Experience.ExperienceDbContract.COL_CREATED_AT));
         return l;
+    }
+
+    public Location getLocation() {
+        Location location = new Location("dummyprovider");
+        location.setLatitude(lat);
+        location.setLongitude(lon);
+        return location;
     }
 
     /**
