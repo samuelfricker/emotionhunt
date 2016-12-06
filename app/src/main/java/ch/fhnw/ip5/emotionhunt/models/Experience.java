@@ -98,9 +98,16 @@ public abstract class Experience{
      * Returns the marker icon
      * @return
      */
-    public BitmapDescriptor getMarkerIcon() {
-        //TODO depending on the state return a BitmapDescriptor
-        return BitmapDescriptorFactory.fromResource(R.drawable.img_marker);
+    public BitmapDescriptor getMarkerIcon(Context context) {
+        if(this.isRead()){
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_isread);
+        }else if(!this.isRead() && this.isCatchable(context)){
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_iscatchable);
+        } else if (!this.isRead() && !this.isCatchable(context)){
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker);
+        } else{
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker);
+        }
     }
 
     /**
