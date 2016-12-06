@@ -289,7 +289,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //assert that there is a matching marker found
         if (marker == null) return false;
-        marker.setIcon(experience.getMarkerIcon());
+        marker.setIcon(experience.getMarkerIcon(getApplicationContext()));
         return true;
     }
 
@@ -316,7 +316,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         LatLng marker = new LatLng(experience.lat, experience.lon);
         MarkerOptions options = new MarkerOptions().position(marker).title(experience.text);
-        options.icon(experience.getMarkerIcon());
+        options.icon(experience.getMarkerIcon(getApplicationContext()));
         Marker m = mMap.addMarker(options);
         m.setTitle(String.valueOf(experience.id));
 
