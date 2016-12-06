@@ -100,13 +100,13 @@ public abstract class Experience{
      */
     public BitmapDescriptor getMarkerIcon(Context context) {
         if(this.isRead()){
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_isread);
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_location);
         }else if(this.isCatchable(context)){
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_iscatchable);
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_location_checked);
         } else if (!this.isRead() && !this.isCatchable(context)){
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker_ishuntable);
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_location_cross);
         } else{
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_marker);
+            return BitmapDescriptorFactory.fromResource(R.drawable.img_location);
         }
     }
 
