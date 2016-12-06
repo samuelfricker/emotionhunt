@@ -291,12 +291,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     public boolean updateMarkerIcon (Experience experience) {
         int markerIndex = mExperiences.indexOf(experience);
+
+        //assert that there is a matching experience found
+        if (markerIndex == -1) return false;
         Marker marker = mMarkers.get(markerIndex);
-        if (marker != null) {
-            setMarker(marker,experience);
-            return true;
-        }
-        return false;
+
+        //assert that there is a matching marker found
+        if (marker == null) return false;
+        setMarker(marker,experience);
+        return true;
     }
 
     /**
