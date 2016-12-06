@@ -33,7 +33,7 @@ import ch.fhnw.ip5.emotionhunt.tasks.RestTask;
  */
 
 public class ReceivedExperience extends Experience {
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = ReceivedExperience.class.getSimpleName();
 
     /**
      * Returns a ReceivedExperience instance from the experience sql lite database.

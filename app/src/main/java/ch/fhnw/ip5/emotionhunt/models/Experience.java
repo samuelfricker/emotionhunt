@@ -1,9 +1,12 @@
 package ch.fhnw.ip5.emotionhunt.models;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.provider.Telephony;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -11,6 +14,7 @@ import com.google.gson.annotations.SerializedName;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
+import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.models
@@ -19,7 +23,7 @@ import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
  */
 
 public abstract class Experience{
-    private static final String TAG = MainActivity.class.getSimpleName();
+    private static final String TAG = Experience.class.getSimpleName();
     private static final int CATCHABLE_WITHIN_METERS = 50;
 
     @SerializedName("id")
@@ -108,6 +112,19 @@ public abstract class Experience{
         } else{
             return BitmapDescriptorFactory.fromResource(R.drawable.img_location);
         }
+    }
+
+    /**
+     * Updates an existing experience as isRead
+     * @param context
+     * @return
+     */
+    public boolean updateIsRead(Context context) {
+        Log.d(TAG, "updateIsRead");
+        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ExperienceDbContract.COL_IS_READ, 1);
+        return db.update(ExperienceDbContract.TABLE_NAME, contentValues, "id=" + id, null) != -1;
     }
 
     /**

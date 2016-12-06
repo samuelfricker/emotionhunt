@@ -79,12 +79,25 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             restExperienceMediaTask.execute();
         }
 
+        Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isRead ? "is read" : "is not read"));
+        Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isSent ? "is sent" : "is received"));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
         //update the isRead flag after first opening of this experience
         if (!mExperience.isRead && !mExperience.isSent) {
-            mExperience.isRead = true;
-            mExperience.saveDb(getApplicationContext());
+            Log.d(TAG, "mark experience as read");
+            mExperience.updateIsRead(getApplicationContext());
         }
+    }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        Log.d(TAG, "onStop");
     }
 
     @Override

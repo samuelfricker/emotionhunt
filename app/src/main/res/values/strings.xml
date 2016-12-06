@@ -224,4 +224,5 @@
     <string name="user_has_been_successfully_created">User has been successfully created</string>
     <string name="has_left_something_for_you">has left something for you</string>
     <string name="not_catchable">This experience is not catchable. Get closer to the experience to open it.</string>
+    <string name="my_reaction">your reaction</string>
 </resources>

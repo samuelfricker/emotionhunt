@@ -19,11 +19,39 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <ch.fhnw.ip5.emotionhunt.helpers.SquareImageView
-        android:id="@+id/img_experience_preview"
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:scaleType="fitXY"/>
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <ch.fhnw.ip5.emotionhunt.helpers.SquareImageView
+            android:id="@+id/img_experience_preview"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:scaleType="fitXY"/>
+        <LinearLayout
+            android:id="@+id/activity_experience_detail_my_reaction"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:text="@string/my_reaction"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_experience_detail_my_reaction"
+                android:textStyle="normal|bold"
+                android:textSize="18sp"/>
+            <ImageView
+                app:srcCompat="@drawable/img_questionmark"
+                android:id="@+id/img_experience_icon"
+                android:layout_gravity="center_vertical|center_horizontal"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:padding="15dp"
+                android:background="#eee"
+                android:layout_margin="5dp"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
@@ -56,23 +84,31 @@
         android:background="#aaffffff"
         >
 
-        <TextView
-            android:text="@string/reactions"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/activity_experience_detail_reaction_view"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/text_experience_detail_reaction"
-            android:textStyle="normal|bold"
-            android:textSize="18sp"/>
+            android:visibility="invisible">
+            <TextView
+                android:text="@string/reactions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/text_experience_detail_reaction"
+                android:textStyle="normal|bold"
+                android:textSize="18sp"/>
 
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-            <include layout="@layout/activity_experience_detail_reaction_item"
-                android:layout_width="fill_parent"
-                android:layout_height="match_parent"></include>
+                <include layout="@layout/activity_experience_detail_reaction_item"
+                         android:layout_width="fill_parent"
+                         android:layout_height="match_parent"></include>
 
-        </HorizontalScrollView>
+            </HorizontalScrollView>
+        </LinearLayout>
+
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>

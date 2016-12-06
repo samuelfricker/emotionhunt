@@ -44,4 +44,5 @@
     <string name="user_has_been_successfully_created">Registrierung erfolgreich.</string>
     <string name="has_left_something_for_you">hat dir etwas hinterlegt.</string>
     <string name="not_catchable">Dieses Erlebnis ist zu weit weg. Nähere dich dem Erlebnis um es zu öffnen.</string>
+    <string name="my_reaction">deine Reaktion</string>
 </resources>
