@@ -5,8 +5,11 @@ import android.database.Cursor;
 import android.location.Location;
 import android.provider.Telephony;
 
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.annotations.SerializedName;
 
+import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 
 /**
@@ -89,6 +92,15 @@ public abstract class Experience{
      */
     public boolean isRead() {
         return isRead;
+    }
+
+    /**
+     * Returns the marker icon
+     * @return
+     */
+    public BitmapDescriptor getMarkerIcon() {
+        //TODO depending on the state return a BitmapDescriptor
+        return BitmapDescriptorFactory.fromResource(R.drawable.img_marker);
     }
 
     /**
