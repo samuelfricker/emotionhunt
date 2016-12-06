@@ -15,7 +15,7 @@
     <string name="please_do_yur_dishes">Please do yur Dishes!</string>
     <string name="mark_as_spam">Mark as Spam</string>
     <string name="reactions">Reactions</string>
-    <string name="experience_detail">Experience Detail</string>
+    <string name="experience_detail">Ereignis</string>
     <string name="location_service">EmotionHuntLocationService</string>
     <string name="send">senden</string>
     <string name="experience_successfully_created">Erlebnisse erfolgreich erstellt.</string>

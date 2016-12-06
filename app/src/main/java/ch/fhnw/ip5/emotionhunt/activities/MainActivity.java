@@ -282,11 +282,15 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     public boolean addExperience(ReceivedExperience experience) {
         if (mExperiences == null) mExperiences = new ArrayList<>();
-        if (mMarkers == null) mMarkers = new ArrayList<>();
-        if (mExperiences.contains(experience)) {
+
+        //prevent adding duplicates or sent experiences
+        if (mExperiences.contains(experience) || (experience.isSent && !experience.isPublic)) {
             //already added
             return false;
         }
+
+        if (mMarkers == null) mMarkers = new ArrayList<>();
+
         LatLng marker = new LatLng(experience.lat, experience.lon);
         MarkerOptions options = new MarkerOptions().position(marker).title(experience.text);
         options.icon(BitmapDescriptorFactory.fromResource(R.drawable.img_marker));
