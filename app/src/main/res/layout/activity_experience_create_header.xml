@@ -38,7 +38,6 @@
             android:layout_width="80dp"
             android:layout_height="80dp"
             android:padding="15dp"
-            android:background="#eee"
             android:layout_margin="5dp"/>
     </LinearLayout>
 
