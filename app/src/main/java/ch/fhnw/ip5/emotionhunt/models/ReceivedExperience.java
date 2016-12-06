@@ -94,8 +94,8 @@ public class ReceivedExperience extends Experience {
         contentValues.put(ExperienceDbContract.COL_LAT, lat);
         contentValues.put(ExperienceDbContract.COL_LON, lon);
         contentValues.put(ExperienceDbContract.COL_IS_PUBLIC, isPublic);
-        contentValues.put(ExperienceDbContract.COL_IS_SENT, false);
-        contentValues.put(ExperienceDbContract.COL_IS_READ, isRead);
+        contentValues.put(ExperienceDbContract.COL_IS_SENT, 0);
+        contentValues.put(ExperienceDbContract.COL_IS_READ, isRead ? 1 : 0);
         contentValues.put(ExperienceDbContract.COL_EMOTION, "");
         contentValues.put(ExperienceDbContract.COL_TEXT, text);
         contentValues.put(ExperienceDbContract.COL_FILENAME, filename);

@@ -51,8 +51,8 @@ public class SentExperience extends Experience {
         contentValues.put(Experience.ExperienceDbContract.COL_LAT, lat);
         contentValues.put(Experience.ExperienceDbContract.COL_LON, lon);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_PUBLIC, isPublic);
-        contentValues.put(Experience.ExperienceDbContract.COL_IS_SENT, true);
-        contentValues.put(Experience.ExperienceDbContract.COL_IS_READ, true);
+        contentValues.put(Experience.ExperienceDbContract.COL_IS_SENT, 1);
+        contentValues.put(Experience.ExperienceDbContract.COL_IS_READ, 1);
         contentValues.put(Experience.ExperienceDbContract.COL_EMOTION, getExpectedEmotionJSON());
         contentValues.put(Experience.ExperienceDbContract.COL_TEXT, text);
         contentValues.put(Experience.ExperienceDbContract.COL_FILENAME, filename);

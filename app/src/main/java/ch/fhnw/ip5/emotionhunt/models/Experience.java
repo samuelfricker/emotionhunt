@@ -69,7 +69,7 @@ public abstract class Experience{
         e.id = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_ID));
         e.lat = c.getDouble(c.getColumnIndex(ExperienceDbContract.COL_LAT));
         e.lon = c.getDouble(c.getColumnIndex(ExperienceDbContract.COL_LON));
-        e.isSent = e instanceof SentExperience;
+        e.isSent = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_IS_SENT)) == 1;
         e.isPublic = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_IS_PUBLIC)) == 1;
         e.isRead = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_IS_READ)) == 1;
         e.createdAt = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_CREATED_AT));

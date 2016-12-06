@@ -299,6 +299,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @return successfully added
      */
     public boolean addExperience(ReceivedExperience experience) {
+        //prevent adding sent experiences
+        if (experience.isSent) return false;
+
         if (mExperiences == null) mExperiences = new ArrayList<>();
 
         //return if marker was updated
@@ -306,8 +309,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return false;
         }
 
-        //prevent adding duplicates or sent experiences
-        if (mExperiences.contains(experience) || experience.isSent) {
+        //prevent adding duplicates
+        if (mExperiences.contains(experience)) {
             //already added
             return false;
         }
