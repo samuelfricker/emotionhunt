@@ -15,6 +15,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+
 import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.PermissionHelper;
 import ch.fhnw.ip5.emotionhunt.models.LocationHistory;
@@ -27,7 +30,7 @@ import ch.fhnw.ip5.emotionhunt.models.LocationHistory;
 public class LocationService extends Service implements LocationListener {
     private static final String TAG = LocationService.class.getSimpleName();
     //the minimum distance to change Updates in meters
-    private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
+    private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 3;
     //the minimum time between updates in milliseconds
     private static final long MIN_TIME_BW_UPDATES = 1000 * 5 * 1;
     private Context mContext;
@@ -138,5 +141,6 @@ public class LocationService extends Service implements LocationListener {
     public void onStatusChanged(String provider, int status, Bundle extras) {
         Log.i(TAG, "onStatusChanged " + status);
     }
+
 
 }

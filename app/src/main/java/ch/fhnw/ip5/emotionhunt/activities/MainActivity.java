@@ -24,6 +24,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -109,11 +110,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+     * This is where we can add markers or lines, add listeners or move the camera.
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -218,12 +215,23 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.e(TAG, e.getMessage());
         }
 
+
         //zoom to current position:
         if (!isCameraMoved) {
             CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(16).build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             isCameraMoved = true;
         }
+
+    }
+
+    /**
+     * Change the camera position by moving or animating the camera depending on the state of the
+     * animate toggle button.
+     */
+    private void changeCamera(CameraUpdate update) {
+
+
 
     }
 
