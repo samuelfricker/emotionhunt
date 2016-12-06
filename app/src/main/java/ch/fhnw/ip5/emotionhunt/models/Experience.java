@@ -103,6 +103,17 @@ public abstract class Experience{
      * @return
      */
     public boolean isRead() {
+        //TODO implement this method!
+        return true;
+    }
+
+    /**
+     * Returns whether an experience is ready to be opened or not.
+     * That depends on the "isRead" and on the distance.
+     * @return
+     */
+    public boolean isCatchable() {
+        //TODO implement this method!
         return true;
     }
 }
