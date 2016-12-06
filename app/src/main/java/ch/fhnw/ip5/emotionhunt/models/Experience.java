@@ -97,4 +97,12 @@ public abstract class Experience{
         public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String SQL_COUNT_ITEMS = "SELECT COUNT(*) FROM " + TABLE_NAME;
     }
+
+    /**
+     * Returns whether an experience is read or not.
+     * @return
+     */
+    public boolean isRead() {
+        return true;
+    }
 }
