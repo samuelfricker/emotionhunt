@@ -19,7 +19,6 @@ import java.util.List;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
-import ch.fhnw.ip5.emotionhunt.helpers.SquareImageView;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceMediaTask;
@@ -78,6 +77,12 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             RestExperienceMediaTask restExperienceMediaTask = new RestExperienceMediaTask(this,
                     url,nameValuePairs,mExperience.filename);
             restExperienceMediaTask.execute();
+        }
+
+        //update the isRead flag after first opening of this experience
+        if (!mExperience.isRead && !mExperience.isSent) {
+            mExperience.isRead = true;
+            mExperience.saveDb(getApplicationContext());
         }
 
     }

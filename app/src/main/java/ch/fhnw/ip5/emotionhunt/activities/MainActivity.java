@@ -307,7 +307,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         //prevent adding duplicates or sent experiences
-        if (mExperiences.contains(experience) || (experience.isSent && !experience.isPublic)) {
+        if (mExperiences.contains(experience) || experience.isSent) {
             //already added
             return false;
         }
@@ -386,10 +386,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (isPublic) {
             fabToggle.setImageResource(R.drawable.ic_public_white_24dp);
-            Toast.makeText(this, R.string.show_public_experiences, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, R.string.show_public_experiences, Toast.LENGTH_SHORT).show();
         } else {
             fabToggle.setImageResource(R.drawable.ic_private_white_24dp);
-            Toast.makeText(this, R.string.show_private_experiences, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, R.string.show_private_experiences, Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -404,9 +404,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             intent.putExtra(ExperienceDetailActivity.EXTRA_EXPERIENCE_ID, experience.id);
             startActivity(intent);
         } else {
-            Toast.makeText(this, "This experience is not catchable. Get closer to the experience to open it.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.not_catchable, Toast.LENGTH_LONG).show();
         }
-
 
         return true;
     }
