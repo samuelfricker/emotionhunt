@@ -68,6 +68,7 @@ public class RestExperienceMediaTask extends RestTask {
             Log.d(TAG, "Execute: " + mUrl);
             HttpPost httppost = new HttpPost(mUrl);
             httppost.setEntity(new UrlEncodedFormEntity(mNameValuePairs));
+            httppost = setHeaderHttpPost(httppost);
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response = httpclient.execute(httppost);
 

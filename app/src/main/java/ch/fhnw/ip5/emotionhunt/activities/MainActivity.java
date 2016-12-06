@@ -399,9 +399,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Experience experience = ReceivedExperience.findById(this,index);
 
         Log.d(TAG, "Experience '" + experience.id + "' clicked.");
-        Intent intent = new Intent(getApplicationContext(), ExperienceDetailActivity.class);
-        intent.putExtra(ExperienceDetailActivity.EXTRA_EXPERIENCE_ID, experience.id);
-        startActivity(intent);
+        if (experience.isRead || experience.isCatchable(getApplicationContext())) {
+            Intent intent = new Intent(getApplicationContext(), ExperienceDetailActivity.class);
+            intent.putExtra(ExperienceDetailActivity.EXTRA_EXPERIENCE_ID, experience.id);
+            startActivity(intent);
+        } else {
+            Toast.makeText(this, "This experience is not catchable. Get closer to the experience to open it.", Toast.LENGTH_LONG).show();
+        }
+
 
         return true;
     }

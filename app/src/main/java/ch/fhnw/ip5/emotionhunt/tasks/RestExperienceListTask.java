@@ -50,6 +50,7 @@ public class RestExperienceListTask extends RestTask {
             httppost.addHeader("Cache-Control", "no-cache");
             httppost.setEntity(new UrlEncodedFormEntity(mNameValuePairs));
             HttpClient httpclient = new DefaultHttpClient();
+            httppost = setHeaderHttpPost(httppost);
             HttpResponse response = httpclient.execute(httppost);
 
             int status = response.getStatusLine().getStatusCode();
@@ -74,7 +75,7 @@ public class RestExperienceListTask extends RestTask {
                     experience.isPublic = experience.isPublicApi == 1;
                     experience.saveDb(mContext);
                 }
-
+                httpclient.getConnectionManager().shutdown();
                 return true;
             }
         } catch (IOException e) {

@@ -112,6 +112,7 @@ public class RestExperienceCreateTask extends RestTask {
             }
 
             httppost.setEntity(entity);
+            httppost = setHeaderHttpPost(httppost);
             HttpClient httpclient = new DefaultHttpClient();
             HttpResponse response = httpclient.execute(httppost);
 

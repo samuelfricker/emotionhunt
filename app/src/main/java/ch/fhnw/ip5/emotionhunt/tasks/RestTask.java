@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.message.BasicNameValuePair;
 
 import java.util.ArrayList;
@@ -30,6 +31,12 @@ public abstract class RestTask extends AsyncTask<String, Integer, Boolean> {
     protected Context mContext;
     protected String mUrl;
     protected List<NameValuePair> mNameValuePairs;
+
+    public HttpPost setHeaderHttpPost(HttpPost httpPost) {
+        httpPost.setHeader("Accept","application/json");
+        httpPost.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
+        return httpPost;
+    }
 
     public RestTask(Context context, String url, List<NameValuePair> nameValuePairs)
     {
