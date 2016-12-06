@@ -1,5 +1,7 @@
 package ch.fhnw.ip5.emotionhunt.models;
 
+import com.google.gson.Gson;
+
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.models
  *
@@ -101,5 +103,10 @@ public class Emotion {
 
     public void setSurprise(double surprise) {
         this.surprise = surprise;
+    }
+
+    public String toString() {
+        Gson gson = new Gson();
+        return gson.toJson(this);
     }
 }

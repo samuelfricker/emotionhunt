@@ -119,11 +119,19 @@ public abstract class Experience{
      * @param context
      * @return
      */
-    public boolean updateIsRead(Context context) {
+    public boolean updateIsRead (Context context) {
         Log.d(TAG, "updateIsRead");
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(ExperienceDbContract.COL_IS_READ, 1);
+        return db.update(ExperienceDbContract.TABLE_NAME, contentValues, "id=" + id, null) != -1;
+    }
+
+    public boolean updateEmotion (Context context) {
+        Log.d(TAG, "updateEmotion");
+        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(ExperienceDbContract.COL_EMOTION, emotion);
         return db.update(ExperienceDbContract.TABLE_NAME, contentValues, "id=" + id, null) != -1;
     }
 

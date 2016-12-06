@@ -9,12 +9,12 @@
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#00ffffff"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
         <android.support.v7.widget.Toolbar
             android:id="@+id/experience_detail_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.AppBarOverlay" />
 
     </android.support.design.widget.AppBarLayout>
@@ -27,52 +27,57 @@
         <ch.fhnw.ip5.emotionhunt.helpers.SquareImageView
             android:id="@+id/img_experience_preview"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:scaleType="fitXY"/>
+
         <LinearLayout
-            android:id="@+id/activity_experience_detail_my_reaction"
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="@string/my_reaction"
+            android:layout_height="match_parent"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_experience_detail_my_reaction"
-                android:textStyle="normal|bold"
-                android:textSize="18sp"/>
-            <ImageView
-                app:srcCompat="@drawable/img_questionmark"
-                android:id="@+id/img_experience_icon"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:layout_width="80dp"
-                android:layout_height="80dp"
-                android:padding="15dp"
-                android:background="#eee"
-                android:layout_margin="5dp"/>
+                android:layout_height="match_parent"
+                android:layout_marginBottom="5dp">
+
+                <TextView
+                    android:text="Dimitri"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_author"
+                    android:layout_weight="1"
+                    android:textStyle="normal|bold"/>
+
+                <TextView
+                    android:text="@string/mark_as_spam"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_mark_as_spam"
+                    android:textSize="14sp"
+                    android:layout_weight="1"
+                    android:textAlignment="textEnd"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:text="Message ..."
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/text_experience_detail_comment"
+                    android:layout_weight="1"
+                    android:textSize="28sp"/>
+            </LinearLayout>
         </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="64dp"
-        android:padding="15dp"
-        android:background="#44000000">
-            <TextView
-                android:text=""
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/text_experience_detail_comment"
-                android:layout_weight="1"
-                android:textColor="#fff"
-                android:textSize="16sp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+        android:id="@+id/activity_experience_detail_reaction_view"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -82,33 +87,58 @@
         android:paddingBottom="@dimen/activity_vertical_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:background="#aaffffff"
+        android:visibility="invisible"
         >
 
         <LinearLayout
-            android:id="@+id/activity_experience_detail_reaction_view"
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible">
+            android:layout_height="wrap_content">
             <TextView
                 android:text="@string/reactions"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/text_experience_detail_reaction"
                 android:textStyle="normal|bold"
-                android:textSize="18sp"/>
+                android:textSize="14sp"/>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <include layout="@layout/activity_experience_detail_reaction_item"
-                         android:layout_width="fill_parent"
+                         android:layout_width="match_parent"
                          android:layout_height="match_parent"></include>
 
             </HorizontalScrollView>
         </LinearLayout>
 
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/activity_experience_detail_my_reaction"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:gravity="center_horizontal"
+        android:background="#aaffffff">
+        <TextView
+            android:text="@string/my_reaction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/text_experience_detail_my_reaction"
+            android:textStyle="normal|bold"
+            android:textSize="14sp"/>
+        <ImageView
+            app:srcCompat="@drawable/img_questionmark"
+            android:id="@+id/img_experience_icon"
+            android:layout_gravity="center_vertical|center_horizontal"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:background="#eee"
+            android:layout_margin="15dp"
+            android:padding="5dp"/>
     </LinearLayout>
 
 </android.support.design.widget.CoordinatorLayout>
