@@ -276,12 +276,38 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     /**
+     * Set marker depending on the state of the experience
+     * @param marker
+     * @param experience
+     */
+    public void setMarker(Marker marker, Experience experience) {
+        //TODO add logic for marker handling
+    }
+
+    /**
+     * Update the marker's icon and returns whether there was an update possible or not.
+     * @param experience
+     * @return
+     */
+    public boolean updateMarkerIcon (Experience experience) {
+        int markerIndex = mExperiences.indexOf(experience);
+        Marker marker = mMarkers.get(markerIndex);
+        if (marker != null) {
+            setMarker(marker,experience);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Adds a marker to the array list and on the google maps screen if not yet added.
      * @param experience new experience
      * @return successfully added
      */
     public boolean addExperience(ReceivedExperience experience) {
         if (mExperiences == null) mExperiences = new ArrayList<>();
+
+        updateMarkerIcon(experience);
 
         //prevent adding duplicates or sent experiences
         if (mExperiences.contains(experience) || (experience.isSent && !experience.isPublic)) {
