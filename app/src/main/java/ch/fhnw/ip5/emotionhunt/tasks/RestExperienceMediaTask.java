@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.http.AndroidHttpClient;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
@@ -13,10 +14,8 @@ import com.google.gson.JsonParseException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -64,12 +63,13 @@ public class RestExperienceMediaTask extends RestTask {
 
     @Override
     protected Boolean doInBackground(String... urls) {
+        AndroidHttpClient httpclient = null;
         try {
             Log.d(TAG, "Execute: " + mUrl);
             HttpPost httppost = new HttpPost(mUrl);
             httppost.setEntity(new UrlEncodedFormEntity(mNameValuePairs));
             httppost = setHeaderHttpPost(httppost);
-            HttpClient httpclient = new DefaultHttpClient();
+            httpclient = AndroidHttpClient.newInstance("Android");
             HttpResponse response = httpclient.execute(httppost);
 
             int status = response.getStatusLine().getStatusCode();
@@ -97,6 +97,7 @@ public class RestExperienceMediaTask extends RestTask {
                     mImg = BitmapFactory.decodeByteArray(b, 0, b.length);
                     DeviceHelper.saveBitmap(mImg, mContext, mFilename);
                     publishProgress(STATE_BITMAP_READY);
+                    httpclient.close();
                     return true;
                 }
             }
@@ -106,6 +107,8 @@ public class RestExperienceMediaTask extends RestTask {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (httpclient != null) httpclient.close();
         }
         return false;
     }

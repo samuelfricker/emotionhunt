@@ -55,9 +55,11 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         // Get a support ActionBar corresponding to this toolbar
+        //TODO Remove hacks
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getSupportActionBar().setElevation(0f);
 
         initView();
     }

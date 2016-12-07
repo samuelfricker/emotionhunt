@@ -27,9 +27,9 @@ import ch.fhnw.ip5.emotionhunt.models.LocationHistory;
 public class LocationService extends Service implements LocationListener {
     private static final String TAG = LocationService.class.getSimpleName();
     //the minimum distance to change Updates in meters
-    private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
+    private static final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 500;
     //the minimum time between updates in milliseconds
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 5 * 1;
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
     private Context mContext;
     Location location;
     //declaring a Location Manager

@@ -2,13 +2,12 @@ package ch.fhnw.ip5.emotionhunt.tasks;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.Handler;
+import android.net.http.AndroidHttpClient;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -17,10 +16,8 @@ import com.google.gson.JsonParseException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,7 +27,6 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.UserList;
@@ -56,12 +52,13 @@ public class RestUserListTask extends RestTask {
 
     @Override
     protected Boolean doInBackground(String... urls) {
+        AndroidHttpClient httpclient = null;
         try {
             Log.d(TAG, "Execute: " + mUrl);
             HttpPost httppost = new HttpPost(mUrl);
             httppost.setEntity(new UrlEncodedFormEntity(mNameValuePairs));
             httppost = setHeaderHttpPost(httppost);
-            HttpClient httpclient = new DefaultHttpClient();
+            httpclient = AndroidHttpClient.newInstance("Android");
             HttpResponse response = httpclient.execute(httppost);
 
             int status = response.getStatusLine().getStatusCode();
@@ -117,7 +114,7 @@ public class RestUserListTask extends RestTask {
                         }
                     });
                 }
-
+                httpclient.close();
                 return true;
             }
         } catch (IOException e) {
@@ -126,6 +123,8 @@ public class RestUserListTask extends RestTask {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (httpclient != null) httpclient.close();
         }
         return false;
     }

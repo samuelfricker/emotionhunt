@@ -3,10 +3,9 @@ package ch.fhnw.ip5.emotionhunt.tasks;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.http.AndroidHttpClient;
 import android.os.Handler;
-import android.provider.SyncStateContract;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -17,14 +16,11 @@ import com.google.gson.JsonParseException;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,10 +31,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
-import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
-import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
 
 /**
@@ -98,6 +92,8 @@ public class RestExperienceCreateTask extends RestTask {
         //show progress dialog
         publishProgress(STATE_SHOW_PROGRESS_DIALOG);
 
+        AndroidHttpClient httpclient = null;
+
         Log.d(TAG, "Execute: " + mUrl);
         try {
             MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
@@ -113,7 +109,7 @@ public class RestExperienceCreateTask extends RestTask {
 
             httppost.setEntity(entity);
             httppost = setHeaderHttpPost(httppost);
-            HttpClient httpclient = new DefaultHttpClient();
+            httpclient = AndroidHttpClient.newInstance("Android");
             HttpResponse response = httpclient.execute(httppost);
 
             int status = response.getStatusLine().getStatusCode();
@@ -144,6 +140,7 @@ public class RestExperienceCreateTask extends RestTask {
                         ex.printStackTrace();
                     }
                 }
+                httpclient.close();
                 ((Activity)mContext).finish();
                 return true;
             } else if (status == 415) {
@@ -171,6 +168,8 @@ public class RestExperienceCreateTask extends RestTask {
             e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (httpclient != null) httpclient.close();
         }
 
         return false;
