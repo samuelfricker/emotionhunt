@@ -135,6 +135,10 @@ public abstract class Experience{
         return db.update(ExperienceDbContract.TABLE_NAME, contentValues, "id=" + id, null) != -1;
     }
 
+    public boolean isPrivate() {
+        return !isPublic;
+    }
+
     /**
      * Returns whether an experience is ready to be opened or not.
      * That depends on the "isRead" and "isSent" and on the distance.

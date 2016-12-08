@@ -13,7 +13,6 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.widget.Toast;
 
 import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.PermissionHelper;
@@ -43,7 +42,7 @@ public class LocationService extends Service implements LocationListener {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
     /**

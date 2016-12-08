@@ -308,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     public boolean addExperience(ReceivedExperience experience) {
         //prevent adding sent experiences
-        if (experience.isSent) return false;
+        if (experience.isSent && experience.isPrivate()) return false;
 
         if (mExperiences == null) mExperiences = new ArrayList<>();
 

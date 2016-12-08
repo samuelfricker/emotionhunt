@@ -17,8 +17,10 @@ public class ApiService extends Service {
         final Context context = getApplicationContext();
         new Thread(new Runnable(){
             public void run() {
+                int i = 0;
                 while(true) {
                     try {
+                        Log.d(TAG, "Api Call " + i++);
                         loadExperiences(context);
                         Thread.sleep(REPEAT_TIME);
                     } catch (InterruptedException e) {
@@ -27,7 +29,7 @@ public class ApiService extends Service {
                 }
             }
         }).start();
-        return Service.START_NOT_STICKY;
+        return Service.START_STICKY;
     }
 
     @Override

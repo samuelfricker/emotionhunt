@@ -133,14 +133,10 @@
 
         <service
             android:name=".services.ApiService"
-            android:enabled="true"
-            android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/service_name" />
         <service
             android:name=".services.LocationService"
-            android:enabled="true"
-            android:exported="true"
             android:icon="@mipmap/ic_launcher"
             android:label="@string/service_name" />
 
