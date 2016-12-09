@@ -7,15 +7,27 @@
     android:orientation="horizontal"
     tools:context="ch.fhnw.ip5.emotionhunt.activities.SplashScreenActivity">
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="180dip"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:keepScreenOn="true"
+            app:srcCompat="@drawable/ic_logo_medium"
+            android:id="@+id/fullscreen_content" />
+        <TextView
+            android:id="@+id/txt_app_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="10dp"
+            android:text="Version xyz"/>
+    </LinearLayout>
 
-    <ImageView
-        android:layout_width="180dip"
-        android:layout_height="180dip"
-        android:layout_gravity="center_horizontal"
-        android:keepScreenOn="true"
-        app:srcCompat="@drawable/ic_logo_medium"
-        android:id="@+id/fullscreen_content"
-        android:layout_marginTop="190dp" />
 
 
 </FrameLayout>

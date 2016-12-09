@@ -1,10 +1,14 @@
 package ch.fhnw.ip5.emotionhunt.helpers;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.StrictMode;
+import android.preference.Preference;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
@@ -29,6 +33,18 @@ public class DeviceHelper {
     public static String getDeviceId (Context context) {
         String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return androidId;
+    }
+
+    public static String getAppVersion (Activity activity) {
+        PackageManager manager = activity.getPackageManager();
+        PackageInfo info = null;
+        try {
+            info = manager.getPackageInfo(activity.getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            return "";
+        }
+        String version = info.versionName;
+        return version;
     }
 
     /**

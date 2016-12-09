@@ -199,17 +199,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             pref.setTitle("Android ID: " + DeviceHelper.getDeviceId(getActivity()));
             pref.setDefaultValue(DeviceHelper.getDeviceId(getActivity()));
 
-            try {
-                PackageManager manager = getActivity().getPackageManager();
-                PackageInfo info = manager.getPackageInfo(getActivity().getPackageName(), 0);
-                String version = info.versionName;
-                Preference pref2 = findPreference("app_version");
-                pref2.setTitle("App Version: " + version);
-                pref2.setDefaultValue(version);
-                bindPreferenceSummaryToValue(pref2);
-            } catch (PackageManager.NameNotFoundException e) {
-                e.printStackTrace();
-            }
+            String appVersion = DeviceHelper.getAppVersion(getActivity());
+            Preference pref2 = findPreference("app_version");
+            pref2.setTitle("App Version: " + appVersion);
+            pref2.setDefaultValue(appVersion);
+            bindPreferenceSummaryToValue(pref2);
 
             bindPreferenceSummaryToValue(findPreference("android_id"));
             /*bindPreferenceSummaryToValue(findPreference("example_text"));

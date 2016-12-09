@@ -4,7 +4,14 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -15,7 +22,10 @@ import java.util.List;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
+import ch.fhnw.ip5.emotionhunt.helpers.PermissionHelper;
 import ch.fhnw.ip5.emotionhunt.models.User;
+import ch.fhnw.ip5.emotionhunt.services.ApiService;
+import ch.fhnw.ip5.emotionhunt.services.LocationService;
 import ch.fhnw.ip5.emotionhunt.tasks.RestUserLoginTask;
 
 /**
@@ -26,7 +36,6 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     ArrayList<User> users;
     private View mContentView;
-    private String androidId;
     private final static long sleepTime = 1000*1;
 
     @Override
@@ -53,6 +62,21 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         });
 
+        ((TextView) findViewById(R.id.txt_app_version)).setText("V." + DeviceHelper.getAppVersion(SplashScreenActivity.this));
+
+        Animation fadeIn = new AlphaAnimation(0, 1);
+        fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
+        fadeIn.setDuration(2000);
+        mContentView.setAnimation(fadeIn);
+
+        //start api service
+        startService(new Intent(SplashScreenActivity.this, ApiService.class));
+
+        //start location service - check permissions first
+        if (PermissionHelper.checkLocationPermission(this)) {
+            startService(new Intent(SplashScreenActivity.this, LocationService.class));
+        }
+
         new Thread(new Runnable() {
             public void run() {
             try {
@@ -65,21 +89,14 @@ public class SplashScreenActivity extends AppCompatActivity {
             }
         }).start();
 
-
-
-
     }
 
     private void checkUserId() {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
-        androidId = getAndroidId();
-        nameValuePairs.add(new BasicNameValuePair("androidId", androidId));
+        nameValuePairs.add(new BasicNameValuePair("androidId", DeviceHelper.getDeviceId(getApplicationContext())));
         String url = Params.getApiActionUrl(getApplicationContext(), "user.login");
         RestUserLoginTask restTask = new RestUserLoginTask(this,url,nameValuePairs);
         restTask.execute();
     }
 
-    public String getAndroidId() {
-        return DeviceHelper.getDeviceId(getApplicationContext());
-    }
 }

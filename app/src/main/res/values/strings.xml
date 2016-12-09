@@ -126,7 +126,7 @@
     <string name="media_is_empty">Media is empty.</string>
     <string name="experience_public_notice">This experience will be visible for all emotionhunt users.</string>
     <string name="please_wait">Please wait...</string>
-    <string name="what_reaction_do_you_expect">Choose expected Reaction?</string>
+    <string name="what_reaction_do_you_expect">expected Reaction</string>
     <string name="take_photo">Take Photo</string>
     <string name="choose_from_library">Choose from Library</string>
     <string name="add_photo">Add Photo!</string>
@@ -134,7 +134,7 @@
     <string name="new_experience_available">Experience detected!</string>
     <string name="username_already_exists">Username already exists</string>
     <string name="user_has_been_successfully_created">User has been successfully created</string>
-    <string name="has_left_something_for_you">has left something for you</string>
+    <string name="has_left_something_for_you">left something for you</string>
     <string name="not_catchable">This experience is not catchable. Get closer to the experience to open it.</string>
     <string name="my_reaction">your reaction</string>
 </resources>

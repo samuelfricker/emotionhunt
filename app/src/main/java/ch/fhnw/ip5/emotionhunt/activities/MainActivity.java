@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LatLng latLng;
     boolean isCameraMoved = false;
-    boolean isPublic = true;
+    boolean isPublic = false;
 
 
     @Override
@@ -69,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG,"onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
 
         SQLiteDatabase db = new DbHelper(getApplicationContext()).getWritableDatabase();
         DbHelper.getStatus(db);
@@ -149,8 +148,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     //start api service
                     if (PermissionHelper.checkLocationPermission(this)) {
-                        Intent intent= new Intent(this, LocationService.class);
-                        startService(intent);
+                        startService(new Intent(MainActivity.this, LocationService.class));
                         mMap.setMyLocationEnabled(true);
                         buildGoogleApiClient();
                         mGoogleApiClient.connect();
@@ -218,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         //zoom to current position:
         if (!isCameraMoved) {
-            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(16).build();
+            CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).build();
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             isCameraMoved = true;
         }
@@ -272,15 +270,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        //start api service
-        Intent intent= new Intent(this, ApiService.class);
-        startService(intent);
+        //TODO fix problem with multiple service instances!!!!!!
 
-        //start location service - check permissions first
-        if (PermissionHelper.checkLocationPermission(this)) {
-            intent = new Intent(this, LocationService.class);
-            startService(intent);
-        }
+
     }
 
     /**

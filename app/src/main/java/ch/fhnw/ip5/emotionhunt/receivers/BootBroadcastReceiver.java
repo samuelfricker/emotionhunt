@@ -12,12 +12,9 @@ public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent startServiceIntent = new Intent(context, ApiService.class);
-        startWakefulService(context, startServiceIntent);
-
+        context.startService(new Intent(context, ApiService.class));
         if (PermissionHelper.checkLocationPermission(context)) {
-            startServiceIntent = new Intent(context, LocationService.class);
-            startWakefulService(context, startServiceIntent);
+            context.startService(new Intent(context, LocationService.class));
         }
     }
 }

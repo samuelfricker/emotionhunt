@@ -134,11 +134,15 @@
         <service
             android:name=".services.ApiService"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name" />
+            android:label="@string/service_name"
+            android:enabled="true"
+            android:exported="false" />
         <service
             android:name=".services.LocationService"
             android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name" />
+            android:label="@string/service_name"
+            android:enabled="true"
+            android:exported="false" />
 
         <receiver android:name=".receivers.BootBroadcastReceiver">
             <intent-filter>
