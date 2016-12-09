@@ -115,4 +115,8 @@ public class SentExperience extends Experience {
         String sExpectedEmotion = gson.toJson(expectedEmotion);
         return sExpectedEmotion;
     }
+
+    public ArrayList<ReceivedExperience> getAll(Context context){
+        return super.getAll(context, true);
+    }
 }

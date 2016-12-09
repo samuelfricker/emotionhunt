@@ -137,4 +137,6 @@
     <string name="has_left_something_for_you">left something for you</string>
     <string name="not_catchable">This experience is not catchable. Get closer to the experience to open it.</string>
     <string name="my_reaction">your reaction</string>
+    <string name="Received">Received</string>
+    <string name="Sent">Sent</string>
 </resources>

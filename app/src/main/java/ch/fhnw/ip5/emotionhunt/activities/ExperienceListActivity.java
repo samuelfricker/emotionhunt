@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
-import ch.fhnw.ip5.emotionhunt.fragments.ExperiencesPrivateFragment;
-import ch.fhnw.ip5.emotionhunt.fragments.ExperiencesPublicFragment;
+import ch.fhnw.ip5.emotionhunt.fragments.ExperiencesReceivedFragment;
+import ch.fhnw.ip5.emotionhunt.fragments.ExperiencesSentFragment;
 
 public class ExperienceListActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -40,8 +40,8 @@ public class ExperienceListActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new ExperiencesPrivateFragment(), getString(R.string.experience_private));
-        adapter.addFragment(new ExperiencesPublicFragment(), getString(R.string.experience_public));
+        adapter.addFragment(new ExperiencesReceivedFragment(), getString(R.string.Received));
+        adapter.addFragment(new ExperiencesSentFragment(), getString(R.string.Sent));
         viewPager.setAdapter(adapter);
     }
 

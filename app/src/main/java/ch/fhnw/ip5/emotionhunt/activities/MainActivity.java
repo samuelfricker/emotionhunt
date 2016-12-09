@@ -29,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
@@ -103,6 +104,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intent);
             }
         });
+
     }
 
 
@@ -128,6 +130,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMap = googleMap;
         mMap.setOnMarkerClickListener(this);
         mMap.getUiSettings().setMapToolbarEnabled(false);
+
 
 
         startExperienceListener();
@@ -223,15 +226,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     }
 
-    /**
-     * Change the camera position by moving or animating the camera depending on the state of the
-     * animate toggle button.
-     */
-    private void changeCamera(CameraUpdate update) {
-
-
-
-    }
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -346,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         continue;
                     }
 
-                    ArrayList<ReceivedExperience> receivedExperiences = ReceivedExperience.getAll(getApplicationContext());
+                    ArrayList<ReceivedExperience> receivedExperiences = Experience.getAll(getApplicationContext(),false);
                     for (final ReceivedExperience receivedExperience : receivedExperiences) {
                         runOnUiThread(new Runnable() {
                             @Override

@@ -59,26 +59,7 @@ public class ReceivedExperience extends Experience {
         return null;
     }
 
-    /**
-     * Returns all ReceivedExperience instances from the experience sql lite database.
-     * @param context
-     * @return List of experiences
-     */
-    public static ArrayList<ReceivedExperience> getAll(Context context) {
-        ArrayList<ReceivedExperience> receivedExperiences = new ArrayList<>();
-        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + ExperienceDbContract.TABLE_NAME , null);
-        if(c.moveToFirst()){
-            do{
-                ReceivedExperience experience = new ReceivedExperience();
-                experience = (ReceivedExperience) loadFromCursor(c, experience);
-                receivedExperiences.add(experience);
-            }while(c.moveToNext());
-        }
-        c.close();
-        db.close();
-        return receivedExperiences;
-    }
+
 
     public boolean saveDb(Context context) {
         ReceivedExperience experience = ReceivedExperience.findById(context, this.id);
@@ -146,5 +127,9 @@ public class ReceivedExperience extends Experience {
 
         RestTask task = new RestExperienceListTask(context, url, nameValuePairs);
         task.execute();
+    }
+
+    public ArrayList<ReceivedExperience> getAll(Context context){
+        return super.getAll(context, false);
     }
 }
