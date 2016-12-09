@@ -129,7 +129,11 @@ public class ReceivedExperience extends Experience {
         task.execute();
     }
 
-    public ArrayList<ReceivedExperience> getAll(Context context){
-        return super.getAll(context, false);
+    public static ArrayList<ReceivedExperience> getAllRead(Context context, boolean isRead){
+        return Experience.getAll(context, false, isRead);
+    }
+
+    public static ArrayList<ReceivedExperience> getAll(Context context){
+        return Experience.getAll(context, false, null);
     }
 }

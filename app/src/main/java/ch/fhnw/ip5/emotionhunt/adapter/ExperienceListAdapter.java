@@ -1,6 +1,5 @@
 package ch.fhnw.ip5.emotionhunt.adapter;
 
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -68,7 +67,7 @@ public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAd
     public ExperienceListAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.experience_list_item, parent, false);
+                .inflate(R.layout.item_experience_list, parent, false);
         // set the view's size, margins, paddings and layout parameters
         MyViewHolder vh = new MyViewHolder(v);
         return vh;

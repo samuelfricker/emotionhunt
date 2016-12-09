@@ -378,6 +378,7 @@ public class ExperienceCreateActivity extends AppCompatActivity {
      */
     private ArrayList<Integer> getRecipients() {
         ArrayList<Integer> recipients = new ArrayList<>();
+        if (isPublic) return recipients;
         UserList userList = UserList.getInstance();
         for (User user : userList.recipients) {
             recipients.add((int) user.id);

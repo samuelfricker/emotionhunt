@@ -340,7 +340,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         continue;
                     }
 
-                    ArrayList<ReceivedExperience> receivedExperiences = Experience.getAll(getApplicationContext(),false);
+                    ArrayList<ReceivedExperience> receivedExperiences = Experience.getAll(getApplicationContext(), null, null);
                     for (final ReceivedExperience receivedExperience : receivedExperiences) {
                         runOnUiThread(new Runnable() {
                             @Override

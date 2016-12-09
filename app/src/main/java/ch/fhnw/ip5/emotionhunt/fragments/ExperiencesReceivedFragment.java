@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.adapter.ExperienceListAdapter;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
+import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.fragments
@@ -37,7 +38,7 @@ public class ExperiencesReceivedFragment extends Fragment {
         RecyclerView rv = (RecyclerView) rootView.findViewById(R.id.rv_recycler_view);
         rv.setHasFixedSize(false);
 
-        ExperienceListAdapter adapter = new ExperienceListAdapter(Experience.getAll(container.getContext(),false), container.getContext());
+        ExperienceListAdapter adapter = new ExperienceListAdapter(ReceivedExperience.getAllRead(container.getContext(), true), container.getContext());
         rv.setAdapter(adapter);
 
         LinearLayoutManager llm = new LinearLayoutManager(getActivity());

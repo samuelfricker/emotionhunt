@@ -37,7 +37,6 @@ public class SplashScreenActivity extends AppCompatActivity {
     ArrayList<User> users;
     private View mContentView;
     private final static long sleepTime = 1000*1;
-    private String androidId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

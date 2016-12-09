@@ -197,10 +197,13 @@ public abstract class Experience{
      * @param isSent
      * @return List of experiences
      */
-    public static ArrayList<ReceivedExperience> getAll(Context context, boolean isSent) {
+    public static ArrayList<ReceivedExperience> getAll(Context context, Boolean isSent, Boolean isRead) {
         ArrayList<ReceivedExperience> receivedExperiences = new ArrayList<>();
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
-        Cursor c = db.rawQuery("SELECT * FROM " + ExperienceDbContract.TABLE_NAME + " WHERE " + ExperienceDbContract.COL_IS_SENT + " = " + (isSent ? 1 : 0) , null);
+        Cursor c = db.rawQuery("SELECT * FROM " + ExperienceDbContract.TABLE_NAME + " WHERE 1=1 " +
+                (isSent != null ? " AND " + ExperienceDbContract.COL_IS_SENT + " = " + (isSent ? 1 : 0) : "") +
+                (isRead != null ? " AND " + ExperienceDbContract.COL_IS_READ + " = " + (isRead ? 1 : 0) : "")
+                , null);
         if(c.moveToFirst()){
             do{
                 ReceivedExperience experience = new ReceivedExperience();

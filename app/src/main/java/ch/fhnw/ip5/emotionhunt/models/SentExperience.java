@@ -116,7 +116,7 @@ public class SentExperience extends Experience {
         return sExpectedEmotion;
     }
 
-    public ArrayList<ReceivedExperience> getAll(Context context){
-        return super.getAll(context, true);
+    public static ArrayList<ReceivedExperience> getAll(Context context){
+        return Experience.getAll(context, true, null);
     }
 }
