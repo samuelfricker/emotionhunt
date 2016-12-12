@@ -31,7 +31,7 @@
         <!-- API URLs -->
         <meta-data
             android:name="api.url"
-            android:value="http://emotionhunt.yourwebsolution.ch/api/?action=" />
+            android:value="http://emotionhunt.com/api/?action=" />
         <meta-data
             android:name="api.action.experience.create"
             android:value="experience/create" />
@@ -47,6 +47,9 @@
         <meta-data
             android:name="api.action.experience.media"
             android:value="experience/media" />
+        <meta-data
+            android:name="api.action.experience.reactions"
+            android:value="experience/reactions" />
         <meta-data
             android:name="api.action.user.get"
             android:value="user/list" />
@@ -100,6 +103,7 @@
             android:name=".activities.ExperienceDetailActivity"
             android:label="@string/experience_detail"
             android:parentActivityName=".activities.MainActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->

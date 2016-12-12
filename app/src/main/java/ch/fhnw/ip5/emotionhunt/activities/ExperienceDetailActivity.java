@@ -28,6 +28,7 @@ import ch.fhnw.ip5.emotionhunt.models.Emotion;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceMediaTask;
+import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceReactionsTask;
 
 public class ExperienceDetailActivity extends AppCompatActivity {
     public static final String TAG = "ExperienceDetailActi";
@@ -143,7 +144,6 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         String url = Params.getApiActionUrl(getApplicationContext(), "experience.media");
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("media", mExperience.filename));
-
         Bitmap mediaBitmap = DeviceHelper.loadImageFromStorage(mExperience.filename, ExperienceDetailActivity.this);
         if (mediaBitmap != null) {
             Log.d(TAG, "image already stored on device...");
@@ -154,6 +154,13 @@ public class ExperienceDetailActivity extends AppCompatActivity {
                     url,nameValuePairs,mExperience.filename);
             restExperienceMediaTask.execute();
         }
+
+        //execute async task to load reactions
+        url = Params.getApiActionUrl(getApplicationContext(), "experience.reactions");
+        nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(mExperience.id)));
+        RestExperienceReactionsTask restExperienceReactionsTask = new RestExperienceReactionsTask(this,url,nameValuePairs);
+        restExperienceReactionsTask.execute();
 
         Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isRead ? "is read" : "is not read"));
         Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isSent ? "is sent" : "is received"));

@@ -2,6 +2,8 @@ package ch.fhnw.ip5.emotionhunt.models;
 
 import com.google.gson.Gson;
 
+import ch.fhnw.ip5.emotionhunt.R;
+
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.models
  *
@@ -108,5 +110,44 @@ public class Emotion {
     public String toString() {
         Gson gson = new Gson();
         return gson.toJson(this);
+    }
+
+    public int getResourceId() {
+        int resId = R.drawable.img_questionmark;
+        double value = 0.0;
+
+        if (anger > value) {
+            resId = R.drawable.img_emotion_anger;
+            value = anger;
+        }
+        if (contempt > value) {
+            resId = R.drawable.img_emotion_contempt;
+            value = contempt;
+        }
+        if (disgust > value) {
+            resId = R.drawable.img_emotion_disgust;
+            value = disgust;
+        }
+        if (fear > value) {
+            resId = R.drawable.img_emotion_fear;
+            value = fear;
+        }
+        if (happiness > value) {
+            resId = R.drawable.img_emotion_happiness;
+            value = happiness;
+        }
+        if (neutral > value) {
+            resId = R.drawable.img_emotion_neutral;
+            value = neutral;
+        }
+        if (sadness > value) {
+            resId = R.drawable.img_emotion_sadness;
+            value = sadness;
+        }
+        if (surprise > value) {
+            resId = R.drawable.img_emotion_surprise;
+            value = surprise;
+        }
+        return resId;
     }
 }
