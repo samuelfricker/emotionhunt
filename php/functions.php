@@ -40,6 +40,9 @@ function handleRequest() {
 		case 'experience/create' :
 			createExperience();
 			break;
+		case 'experience/reaction/create' :
+			createExperienceReaction();
+			break;
 		case 'experience/list' :
 			getExperiences();
 			break;
@@ -128,7 +131,7 @@ function getReactions() {
 		return printResult([],405,'Not allowed call: Invalid request value for id: ' . $experienceId);
 	}
 
-	printResult(dbgetReactions($experienceId), 201);
+	printResult(dbgetReactions($experienceId), 200);
 }
 
 /**
@@ -144,6 +147,10 @@ function getReactions() {
  */
 function createExperience() {
 	printResult(dbCreateExperience(), 201);
+}
+
+function createExperienceReaction() {
+	printResult(dbCreateExperienceReaction(), 201);
 }
 
 /**

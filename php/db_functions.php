@@ -106,7 +106,11 @@ function dbGetExperienceById($id) {
  */
 function dbGetReactions($id) {
 	$db = new Db();
-	$rows = $db->select('SELECT e.*, ue.user_id, ue.is_sender FROM emotion e LEFT JOIN user_experience ue ON ue.id = e.id WHERE ue.experience_id = ' . $id);
+	$query = 'SELECT e.*, ue.user_id, ue.is_sender, u.name, u.profile_picture FROM emotion e 
+LEFT JOIN user_experience ue ON ue.id = e.user_experience_id
+LEFT JOIN user u ON u.id = ue.user_id 
+WHERE ue.experience_id = ' . $id;
+	$rows = $db->select($query);
 	return $rows;
 }
 
@@ -206,12 +210,95 @@ function dbCreateExperience($isPublic=false) {
 }
 
 /**
+ * Create new emotion and user-experience entry if the passed experience is a public experience.
+ * @return array|string
+ */
+function dbCreateExperienceReaction() {
+
+	/** @var Db $db */
+	$db = new Db();
+	$db->connect()->autocommit(false);
+
+	$validation = true;
+	$errorMessage = [];
+	$errorTexts = [];
+
+	if (empty($_POST['androidId']) || empty($_POST['emotion']) || empty($_POST['id'])) return [];
+
+	$emotion = $_POST['emotion'];
+	$sender = $db->quote($_POST['androidId']);
+	$experienceId = $_POST['id'];
+
+	//get user id
+	$rows = dbGetUserByAndroidId($sender);
+	$userId = null;
+	if (empty($rows)) {
+		$validation = false;
+		$errorMessage[] = sprintf("User not found by android id: %s", $sender);
+		$errorTexts[] = sprintf("Error 1 message: %s", $db->connect()->error);
+	} else {
+		$userId = $rows[0]['id'];
+	}
+
+	//check if experience is public and create user-experience if necessary
+	$rows = dbGetExperienceById($experienceId);
+	$isPublic = false;
+	if (empty($rows)) {
+		$validation = false;
+		$errorMessage[] = sprintf("Experience not found by id: %s", $experienceId);
+		$errorTexts[] = sprintf("Error 2 message: %s", $db->connect()->error);
+	} else {
+		$isPublic = $rows[0]['is_public'] == 1;
+	}
+	$userExperienceId = null;
+	if ($isPublic) {
+		if (!dbCreateUserExperience($userId, $experienceId, false, $db)) {
+			$validation = false;
+			$errorMessage[] = 'Could not create new user-emotion with experienceId ' . $experienceId . ' userid ' . $userId;
+			$errorTexts[] = sprintf("Error 4 message: %s", $db->connect()->error);
+		} else {
+			$userExperienceId = $db->lastId();
+		}
+	} else {
+		$rows = dbGetUserExperienceByUserAndExperience($userId, $experienceId);
+		$userExperienceId = $rows[0]['id'];
+	}
+
+	//create emotion
+	if (!dbCreateEmotion($userExperienceId, $emotion, false, $db)) {
+		$validation = false;
+		$errorMessage[] = 'Could not create new emotion from sender';
+		$errorTexts[] = sprintf("Error 5 message: %s", $db->connect()->error);
+	}
+
+	if ($validation) {
+		$db->connect()->commit();
+		$db->connect()->autocommit(true);
+		return dbGetReactions($experienceId);
+	} else {
+		throwDbException(join('. ', $errorMessage), join('. ', $errorTexts));
+		$db->connect()->rollback();
+		$db->connect()->autocommit(true);
+	}
+}
+
+/**
  * Returns all users.
  * @return mixed
  */
 function dbGetUsers() {
 	$db = new Db();
 	$rows = $db->select('SELECT * FROM user');
+	return $rows;
+}
+
+/**
+ * Returns a user experience by user and experience.
+ * @return mixed
+ */
+function dbGetUserExperienceByUserAndExperience($userId, $experienceId) {
+	$db = new Db();
+	$rows = $db->select('SELECT * FROM user_experience WHERE user_id = ' . $userId . ' AND experience_id = ' . $experienceId);
 	return $rows;
 }
 
