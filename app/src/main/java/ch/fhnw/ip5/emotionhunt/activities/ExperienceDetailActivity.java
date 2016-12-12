@@ -27,6 +27,7 @@ import ch.fhnw.ip5.emotionhunt.helpers.Params;
 import ch.fhnw.ip5.emotionhunt.models.Emotion;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
+import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceCreateReactionTask;
 import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceMediaTask;
 import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceReactionsTask;
 
@@ -177,6 +178,14 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             if (mMyReaction != null) {
                 mExperience.emotion = mMyReaction.toString();
                 mExperience.updateEmotion(getApplicationContext());
+
+                String url = Params.getApiActionUrl(getApplicationContext(), "experience.reaction.create");
+                List<NameValuePair> nameValuePairs = new ArrayList<>();
+                nameValuePairs.add(new BasicNameValuePair("androidId", DeviceHelper.getDeviceId(getApplicationContext())));
+                nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(mExperience.id)));
+                nameValuePairs.add(new BasicNameValuePair("emotion", mMyReaction.toString()));
+                RestExperienceCreateReactionTask restTask = new RestExperienceCreateReactionTask(this,url, nameValuePairs);
+                restTask.execute();
             }
         }
     }

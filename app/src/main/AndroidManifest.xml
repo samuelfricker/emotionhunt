@@ -51,6 +51,9 @@
             android:name="api.action.experience.reactions"
             android:value="experience/reactions" />
         <meta-data
+            android:name="api.action.experience.reaction.create"
+            android:value="experience/reaction/create" />
+        <meta-data
             android:name="api.action.user.get"
             android:value="user/list" />
         <meta-data
