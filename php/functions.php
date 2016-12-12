@@ -19,6 +19,9 @@ function validateApiKey() {
  */
 function handleRequest() {
 	switch (getAction()) {
+		case 'reset' :
+			resetDb();
+			break;
 		case 'user/login' :
 			login();
 			break;
@@ -30,6 +33,9 @@ function handleRequest() {
 			break;
 		case 'experience/media' :
 			getMedia();
+			break;
+		case 'experience/reactions' :
+			getReactions();
 			break;
 		case 'experience/create' :
 			createExperience();
@@ -47,6 +53,20 @@ function handleRequest() {
 			printResult(null,404,'Action not found');
 			break;
 	}
+}
+
+/**
+ * Removes all data from all tables
+ */
+function resetDb() {
+	//TODO REMOVE THIS HACK!!!
+	$db = new Db();
+	$db->query("SET foreign_key_checks = 0;");
+	$db->query("TRUNCATE user;");
+	$db->query("TRUNCATE user_experience;");
+	$db->query("TRUNCATE experience;");
+	$db->query("TRUNCATE emotion;");
+	$db->query("SET foreign_key_checks = 1;");
 }
 
 /**
@@ -96,6 +116,19 @@ function getMedia() {
 	} else {
 		return printResult([],404,'Media not found');
 	}
+}
+
+/**
+ * Returns all reactions on a published experience.
+ */
+function getReactions() {
+	$experienceId = $_POST['id'];
+
+	if (!is_numeric($experienceId)) {
+		return printResult([],405,'Not allowed call: Invalid request value for id: ' . $experienceId);
+	}
+
+	printResult(dbgetReactions($experienceId), 201);
 }
 
 /**

@@ -95,7 +95,18 @@ function dbGetExperiences() {
  */
 function dbGetExperienceById($id) {
 	$db = new Db();
-	$rows = $db->select('SELECT * FROM experience where id = ' . $id);
+	$rows = $db->select('SELECT * FROM experience WHERE id = ' . $id);
+	return $rows;
+}
+
+/**
+ * Returns all reactions on an experience.
+ * @param $id experience id
+ * @return mixed
+ */
+function dbGetReactions($id) {
+	$db = new Db();
+	$rows = $db->select('SELECT e.*, ue.user_id, ue.is_sender FROM emotion e LEFT JOIN user_experience ue ON ue.id = e.id WHERE ue.experience_id = ' . $id);
 	return $rows;
 }
 
@@ -129,12 +140,12 @@ function dbCreateExperience($isPublic=false) {
 
 	//attributes from related object (e.g. user)
 	$sender = $db->escape($_POST['androidId']);
-	$recipients = $isPublic == 0 ? explode(',', $db->escape($_POST['recipients'])) : [];
+	$recipients = !$isPublic ? explode(',', $db->escape($_POST['recipients'])) : [];
 
-	if ($isPublic == 0 && count($recipients) == 0) {
+	if (!$isPublic && count($recipients) == 0) {
 		$validation = false;
-		$errorMessage[] = 'Recipient(s) missing. Please define at least one receipient per non-public experience';
-		$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
+		$errorMessage[] = 'Recipient(s) missing. Please define at least one receipient for a private experience';
+		$errorTexts[] = sprintf("Error 1 message: %s", $db->connect()->error);
 	}
 
 	//reaction
@@ -143,21 +154,21 @@ function dbCreateExperience($isPublic=false) {
 	$timestamp = time();
 
 	//create emotion
-	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`, `filename`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . "," . $timestamp . "," . $visibilityDuration . "," . $text . ",'". $filename ."')")) {
+	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`, `filename`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . "," . $timestamp . "," . ($isPublic ? $visibilityDuration : "null"). "," . $text . ",'". $filename ."')")) {
 		$validation = false;
 		$errorMessage[] = 'Could not insert new experience';
-		$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
+		$errorTexts[] = sprintf("Error 2 message: %s", $db->connect()->error);
 	} else {
 		$experienceId = $db->lastId();
 	}
 
 	//iterate all receipients
-	if ($isPublic == 0) {
+	if (!$isPublic && count($recipients) > 0) {
 		foreach ($recipients as $recipient) {
 			if (!dbCreateUserExperience($recipient, $experienceId, false, $db)) {
 				$validation = false;
 				$errorMessage[] = 'Could not create new user-emotion with experienceId ' . $experienceId . ' userid ' . $recipient;
-				$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
+				$errorTexts[] = sprintf("Error 3 message: %s", $db->connect()->error);
 			}
 		}
 	}
@@ -180,7 +191,7 @@ function dbCreateExperience($isPublic=false) {
 		if (!dbCreateEmotion($senderUserExperienceId, $expectedEmotionValues, false, $db)) {
 			$validation = false;
 			$errorMessage[] = 'Could not create new emotion from sender';
-			$errorTexts[] = sprintf("Error message: %s", $db->connect()->error);
+			$errorTexts[] = sprintf("Error 4 message: %s", $db->connect()->error);
 		}
 	}
 
@@ -232,8 +243,7 @@ function dbCreateEmotion($userExperienceId, $emotionValues, $isEmpty = false, $d
 	if ($db == null) $db = new Db();
 	$emotionValues = json_decode($emotionValues);
 
-	$query = "INSERT INTO `emotion` (`user_experience_id`,`is_empty`,`anger`,`contempt`,`disgust`,`fear`,`happiness`,`neutral`,`sadness`,`surprise`) VALUES 
-		(" . $userExperienceId . "," . ($isEmpty ? 1 : 0) . "," . $emotionValues->anger . "," . $emotionValues->contempt . "," .
+	$query = "INSERT INTO `emotion` (`user_experience_id`,`is_empty`,`anger`,`contempt`,`disgust`,`fear`,`happiness`,`neutral`,`sadness`,`surprise`) VALUES (" . $userExperienceId . "," . ($isEmpty ? 1 : 0) . "," . $emotionValues->anger . "," . $emotionValues->contempt . "," .
 		$emotionValues->disgust . "," . $emotionValues->fear . ','. $emotionValues->happiness . ',' .
 		$emotionValues->neutral .',' . $emotionValues->sadness . ','. $emotionValues->surprise . ");";
 

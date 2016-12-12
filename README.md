@@ -76,6 +76,13 @@ Lädt ein Foto einer Experience.
 	
 	media //filename for download (e.g. media=e81732458bda9a61300cd63162686b5cdb80b2c6.png)
 
+####experience/reactions
+Liefert sämtliche Reaktionen zu einer Experience.
+
+	Params: 
+	
+	id //experience id
+
 ###Emotion
 ####emotion/create
 Erstellt eine neue Emotion als eine Art Reaktion bzw. "gelesen" einer Experience.
