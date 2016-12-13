@@ -1,12 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ImageView
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="50dp"
-    android:layout_width="50dp"
-    app:srcCompat="@drawable/img_questionmark"
-    android:paddingRight="5dp"
-    android:paddingBottom="5dp"
-    android:paddingTop="5dp"
-    android:id="@+id/img_reaction"
-    />
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/linear_reaction_layout">
+
+    <ImageView
+        android:layout_height="50dp"
+        android:layout_width="50dp"
+        app:srcCompat="@drawable/img_questionmark"
+        android:id="@+id/img_reaction"
+        android:padding="5dp"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_user_name"
+        android:layout_weight="1"
+        android:textSize="10sp"
+        android:layout_width="50dp"
+        android:textAlignment="center"/>
+
+</LinearLayout>

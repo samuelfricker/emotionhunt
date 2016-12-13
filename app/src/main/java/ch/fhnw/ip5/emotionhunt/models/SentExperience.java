@@ -33,7 +33,6 @@ public class SentExperience extends Experience {
 
     public Bitmap image;
     public ArrayList<Integer> recipients;
-    public Emotion expectedEmotion;
 
     public SentExperience() {
         recipients = new ArrayList<>();
@@ -53,7 +52,7 @@ public class SentExperience extends Experience {
         contentValues.put(Experience.ExperienceDbContract.COL_IS_PUBLIC, isPublic);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_SENT, 1);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_READ, 1);
-        contentValues.put(Experience.ExperienceDbContract.COL_EMOTION, getExpectedEmotionJSON());
+        contentValues.put(Experience.ExperienceDbContract.COL_EMOTION, emotion);
         contentValues.put(Experience.ExperienceDbContract.COL_TEXT, text);
         contentValues.put(Experience.ExperienceDbContract.COL_FILENAME, filename);
         contentValues.put(Experience.ExperienceDbContract.COL_CREATED_AT, createdAt);
@@ -110,13 +109,9 @@ public class SentExperience extends Experience {
         experienceCreateTask.execute();
     }
 
-    public String getExpectedEmotionJSON() {
-        Gson gson = new Gson();
-        String sExpectedEmotion = gson.toJson(expectedEmotion);
-        return sExpectedEmotion;
-    }
-
     public static ArrayList<ReceivedExperience> getAll(Context context){
-        return Experience.getAll(context, true, null);
+        ArrayList<ReceivedExperience> experiences = Experience.getAll(context, true, null);
+        Log.d(TAG, experiences.size() + " SentExperiences found in local db.");
+        return experiences;
     }
 }

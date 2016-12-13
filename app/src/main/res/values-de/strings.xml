@@ -135,8 +135,11 @@
     <string name="title_activity_splash_screen">SplashScreenActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
-    <string name="Received">Received</string>
-    <string name="Sent">Sent</string>
+    <string name="Received">Gesammelt</string>
+    <string name="Sent">Hinterlegt</string>
+    <string name="me">Ich</string>
+    <string name="missing_reaction">Missing reaction</string>
+    <string name="leave_without_reaction">Do you really want to leave without reaction?</string>
 
 </resources>
 

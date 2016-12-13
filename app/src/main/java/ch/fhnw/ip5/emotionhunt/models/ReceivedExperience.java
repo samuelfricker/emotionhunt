@@ -82,9 +82,11 @@ public class ReceivedExperience extends Experience {
         contentValues.put(ExperienceDbContract.COL_FILENAME, filename);
         contentValues.put(ExperienceDbContract.COL_CREATED_AT, createdAt);
         contentValues.put(ExperienceDbContract.COL_VISIBILITY_DURATION, visibilityDuration);
+        contentValues.put(ExperienceDbContract.COL_SENDER_ID, senderId);
+        contentValues.put(ExperienceDbContract.COL_SENDER_NAME, senderName);
 
         //show notification if this is a new experience
-        if (!isPublic) ReceivedExperience.showNotification(context, (int) id);
+        if (!isPublic) ReceivedExperience.showNotification(context, (int) id, senderName);
 
         boolean validation = db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
         db.close();
@@ -92,13 +94,13 @@ public class ReceivedExperience extends Experience {
         return validation;
     }
 
-    public static void showNotification(Context context, int id) {
+    public static void showNotification(Context context, int id, String senderName) {
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setContentTitle(context.getString(R.string.new_experience_available))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentText("Dimitri " + context.getString(R.string.has_left_something_for_you));
+                .setContentText(senderName + " " + context.getString(R.string.has_left_something_for_you));
         //creates an explicit intent for an Activity in your app
         Intent resultIntent = new Intent(context, MainActivity.class);
 

@@ -1,6 +1,10 @@
 package ch.fhnw.ip5.emotionhunt.models;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.util.Arrays;
+import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
 
@@ -41,6 +45,14 @@ public class Emotion {
         neutral = 0.0;
         sadness = 0.0;
         surprise = 0.0;
+    }
+
+    public static Emotion getEmotionFromJson(String json) {
+        //read json values from response
+        GsonBuilder gsonBuilder = new GsonBuilder();
+        Gson gson = gsonBuilder.create();
+        Emotion emotion = gson.fromJson(json, Emotion.class);
+        return emotion;
     }
 
     public double getAnger() {

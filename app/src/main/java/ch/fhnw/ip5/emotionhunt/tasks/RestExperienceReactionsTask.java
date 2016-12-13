@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.google.android.gms.vision.text.Line;
 import com.google.gson.Gson;
@@ -22,6 +23,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -56,18 +58,20 @@ public class RestExperienceReactionsTask extends RestTask {
                 //load reactions in view
                 handler.post(new Runnable() {
                     public void run() {
+                        LinearLayout layoutReactions = (LinearLayout) ((Activity)mContext).findViewById(R.id.layout_reactions);
+                        layoutReactions.removeAllViews();
                         for (UserEmotion userEmotion : userEmotions) {
                             //skip expected reactions
                             if (userEmotion.isSender()) continue;
 
                             Log.d(TAG, "Received User Emotion from User " + userEmotion.getName());
-                            LinearLayout layoutReactions = (LinearLayout) ((Activity)mContext).findViewById(R.id.layout_reactions);
-                            layoutReactions.removeAllViews();
                             View reactionView = ((Activity)mContext).getLayoutInflater().inflate(R.layout.activity_experience_detail_reaction_item, null);
+                            TextView txtUser = (TextView) reactionView.findViewById(R.id.txt_user_name);
                             ImageView imgReaction = (ImageView) reactionView.findViewById(R.id.img_reaction);
                             imgReaction.setImageResource(userEmotion.getResourceId());
                             imgReaction.setMaxHeight(60);
                             imgReaction.setMaxWidth(60);
+                            txtUser.setText(userEmotion.getName());
                             layoutReactions.addView(reactionView);
                         }
                     }

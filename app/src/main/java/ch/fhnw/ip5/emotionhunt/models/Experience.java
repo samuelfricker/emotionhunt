@@ -10,6 +10,7 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
@@ -24,9 +25,12 @@ import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
  * @author Benjamin Bur
  */
 
-public abstract class Experience{
+public abstract class Experience {
     private static final String TAG = Experience.class.getSimpleName();
     private static final int CATCHABLE_WITHIN_METERS = 50;
+
+    //TODO fix this (move to sentexperience class) & change typecasting in getAll()
+    public Emotion expectedEmotion;
 
     @SerializedName("id")
     public long id;
@@ -45,6 +49,10 @@ public abstract class Experience{
     public String text;
     public String filename;
     public String emotion;
+    @SerializedName("sender_name")
+    public String senderName;
+    @SerializedName("sender_id")
+    public long senderId;
 
     public static Experience findById(Context context, long id) { return null; };
     public static void loadExperiencesFromApi(Context context, boolean isPublic) { }
@@ -79,6 +87,8 @@ public abstract class Experience{
         e.text = c.getString(c.getColumnIndex(ExperienceDbContract.COL_TEXT));
         e.filename = c.getString(c.getColumnIndex(ExperienceDbContract.COL_FILENAME));
         e.emotion = c.getString(c.getColumnIndex(ExperienceDbContract.COL_EMOTION));
+        e.senderId = c.getLong(c.getColumnIndex(ExperienceDbContract.COL_SENDER_ID));
+        e.senderName = c.getString(c.getColumnIndex(ExperienceDbContract.COL_SENDER_NAME));
         return e;
     }
 
@@ -171,6 +181,8 @@ public abstract class Experience{
         public static final String COL_TEXT = "text";
         public static final String COL_FILENAME = "filename";
         public static final String COL_EMOTION = "emotion";
+        public static final String COL_SENDER_ID = "sender_id";
+        public static final String COL_SENDER_NAME = "sender_name";
 
         public static final String SQL_CREATE_TABLE =
                 "CREATE TABLE IF NOT EXISTS`" + TABLE_NAME +"` (\n" +
@@ -184,6 +196,8 @@ public abstract class Experience{
                         "  `" + COL_VISIBILITY_DURATION + "` INT NULL,\n" +
                         "  `" + COL_TEXT + "` TEXT NULL,\n" +
                         "  `" + COL_EMOTION + "` TEXT NULL,\n" +
+                        "  `" + COL_SENDER_ID + "` INT NULL,\n" +
+                        "  `" + COL_SENDER_NAME + "` VARCHAR(255) NULL,\n" +
                         "  `" + COL_FILENAME + "` VARCHAR(255) NULL,\n" +
                         "  PRIMARY KEY (`" + COL_ID + "`))";
 
@@ -214,6 +228,19 @@ public abstract class Experience{
         c.close();
         db.close();
         return receivedExperiences;
+    }
+
+    //TODO fix this (move to sentexperience class) & change typecasting in getAll()
+    public String getExpectedEmotionJSON() {
+        Gson gson = new Gson();
+        String sExpectedEmotion = gson.toJson(expectedEmotion);
+        return sExpectedEmotion;
+    }
+
+    //TODO fix this (move to sentexperience class) & change typecasting in getAll()
+    public Emotion getExpectedEmotion() {
+        Emotion emotion = Emotion.getEmotionFromJson(this.emotion);
+        return emotion;
     }
 
 }

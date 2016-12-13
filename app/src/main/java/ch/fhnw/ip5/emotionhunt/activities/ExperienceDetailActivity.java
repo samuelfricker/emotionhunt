@@ -1,11 +1,11 @@
 package ch.fhnw.ip5.emotionhunt.activities;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -70,6 +70,7 @@ public class ExperienceDetailActivity extends AppCompatActivity {
      */
     private void initView() {
         mTxtExperienceText = (TextView) findViewById(R.id.text_experience_detail_comment);
+        TextView txtSenderName = (TextView) findViewById(R.id.txt_sender_name);
         mImageView = (ImageView) findViewById(R.id.img_experience_preview);
         layoutMyReaction = (LinearLayout) findViewById(R.id.activity_experience_detail_my_reaction);
         layoutReactions = (LinearLayout) findViewById(R.id.activity_experience_detail_reaction_view);
@@ -81,6 +82,8 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             layoutMyReaction.setVisibility(View.VISIBLE);
             layoutReactions.setVisibility(View.INVISIBLE);
         }
+
+        txtSenderName.setText(mExperience.senderName);
 
         mImageViewMyReaction = (ImageView) findViewById(R.id.img_experience_icon);
         mImageViewMyReaction.setOnClickListener(new View.OnClickListener() {
@@ -167,6 +170,36 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isSent ? "is sent" : "is received"));
     }
 
+    private void checkConfirmDialogOnLeave() {
+        final Activity activity = ExperienceDetailActivity.this;
+        if (!mExperience.isRead && !mExperience.isSent && mMyReaction == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(ExperienceDetailActivity.this);
+            builder.setTitle(R.string.missing_reaction);
+            builder.setMessage(R.string.leave_without_reaction);
+            // Add the buttons
+            builder.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    activity.finish();
+                }
+            });
+            builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        } else {
+            activity.finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed");
+        checkConfirmDialogOnLeave();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -178,15 +211,15 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             if (mMyReaction != null) {
                 mExperience.emotion = mMyReaction.toString();
                 mExperience.updateEmotion(getApplicationContext());
-
-                String url = Params.getApiActionUrl(getApplicationContext(), "experience.reaction.create");
-                List<NameValuePair> nameValuePairs = new ArrayList<>();
-                nameValuePairs.add(new BasicNameValuePair("androidId", DeviceHelper.getDeviceId(getApplicationContext())));
-                nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(mExperience.id)));
-                nameValuePairs.add(new BasicNameValuePair("emotion", mMyReaction.toString()));
-                RestExperienceCreateReactionTask restTask = new RestExperienceCreateReactionTask(this,url, nameValuePairs);
-                restTask.execute();
             }
+
+            String url = Params.getApiActionUrl(getApplicationContext(), "experience.reaction.create");
+            List<NameValuePair> nameValuePairs = new ArrayList<>();
+            nameValuePairs.add(new BasicNameValuePair("androidId", DeviceHelper.getDeviceId(getApplicationContext())));
+            nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(mExperience.id)));
+            nameValuePairs.add(new BasicNameValuePair("emotion", mMyReaction != null ? mMyReaction.toString() : ""));
+            RestExperienceCreateReactionTask restTask = new RestExperienceCreateReactionTask(this,url, nameValuePairs);
+            restTask.execute();
         }
     }
 
@@ -200,7 +233,7 @@ public class ExperienceDetailActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                checkConfirmDialogOnLeave();
                 break;
         }
         return true;

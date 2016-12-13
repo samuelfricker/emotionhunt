@@ -17,16 +17,19 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.List;
 
@@ -104,7 +107,7 @@ public class RestExperienceCreateTask extends RestTask {
             entity.addPart("media", new ByteArrayBody(ba, "emo-upload.jpg"));
 
             for (NameValuePair nvp : this.mNameValuePairs) {
-                entity.addPart(nvp.getName(), new StringBody(nvp.getValue()));
+                entity.addPart(nvp.getName(), new StringBody(nvp.getValue(), Charset.forName("UTF-8")));
             }
 
             httppost.setEntity(entity);
@@ -130,8 +133,9 @@ public class RestExperienceCreateTask extends RestTask {
                 List<SentExperience> experiences = Arrays.asList(gson.fromJson(data, SentExperience[].class));
 
                 //save all received experiences into db
-                for (Experience e : experiences) {
+                for (SentExperience e : experiences) {
                     if (experience.isPublic) e.isPublic = true;
+                    e.emotion = experience.getExpectedEmotionJSON();
                     e.isSent = true;
                     e.saveDb(mContext);
                     try {

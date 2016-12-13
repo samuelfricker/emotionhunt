@@ -21,7 +21,7 @@ public class DbHelper  extends SQLiteOpenHelper {
     /** Tag for logging */
     public static final String TAG = "DbHelper";
     /** Version of the database */
-    public static final int DB_VERSION = 2;
+    public static final int DB_VERSION = 4;
     /** Name of the database */
     public static final String DB_NAME = "emotionhunt.db";
 
