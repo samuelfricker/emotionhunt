@@ -10,15 +10,15 @@
     <string name="profile">Profile</string>
     <string name="experience_private">Privat</string>
     <string name="experience_public">Öffentlich</string>
-    <string name="my_experiences">My Experiences</string>
+    <string name="my_experiences">Meine Erlebnisse</string>
     <string name="experience_list">Experience List</string>
     <string name="please_do_yur_dishes">Please do yur Dishes!</string>
     <string name="mark_as_spam">Mark as Spam</string>
-    <string name="reactions">Reactions</string>
+    <string name="reactions">Reaktionen</string>
     <string name="experience_detail">Ereignis</string>
     <string name="location_service">EmotionHuntLocationService</string>
     <string name="send">senden</string>
-    <string name="experience_successfully_created">Erlebnisse erfolgreich erstellt.</string>
+    <string name="experience_successfully_created">Erlebniss erfolgreich erstellt.</string>
     <string name="name">Name</string>
     <string name="phone_number">Telefonnummer (0791234567)</string>
     <string name="empty_name">Name ist leer</string>
@@ -26,11 +26,11 @@
     <string name="pref_previous_started">Pref Previous Started</string>
     <string name="show_public_experiences">öffentliche Erlebnisse</string>
     <string name="show_private_experiences">private Erlebnisse</string>
-    <string name="network_problem">Network Problem occured</string>
+    <string name="network_problem">Ein Netzwerkproblem ist aufgetreten.</string>
     <string name="text_is_empty">Text ist leer.</string>
     <string name="recipients_are_empty">Keine Empfänger ausgewählt.</string>
-    <string name="expected_emotion_is_empty">Expected emotion is empty.</string>
-    <string name="media_is_empty">Media is empty.</string>
+    <string name="expected_emotion_is_empty">Erwartete Emotion ist nicht definiert.</string>
+    <string name="media_is_empty">Kein Foto ist hinzugefügt.</string>
     <string name="experience_public_notice">Dieser Beitrag wird sämtlichen Emotionhunt Nutzern zugänglich gemacht.</string>
     <string name="please_wait">Bitte warten...</string>
     <string name="what_reaction_do_you_expect">Deine Erwartung:</string>
@@ -122,7 +122,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password (optional)</string>
-    <string name="action_sign_in">Register</string>
+    <string name="action_sign_in">Registrieren</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">This email address is invalid</string>
     <string name="error_invalid_password">This password is too short</string>
@@ -138,8 +138,9 @@
     <string name="Received">Gesammelt</string>
     <string name="Sent">Hinterlegt</string>
     <string name="me">Ich</string>
-    <string name="missing_reaction">Missing reaction</string>
-    <string name="leave_without_reaction">Do you really want to leave without reaction?</string>
+    <string name="missing_reaction">Keine Reaktion</string>
+    <string name="leave_without_reaction">Möchtest du tatsächlich keine Reaktion hinterlassen?</string>
+    <string name="no_umlauts">Umlaute sind nicht erlaubt.</string>
 
 </resources>
 
