@@ -13,6 +13,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
+
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
@@ -81,7 +83,6 @@ public class OnBoardActivity extends AppCompatActivity {
 
         // Check for a valid name, if the user entered one.
         if (!isNameValid(name)) {
-            Toast.makeText(this, R.string.empty_name, Toast.LENGTH_SHORT).show();
             cancel = true;
         }
 
@@ -113,7 +114,16 @@ public class OnBoardActivity extends AppCompatActivity {
     }
 
     private boolean isNameValid(String password) {
-        return password.length() > 1;
+        Pattern p = Pattern.compile("[a-zA-Z0-9]+");
+        if(!p.matcher(password).matches()){
+            Toast.makeText(this, R.string.no_umlauts, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if(password.length() < 1 || password.length() > 10){
+            Toast.makeText(this, R.string.empty_name, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
 }
