@@ -1,6 +1,5 @@
 package ch.fhnw.ip5.emotionhunt.models;
 
-import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
-import android.provider.Telephony;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.BitmapDescriptor;
@@ -16,7 +15,6 @@ import com.google.gson.annotations.SerializedName;
 import java.util.ArrayList;
 
 import ch.fhnw.ip5.emotionhunt.R;
-import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
 
 /**
@@ -36,6 +34,9 @@ public abstract class Experience {
     public long id;
     @SerializedName("is_sent")
     public boolean isSent;
+    @SerializedName("is_location_based")
+    public int isLocationBasedApi;
+    public boolean isLocationBased;
     @SerializedName("is_public")
     public int isPublicApi;
     public boolean isPublic;
@@ -81,6 +82,7 @@ public abstract class Experience {
         e.lon = c.getDouble(c.getColumnIndex(ExperienceDbContract.COL_LON));
         e.isSent = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_IS_SENT)) == 1;
         e.isPublic = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_IS_PUBLIC)) == 1;
+        e.isLocationBased = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_IS_LOCATION_BASED)) == 1;
         e.isRead = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_IS_READ)) == 1;
         e.createdAt = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_CREATED_AT));
         e.visibilityDuration = c.getInt(c.getColumnIndex(ExperienceDbContract.COL_VISIBILITY_DURATION));
@@ -173,6 +175,7 @@ public abstract class Experience {
         public static final String COL_ID = "id";
         public static final String COL_IS_SENT = "is_sent";
         public static final String COL_IS_PUBLIC = "is_public";
+        public static final String COL_IS_LOCATION_BASED = "is_location_based";
         public static final String COL_IS_READ = "is_read";
         public static final String COL_LAT = "lat";
         public static final String COL_LON = "lon";
@@ -190,6 +193,7 @@ public abstract class Experience {
                         "  `" + COL_IS_SENT + "` TINYINT(1) NOT NULL DEFAULT 0,\n" +
                         "  `" + COL_IS_PUBLIC + "` TINYINT(1) NOT NULL DEFAULT 0,\n" +
                         "  `" + COL_IS_READ + "` TINYINT(1) NOT NULL DEFAULT 0,\n" +
+                        "  `" + COL_IS_LOCATION_BASED + "` TINYINT(1) NOT NULL DEFAULT 1,\n" +
                         "  `" + COL_LAT + "` DECIMAL(10,8) NOT NULL,\n" +
                         "  `" + COL_LON + "` DECIMAL(11,8) NOT NULL,\n" +
                         "  `" + COL_CREATED_AT + "` INT NOT NULL,\n" +

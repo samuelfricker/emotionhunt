@@ -16,10 +16,10 @@ public class UserEmotion extends Emotion {
     @SerializedName("user_id")
     private int userId;
     @SerializedName("is_sender")
-    private int is_sender;
+    private int isSender;
 
     public boolean isSender() {
-        return is_sender == 1;
+        return isSender == 1;
     }
     public String getName() {
         return name;

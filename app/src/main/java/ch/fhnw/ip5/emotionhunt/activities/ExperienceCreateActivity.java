@@ -369,6 +369,10 @@ public class ExperienceCreateActivity extends AppCompatActivity {
 
         //set expected emotion
         sentExperience.expectedEmotion = getExpectedEmotion();
+
+        //TODO confirm dialog check if isLocationBased true / false
+        // onclick yes => sentExperience.isLocationBased = true, onclick false => sentExperience.isLocationBased = false,
+        // ... sentExperience.sendApi(this);
         sentExperience.sendApi(this);
     }
 

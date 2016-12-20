@@ -3,9 +3,6 @@ package ch.fhnw.ip5.emotionhunt.models;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Arrays;
-import java.util.List;
-
 import ch.fhnw.ip5.emotionhunt.R;
 
 /**

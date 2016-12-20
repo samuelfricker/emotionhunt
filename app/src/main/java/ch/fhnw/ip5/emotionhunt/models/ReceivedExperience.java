@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
+import ch.fhnw.ip5.emotionhunt.activities.ExperienceListActivity;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
@@ -59,8 +60,6 @@ public class ReceivedExperience extends Experience {
         return null;
     }
 
-
-
     public boolean saveDb(Context context) {
         ReceivedExperience experience = ReceivedExperience.findById(context, this.id);
         if (experience != null) {
@@ -75,6 +74,7 @@ public class ReceivedExperience extends Experience {
         contentValues.put(ExperienceDbContract.COL_LAT, lat);
         contentValues.put(ExperienceDbContract.COL_LON, lon);
         contentValues.put(ExperienceDbContract.COL_IS_PUBLIC, isPublic);
+        contentValues.put(Experience.ExperienceDbContract.COL_IS_LOCATION_BASED, isLocationBased ? 1 : 0);
         contentValues.put(ExperienceDbContract.COL_IS_SENT, 0);
         contentValues.put(ExperienceDbContract.COL_IS_READ, isRead ? 1 : 0);
         contentValues.put(ExperienceDbContract.COL_EMOTION, "");
@@ -85,24 +85,26 @@ public class ReceivedExperience extends Experience {
         contentValues.put(ExperienceDbContract.COL_SENDER_ID, senderId);
         contentValues.put(ExperienceDbContract.COL_SENDER_NAME, senderName);
 
-        //show notification if this is a new experience
-        if (!isPublic) ReceivedExperience.showNotification(context, (int) id, senderName);
-
         boolean validation = db.insert(ExperienceDbContract.TABLE_NAME, null, contentValues) != -1;
         db.close();
+
+        //show notification if this is a new experience
+        if (!isPublic && validation) ReceivedExperience.showNotification(context, (int) id);
 
         return validation;
     }
 
-    public static void showNotification(Context context, int id, String senderName) {
+    public static void showNotification(Context context, int id) {
+        ReceivedExperience experience = ReceivedExperience.findById(context, id);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setVibrate(new long[] { 1000, 1000, 1000, 1000, 1000 })
                 .setContentTitle(context.getString(R.string.new_experience_available))
                 .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-                .setContentText(senderName + " " + context.getString(R.string.has_left_something_for_you));
+                .setContentText(experience.senderName + " " + context.getString(R.string.has_left_something_for_you));
+
         //creates an explicit intent for an Activity in your app
-        Intent resultIntent = new Intent(context, MainActivity.class);
+        Intent resultIntent = new Intent(context, (experience.isLocationBased ? MainActivity.class : ExperienceListActivity.class));
 
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
         //adds the Intent that starts the Activity to the top of the stack

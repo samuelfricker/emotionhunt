@@ -50,6 +50,7 @@ public class SentExperience extends Experience {
         contentValues.put(Experience.ExperienceDbContract.COL_LAT, lat);
         contentValues.put(Experience.ExperienceDbContract.COL_LON, lon);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_PUBLIC, isPublic);
+        contentValues.put(Experience.ExperienceDbContract.COL_IS_LOCATION_BASED, isLocationBased ? 1 : 0);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_SENT, 1);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_READ, 1);
         contentValues.put(Experience.ExperienceDbContract.COL_EMOTION, emotion);
@@ -87,6 +88,7 @@ public class SentExperience extends Experience {
         String lon = String.valueOf(lh.lon);
         nameValuePairs.add(new BasicNameValuePair("lat", lat));
         nameValuePairs.add(new BasicNameValuePair("lon", lon));
+        nameValuePairs.add(new BasicNameValuePair("isLocationBased", isLocationBased ? "1" : "0"));
 
         //set the experience's text
         nameValuePairs.add(new BasicNameValuePair("text", text));
