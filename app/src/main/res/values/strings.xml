@@ -147,4 +147,12 @@
     <string name="location_based_text">You can share this experience either location based or not location based. Location based experiences are only viewable at the same location.</string>
     <string name="location_based_button_label">location based</string>
     <string name="not_location_based_button_label">not location based</string>
+    <string name="emotion_disgust">disgust</string>
+    <string name="emotion_happiness">happiness</string>
+    <string name="emotion_contempt">contempt</string>
+    <string name="emotion_anger">anger</string>
+    <string name="emotion_surprise">surprise</string>
+    <string name="emotion_neutral">neutral</string>
+    <string name="emotion_sadness">sadness</string>
+    <string name="emotion_fear">fear</string>
 </resources>

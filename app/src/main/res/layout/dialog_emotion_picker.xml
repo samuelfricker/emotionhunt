@@ -17,33 +17,93 @@
             android:layout_height="match_parent"
             android:layout_marginBottom="15dp">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/img_emotion_happiness"
-                android:id="@+id/img_happiness"
-                android:layout_margin="5dp"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/img_emotion_disgust"
-                android:id="@+id/img_disgust"
-                android:layout_margin="5dp"/>
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/img_emotion_happiness"
+                    android:id="@+id/img_happiness"
+                    android:layout_margin="5dp"/>
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/img_emotion_contempt"
-                android:id="@+id/img_contempt"
-                android:layout_margin="5dp"/>
+                <TextView
+                    android:text="@string/emotion_happiness"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_happiness"
+                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="12sp"/>
+            </LinearLayout>
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/img_emotion_anger"
-                android:id="@+id/img_anger"
-                android:layout_margin="5dp"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/img_emotion_disgust"
+                    android:id="@+id/img_disgust"
+                    android:layout_margin="5dp"/>
+
+                <TextView
+                    android:text="@string/emotion_disgust"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_disgust"
+                    android:textAlignment="center"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/img_emotion_contempt"
+                    android:id="@+id/img_contempt"
+                    android:layout_margin="5dp"/>
+
+                <TextView
+                    android:text="@string/emotion_contempt"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_contempt"
+                    android:textAlignment="center"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/img_emotion_anger"
+                    android:id="@+id/img_anger"
+                    android:layout_margin="5dp"/>
+
+                <TextView
+                    android:text="@string/emotion_anger"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_anger"
+                    android:textAlignment="center"
+                    android:textSize="12sp"/>
+            </LinearLayout>
 
         </TableRow>
 
@@ -51,33 +111,93 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/img_emotion_surprise"
-                android:id="@+id/img_surprise"
-                android:layout_margin="5dp"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal">
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/img_emotion_neutral"
-                android:id="@+id/img_neutral"
-                android:layout_margin="5dp"/>
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/img_emotion_surprise"
+                    android:id="@+id/img_surprise"
+                    android:layout_margin="5dp"/>
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/img_emotion_sadness"
-                android:id="@+id/img_sadness"
-                android:layout_margin="5dp"/>
+                <TextView
+                    android:text="@string/emotion_surprise"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_suprise"
+                    android:layout_width="wrap_content"
+                    android:textAlignment="center"
+                    android:textSize="12sp"/>
+            </LinearLayout>
 
-            <ImageView
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                app:srcCompat="@drawable/img_emotion_fear"
-                android:id="@+id/img_fear"
-                android:layout_margin="5dp"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/img_emotion_neutral"
+                    android:id="@+id/img_neutral"
+                    android:layout_margin="5dp"/>
+
+                <TextView
+                    android:text="@string/emotion_neutral"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_neutral"
+                    android:textAlignment="center"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/img_emotion_sadness"
+                    android:id="@+id/img_sadness"
+                    android:layout_margin="5dp"/>
+
+                <TextView
+                    android:text="@string/emotion_sadness"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_sadness"
+                    android:textAlignment="center"
+                    android:textSize="12sp"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_horizontal">
+
+                <ImageView
+                    android:layout_width="60dp"
+                    android:layout_height="60dp"
+                    app:srcCompat="@drawable/img_emotion_fear"
+                    android:id="@+id/img_fear"
+                    android:layout_margin="5dp"/>
+
+                <TextView
+                    android:text="@string/emotion_fear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/lbl_fear"
+                    android:textAlignment="center"
+                    android:textSize="12sp"/>
+            </LinearLayout>
         </TableRow>
 
     </TableLayout>
