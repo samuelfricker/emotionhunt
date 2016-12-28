@@ -108,7 +108,23 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.btn_create_experience_send:
                 if (validateExperience()) {
-                    sendExperience();
+                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ExperienceCreateActivity.this);
+                    builder.setTitle(R.string.location_based_title);
+                    builder.setMessage(R.string.location_based_text);
+                    // Add the buttons
+                    builder.setPositiveButton(R.string.location_based_button_label, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            sendExperience(true);
+                        }
+                    });
+                    // Add the buttons
+                    builder.setNeutralButton(R.string.not_location_based_button_label, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            sendExperience(false);
+                        }
+                    });
+                    android.app.AlertDialog dialog = builder.create();
+                    dialog.show();
                 }
                 return true;
             case android.R.id.home:
@@ -347,7 +363,7 @@ public class ExperienceCreateActivity extends AppCompatActivity {
     /**
      * Sends the experience trough the Server API
      */
-    private void sendExperience() {
+    private void sendExperience(boolean isLocationBased) {
         SentExperience sentExperience = new SentExperience();
         //TODO add option for visibility duration
         sentExperience.visibilityDuration = 24;
@@ -361,6 +377,7 @@ public class ExperienceCreateActivity extends AppCompatActivity {
             sentExperience.lat = location.lat;
             sentExperience.lon = location.lon;
             sentExperience.isPublic = isPublic;
+            sentExperience.isLocationBased = isLocationBased;
             sentExperience.image = experienceImage;
         } catch (Exception e){
             Log.e(TAG, e.getMessage());

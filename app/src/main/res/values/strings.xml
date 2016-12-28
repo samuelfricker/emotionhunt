@@ -143,4 +143,8 @@
     <string name="me">Me</string>
     <string name="missing_reaction">Missing reaction</string>
     <string name="leave_without_reaction">Do you really want to leave without reaction?</string>
+    <string name="location_based_title">Location</string>
+    <string name="location_based_text">You can share this experience either location based or not location based. Location based experiences are only viewable at the same location.</string>
+    <string name="location_based_button_label">location based</string>
+    <string name="not_location_based_button_label">not location based</string>
 </resources>

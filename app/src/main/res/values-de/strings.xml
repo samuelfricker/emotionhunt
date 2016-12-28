@@ -141,6 +141,10 @@
     <string name="missing_reaction">Keine Reaktion</string>
     <string name="leave_without_reaction">Möchtest du tatsächlich keine Reaktion hinterlassen?</string>
     <string name="no_umlauts">Umlaute sind nicht erlaubt.</string>
+    <string name="location_based_title">Standortbezug</string>
+    <string name="location_based_text">Hinterlege diese Experience standortbezogen, wenn du möchtest, dass der Empfänger die Experience nur nahe deiner aktuellen Position öffnen kann.</string>
+    <string name="location_based_button_label">Standortbezogen</string>
+    <string name="not_location_based_button_label">Ohne Standort</string>
 
 </resources>
 
