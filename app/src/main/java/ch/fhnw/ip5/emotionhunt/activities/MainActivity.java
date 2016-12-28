@@ -284,6 +284,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @return successfully added
      */
     public boolean addExperience(ReceivedExperience experience) {
+        //do not show not-location based experiences on map
+        if (!experience.isLocationBased) return false;
+
         //prevent adding sent experiences
         if (experience.isSent && experience.isPrivate()) return false;
 
