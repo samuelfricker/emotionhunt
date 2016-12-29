@@ -4,18 +4,20 @@ Hierbei handelt es sich um die API für die Emotion-Hunt-App.
 
 Zur Installation wird PHP 5.6+ und MySQL benötigt.
 
-Autoren:
-+ Dimitri Suter
-+ Benjamin Bur
+Autoren: Dimitri Suter, Benjamin Bur
 
 
 ##1. Installation
 + Projekt laden
 Lade das Projekt vom GIT-Repository via
-<code>git clone</code>
+
+```
+git clone
+```
+
 + Initialisiere die Datenbank mit dem aktuellsten .sql-File unterhalb des /db-Ordners.
 + Damit jeder Entwickler seine eigenen DB-Configs verwenden kann, wird die _config.php Datei pro Entwickler
-selbst definiert. Kopiere hierfür die Datei <code>_config.php</code> und benenne die Kopie <code>_myconfig.php</code>.
+selbst definiert. Kopiere hierfür die Datei `_config.php` und benenne die Kopie `_myconfig.php`.
 Passe nun die neue Datei mit deinen eigenen Parametern an.
 
 ##2. Abfragen
