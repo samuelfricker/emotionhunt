@@ -217,18 +217,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.e(TAG, e.getMessage());
         }
 
-        //move camera when location has speed
-        if (location.hasSpeed() && location.getSpeed() > 2.0f) isCameraMoved = false;
+        //move camera when location has speed (>2kmh)
+        boolean hasSpeed = location.hasSpeed() && location.getSpeed() > 0.55f;
 
         //zoom to current position:
-        if (!isCameraMoved) {
+        if (!isCameraMoved || hasSpeed) {
             CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).build();
+            if (isCameraMoved) {
+                cameraPosition = new CameraPosition.Builder().target(latLng).build();
+            }
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             isCameraMoved = true;
         }
-
     }
-
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -236,10 +237,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (PermissionHelper.checkLocationPermission(this)) {
             Log.d(TAG,"onConnected permissions granted");
             mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(5000); //5 seconds
-            mLocationRequest.setFastestInterval(1000); //3 seconds
+            mLocationRequest.setInterval(3000); //3 seconds
+            mLocationRequest.setFastestInterval(500); //0.5 seconds
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            mLocationRequest.setSmallestDisplacement(0.5F); //1/10 meter
+            mLocationRequest.setSmallestDisplacement(0.5F); //1/2 meter
 
             if (mGoogleApiClient.isConnected()) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -352,7 +353,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     int countUnreadPublic = 0;
                     int countUnreadPrivate = 0;
                     for (final ReceivedExperience receivedExperience : receivedExperiences) {
-                        if (!receivedExperience.isSent && !receivedExperience.isRead) {
+                        if (!receivedExperience.isSent && !receivedExperience.isRead && receivedExperience.isLocationBased) {
                             if (receivedExperience.isPublic) {
                                 countUnreadPublic++;
                             } else {
