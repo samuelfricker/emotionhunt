@@ -6,8 +6,8 @@ return [
 	'radius'=>100,
 	//upload directory for uploaded media files
 	'uploadDir'=>'uploads',
-	//max file size which is a limit for a media file upload in this API (in bytes, e.g. 5242880 = 5MB)
-	'maxFileSize'=>5242880,
+	//max file size which is a limit for a media file upload in this API (in bytes, e.g. 8388608 = 8MB)
+	'maxFileSize'=>8388608,
 	//supported MIME types for uploaded media file
 	'supportedMimes'=>[
 		'jpg'=>'image/jpeg',

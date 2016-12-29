@@ -55,8 +55,13 @@ function dbGetPublicExperiences() {
 
 	$radius = $params['radius'];
 
-	$query = "SELECT *," . dbDistanceFunction($lat,$lon) . " FROM experience 
-	WHERE is_public = 1 HAVING distance < $radius ORDER BY distance";
+	$query = "SELECT DISTINCT(e.id), e.lat, e.lon, e.is_public, e.is_location_based, e.created_at, e.visibility_duration, e.text, e.filename," . dbDistanceFunction($lat,$lon) . ",
+	(SELECT us.name FROM user_experience usex LEFT JOIN user us on us.id = usex.user_id WHERE usex.experience_id = e.id AND usex.is_sender = 1) as sender_name,
+	(SELECT us.id FROM user_experience usex LEFT JOIN user us on us.id = usex.user_id WHERE usex.experience_id = e.id AND usex.is_sender = 1) as sender_id
+	FROM experience e
+	LEFT JOIN user_experience ue ON ue.experience_id = e.id
+	LEFT JOIN user u ON u.id = ue.user_id
+	WHERE e.is_public = 1 HAVING distance < $radius ORDER BY distance";
 
 	$rows = $db->select($query);
 	return $rows;
@@ -79,9 +84,12 @@ function dbGetExperiences() {
 
 	$radius = $params['radius'];
 
-	$query = "SELECT e.*," . dbDistanceFunction($lat,$lon) . " FROM experience e
-	LEFT JOIN user_experience ue on ue.experience_id = e.id
-	LEFT JOIN user u on u.id = ue.user_id
+	$query = "SELECT DISTINCT(e.id), e.lat, e.lon, e.is_public, e.is_location_based, e.created_at, e.visibility_duration, e.text, e.filename," . dbDistanceFunction($lat,$lon) . ",
+	(SELECT us.name FROM user_experience usex LEFT JOIN user us on us.id = usex.user_id WHERE usex.experience_id = e.id AND usex.is_sender = 1) as sender_name,
+	(SELECT us.id FROM user_experience usex LEFT JOIN user us on us.id = usex.user_id WHERE usex.experience_id = e.id AND usex.is_sender = 1) as sender_id
+	FROM experience e
+	LEFT JOIN user_experience ue ON ue.experience_id = e.id
+	LEFT JOIN user u ON u.id = ue.user_id
 	WHERE e.is_public = 0 AND u.android_id = '" . $imei . "' AND ue.is_sender = 0" .
 		" HAVING distance < $radius ORDER BY distance";
 	$rows = $db->select($query);
@@ -131,6 +139,9 @@ function dbCreateExperience($isPublic=false) {
 	$errorMessage = [];
 	$errorTexts = [];
 
+	//check if this experience is location based or not
+	$isLocationBased = isset($_POST['isLocationBased']) && $_POST['isLocationBased'] == 1;
+
 	//attributes from emotion object
 	$lat = $db->escape($_POST['lat']);
 	$lon = $db->escape($_POST['lon']);
@@ -148,7 +159,7 @@ function dbCreateExperience($isPublic=false) {
 
 	if (!$isPublic && count($recipients) == 0) {
 		$validation = false;
-		$errorMessage[] = 'Recipient(s) missing. Please define at least one receipient for a private experience';
+		$errorMessage[] = 'Recipient(s) missing. Please define at least one recipient for a private experience';
 		$errorTexts[] = sprintf("Error 1 message: %s", $db->connect()->error);
 	}
 
@@ -158,7 +169,7 @@ function dbCreateExperience($isPublic=false) {
 	$timestamp = time();
 
 	//create emotion
-	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`created_at`,`visibility_duration`,`text`, `filename`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . "," . $timestamp . "," . ($isPublic ? $visibilityDuration : "null"). "," . $text . ",'". $filename ."')")) {
+	if (!$db->query("INSERT INTO `experience` (`lat`,`lon`,`is_public`,`is_location_based`,`created_at`,`visibility_duration`,`text`, `filename`) VALUES (" . $lat . "," . $lon . "," . ($isPublic ? 1 : 0) . ", " . ($isLocationBased ? 1 : 0) . ", " . $timestamp . "," . ($isPublic ? $visibilityDuration : "null"). "," . $text . ",'". $filename ."')")) {
 		$validation = false;
 		$errorMessage[] = 'Could not insert new experience';
 		$errorTexts[] = sprintf("Error 2 message: %s", $db->connect()->error);
@@ -223,7 +234,7 @@ function dbCreateExperienceReaction() {
 	$errorMessage = [];
 	$errorTexts = [];
 
-	if (empty($_POST['androidId']) || empty($_POST['emotion']) || empty($_POST['id'])) return [];
+	if (empty($_POST['androidId']) || empty($_POST['id'])) return [];
 
 	$emotion = $_POST['emotion'];
 	$sender = $db->quote($_POST['androidId']);
@@ -265,7 +276,7 @@ function dbCreateExperienceReaction() {
 	}
 
 	//create emotion
-	if (!dbCreateEmotion($userExperienceId, $emotion, false, $db)) {
+	if (!dbCreateEmotion($userExperienceId,$emotion, false, $db)) {
 		$validation = false;
 		$errorMessage[] = 'Could not create new emotion from sender';
 		$errorTexts[] = sprintf("Error 5 message: %s", $db->connect()->error);
@@ -288,7 +299,7 @@ function dbCreateExperienceReaction() {
  */
 function dbGetUsers() {
 	$db = new Db();
-	$rows = $db->select('SELECT * FROM user');
+	$rows = $db->select('SELECT id, android_id, name, profile_picture FROM user');
 	return $rows;
 }
 
@@ -328,11 +339,17 @@ function dbCreateUserExperience($userId, $experienceId, $isSender=false, $db) {
  */
 function dbCreateEmotion($userExperienceId, $emotionValues, $isEmpty = false, $db=null) {
 	if ($db == null) $db = new Db();
-	$emotionValues = json_decode($emotionValues);
 
-	$query = "INSERT INTO `emotion` (`user_experience_id`,`is_empty`,`anger`,`contempt`,`disgust`,`fear`,`happiness`,`neutral`,`sadness`,`surprise`) VALUES (" . $userExperienceId . "," . ($isEmpty ? 1 : 0) . "," . $emotionValues->anger . "," . $emotionValues->contempt . "," .
-		$emotionValues->disgust . "," . $emotionValues->fear . ','. $emotionValues->happiness . ',' .
-		$emotionValues->neutral .',' . $emotionValues->sadness . ','. $emotionValues->surprise . ");";
+	if (!empty($emotionValues)) {
+		$emotionValues = json_decode($emotionValues);
+
+		$query = "INSERT INTO `emotion` (`user_experience_id`,`is_empty`,`anger`,`contempt`,`disgust`,`fear`,`happiness`,`neutral`,`sadness`,`surprise`, `strength`) VALUES (" . $userExperienceId . "," . 0 . "," . $emotionValues->anger . "," . $emotionValues->contempt . "," .
+			$emotionValues->disgust . "," . $emotionValues->fear . ','. $emotionValues->happiness . ',' .
+			$emotionValues->neutral .',' . $emotionValues->sadness . ','. $emotionValues->surprise . ", " . (isset($_POST['strength']) ? $_POST['strength'] : "NULL") . ");";
+	} else {
+		$query = "INSERT INTO `emotion` (`user_experience_id`,`is_empty`) VALUES (" . $userExperienceId . "," . 1  . ");";
+	}
+
 
 	return $db->query($query);
 }
