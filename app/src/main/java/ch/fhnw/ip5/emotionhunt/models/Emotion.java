@@ -121,6 +121,46 @@ public class Emotion {
         return gson.toJson(this);
     }
 
+    public int getEmotionLabelResId() {
+        int resId = 0;
+        double value = 0.0;
+
+        if (anger > value) {
+            resId = R.string.emotion_anger;
+            value = anger;
+        }
+        if (contempt > value) {
+            resId = R.string.emotion_contempt;
+            value = contempt;
+        }
+        if (disgust > value) {
+            resId = R.string.emotion_disgust;
+            value = disgust;
+        }
+        if (fear > value) {
+            resId = R.string.emotion_fear;
+            value = fear;
+        }
+        if (happiness > value) {
+            resId = R.string.emotion_happiness;
+            value = happiness;
+        }
+        if (neutral > value) {
+            resId = R.string.emotion_neutral;
+            value = neutral;
+        }
+        if (sadness > value) {
+            resId = R.string.emotion_sadness;
+            value = sadness;
+        }
+        if (surprise > value) {
+            resId = R.string.emotion_surprise;
+            value = surprise;
+        }
+
+        return resId;
+    }
+
     public int getResourceId() {
         int resId = R.drawable.img_questionmark;
         double value = 0.0;

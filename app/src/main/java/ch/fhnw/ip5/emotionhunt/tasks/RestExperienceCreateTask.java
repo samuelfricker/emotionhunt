@@ -135,6 +135,7 @@ public class RestExperienceCreateTask extends RestTask {
                 //save all received experiences into db
                 for (SentExperience e : experiences) {
                     if (experience.isPublic) e.isPublic = true;
+                    e.isLocationBased = experience.isLocationBased;
                     e.emotion = experience.getExpectedEmotionJSON();
                     e.isSent = true;
                     e.saveDb(mContext);

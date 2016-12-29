@@ -29,11 +29,45 @@
     <RelativeLayout
         android:layout_gravity="bottom|end"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:gravity="right">
+
+            <FrameLayout
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="false"
+                android:layout_alignParentEnd="false"
+                android:layout_alignParentRight="false"
+                android:layout_centerHorizontal="false"
+                android:layout_centerInParent="false"
+                android:layout_centerVertical="false"
+                android:layout_alignWithParentIfMissing="false"
+                android:background="@android:drawable/ic_notification_overlay"
+                android:layout_marginRight="8dp"
+                android:padding="5dp"
+                android:alpha="0.6"
+                android:elevation="0dp"
+                android:layout_width="25dp"
+                android:id="@+id/layout_counter"
+                android:visibility="invisible">
+
+                <TextView
+                    android:text="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txt_counter"
+                    android:textSize="11sp"
+                    android:fontFamily="monospace"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"/>
+
+            </FrameLayout>
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_toggle_public_private"
                 android:layout_width="wrap_content"
@@ -41,13 +75,17 @@
                 android:layout_marginLeft="@dimen/fab_margin"
                 android:layout_marginRight="@dimen/fab_margin"
                 app:srcCompat="@drawable/ic_private_white_24dp"
-                app:backgroundTint="@color/colorPrimary"/>
+                app:backgroundTint="@color/colorPrimary"
+                android:layout_marginTop="-5dp"/>
+
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/btn_main_add"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/fab_margin"
                 app:srcCompat="@drawable/ic_add_white_24dp"/>
+
         </LinearLayout>
+
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

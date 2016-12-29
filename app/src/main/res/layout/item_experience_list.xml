@@ -29,33 +29,88 @@
                 android:layout_width="30dp"
                 android:layout_height="30dp"/>
 
-            <LinearLayout
-                android:orientation="vertical"
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:padding="5dp"
                 >
 
-                <TextView
-                    android:id="@+id/tv_title"
-                    android:text="Dimitri"
-                    android:layout_toRightOf ="@+id/iv_image"
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="left"
-                    android:textSize="18sp">
-                </TextView>
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical">
 
-                <TextView
-                    android:id="@+id/tv_text"
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/tv_title"
+                            android:text="Dimitri"
+                            android:layout_toRightOf ="@+id/iv_image"
+                            android:layout_height="wrap_content"
+                            android:gravity="left"
+                            android:textSize="16sp"
+                            android:layout_width="wrap_content"
+                            android:layout_weight="1"
+                            android:textStyle="bold">
+                        </TextView>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_title"
+                        android:layout_toRightOf="@+id/iv_image"
+                        android:layout_toEndOf="@+id/iv_image"
+                        android:layout_marginRight="65dp">
+                    </TextView>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="vertical"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/tv_title"
-                    android:layout_toRightOf="@+id/iv_image"
-                    android:layout_toEndOf="@+id/iv_image">
-                </TextView>
+                    android:layout_height="match_parent"
+                    android:gravity="right|center_vertical"
+                    android:paddingRight="15dp">
 
-            </LinearLayout>
+                    <TextView
+                        android:text="01.01.2017 13:12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/tv_date"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textSize="12sp"
+                        android:paddingBottom="5dp"/>
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            app2:srcCompat="@drawable/ic_gps_location_disabled"
+                            android:id="@+id/iv_gps"
+                            android:layout_weight="1"
+                            android:layout_marginRight="5dp"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"/>
+
+                        <ImageView
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            app2:srcCompat="@drawable/ic_public"
+                            android:id="@+id/iv_public_private"
+                            android:layout_weight="1"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </FrameLayout>
 
         </LinearLayout>
 

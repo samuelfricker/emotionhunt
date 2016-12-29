@@ -41,7 +41,10 @@ public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAd
         public CardView mCardView;
         public TextView mTitle;
         public TextView mText;
+        public TextView mDate;
         public ImageView mImgAvatar;
+        public ImageView mImgPublicPrivate;
+        public ImageView mImgGps;
         private Context mContext;
 
         public MyViewHolder(View v) {
@@ -59,7 +62,10 @@ public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAd
             mCardView = (CardView) v.findViewById(R.id.card_view);
             mTitle = (TextView) v.findViewById(R.id.tv_title);
             mText = (TextView) v.findViewById(R.id.tv_text);
+            mDate = (TextView) v.findViewById(R.id.tv_date);
             mImgAvatar = (ImageView) v.findViewById(R.id.iv_image);
+            mImgPublicPrivate = (ImageView) v.findViewById(R.id.iv_public_private);
+            mImgGps = (ImageView) v.findViewById(R.id.iv_gps);
         }
     }
 
@@ -87,11 +93,26 @@ public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAd
         holder.currentExperience = (Experience) experienceList.get(position);
         holder.mContext = mContext;
         holder.mText.setText(experience.text);
+        holder.mDate.setText(experience.getCreatedAt());
         holder.mTitle.setText(isSent ? mContext.getString(R.string.me) : experience.senderName);
         if (isSent && experience.getExpectedEmotion() != null) {
             Log.d(TAG, "Set expected emotion as avatar img");
             holder.mImgAvatar.setImageResource(experience.getExpectedEmotion().getResourceId());
         }
+        if (!experience.isRead) {
+            holder.mCardView.setCardBackgroundColor(Color.argb(10,0,0,0));
+        }
+        if (experience.isPublic) {
+            holder.mImgGps.setImageResource(R.drawable.ic_public);
+        } else {
+            holder.mImgGps.setImageResource(R.drawable.ic_private);
+        }
+        if (experience.isLocationBased) {
+            holder.mImgGps.setImageResource(R.drawable.ic_gps_location_enabled);
+        } else {
+            holder.mImgGps.setImageResource(R.drawable.ic_gps_location_disabled);
+        }
+
         Log.d(TAG, "Image width " + holder.mImgAvatar.getWidth());
     }
 

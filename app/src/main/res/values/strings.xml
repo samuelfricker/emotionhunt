@@ -155,4 +155,7 @@
     <string name="emotion_neutral">neutral</string>
     <string name="emotion_sadness">sadness</string>
     <string name="emotion_fear">fear</string>
+    <string name="txt_emotion_strength">How strong do you feel \"%1$s\"?</string>
+    <string name="no_gps">No valid GPS location found.</string>
+    <string name="waiting_for_reactions">waiting for reactions</string>
 </resources>

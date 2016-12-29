@@ -12,10 +12,13 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
+import ch.fhnw.ip5.emotionhunt.helpers.Params;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.models
@@ -163,8 +166,14 @@ public abstract class Experience {
         if (isRead || this instanceof SentExperience) return false;
 
         //validate distance from the experience and the current location
-        LocationHistory currentLocation = LocationHistory.getLastPositionHistory(context);
-        return currentLocation.getLocation().distanceTo(getLocation()) < CATCHABLE_WITHIN_METERS;
+        LocationHistory currentLocation = LocationHistory.getLastPositionHistory(context,"fused");
+        return currentLocation != null && currentLocation.getLocation().distanceTo(getLocation()) < CATCHABLE_WITHIN_METERS;
+    }
+
+    public String getCreatedAt() {
+        Log.d(TAG, String.format("Created at: %1$s",createdAt));
+        Date date = Params.getDateFromTime(createdAt *1000L);
+        return DateFormat.getDateTimeInstance().format(date);
     }
 
     /**
@@ -220,7 +229,8 @@ public abstract class Experience {
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM " + ExperienceDbContract.TABLE_NAME + " WHERE 1=1 " +
                 (isSent != null ? " AND " + ExperienceDbContract.COL_IS_SENT + " = " + (isSent ? 1 : 0) : "") +
-                (isRead != null ? " AND " + ExperienceDbContract.COL_IS_READ + " = " + (isRead ? 1 : 0) : "")
+                (isRead != null ? " AND " + ExperienceDbContract.COL_IS_READ + " = " + (isRead ? 1 : 0) : "") +
+                " ORDER BY " + ExperienceDbContract.COL_CREATED_AT + " DESC"
                 , null);
         if(c.moveToFirst()){
             do{

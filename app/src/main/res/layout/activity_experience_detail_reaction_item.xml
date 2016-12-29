@@ -15,12 +15,13 @@
         android:padding="5dp"/>
 
     <TextView
-        android:text="TextView"
-        android:layout_height="wrap_content"
+        android:text="Jacqueline"
         android:id="@+id/txt_user_name"
         android:layout_weight="1"
-        android:textSize="10sp"
+        android:textSize="8sp"
         android:layout_width="50dp"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:fontFamily="sans-serif"
+        android:layout_height="10dp"/>
 
 </LinearLayout>

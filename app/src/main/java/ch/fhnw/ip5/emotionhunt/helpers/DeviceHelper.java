@@ -7,6 +7,8 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.StrictMode;
 import android.preference.Preference;
 import android.provider.Settings;
@@ -45,6 +47,12 @@ public class DeviceHelper {
         }
         String version = info.versionName;
         return version;
+    }
+
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     /**
@@ -100,7 +108,6 @@ public class DeviceHelper {
         }
         catch (FileNotFoundException e)
         {
-            e.printStackTrace();
             return null;
         }
     }

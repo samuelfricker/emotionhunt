@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.net.http.AndroidHttpClient;
 import android.os.Handler;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,39 +41,61 @@ import ch.fhnw.ip5.emotionhunt.models.UserEmotion;
 
 public class RestExperienceReactionsTask extends RestTask {
     private static final String TAG = "RestExperienceReact";
+    private static final int STATE_START = 0;
     private static final int STATE_REACTIONS_READY = 1;
     private List<UserEmotion> userEmotions;
+    private boolean onRefresh;
 
-    public RestExperienceReactionsTask(Context context, String url, List<NameValuePair> nameValuePairs)
+    public RestExperienceReactionsTask(Context context, String url, List<NameValuePair> nameValuePairs, boolean onRefresh)
     {
         super(context, url, nameValuePairs);
+        this.onRefresh = onRefresh;
     }
 
     @Override
     protected void onProgressUpdate(Integer... progress) {
         Log.d(TAG, "onProgressUpdate " + progress[0]);
-        Log.d(TAG, userEmotions.size() + " UserEmotions loaded");
         Handler handler =  new Handler(mContext.getMainLooper());
         switch (progress[0]) {
+            case STATE_START:
+                handler.post(new Runnable() {
+                    public void run() {
+                        LinearLayout layoutReactions = (LinearLayout) ((Activity)mContext).findViewById(R.id.layout_reactions);
+                        layoutReactions.setVisibility(View.INVISIBLE);
+                    }
+                });
+                break;
             case STATE_REACTIONS_READY:
+                Log.d(TAG, userEmotions.size() + " UserEmotions loaded");
+
                 //load reactions in view
                 handler.post(new Runnable() {
                     public void run() {
                         LinearLayout layoutReactions = (LinearLayout) ((Activity)mContext).findViewById(R.id.layout_reactions);
-                        layoutReactions.removeAllViews();
-                        for (UserEmotion userEmotion : userEmotions) {
-                            //skip expected reactions
-                            if (userEmotion.isSender()) continue;
+                        layoutReactions.setVisibility(View.VISIBLE);
 
-                            Log.d(TAG, "Received User Emotion from User " + userEmotion.getName());
-                            View reactionView = ((Activity)mContext).getLayoutInflater().inflate(R.layout.activity_experience_detail_reaction_item, null);
-                            TextView txtUser = (TextView) reactionView.findViewById(R.id.txt_user_name);
-                            ImageView imgReaction = (ImageView) reactionView.findViewById(R.id.img_reaction);
-                            imgReaction.setImageResource(userEmotion.getResourceId());
-                            imgReaction.setMaxHeight(60);
-                            imgReaction.setMaxWidth(60);
-                            txtUser.setText(userEmotion.getName());
-                            layoutReactions.addView(reactionView);
+                        //set refreshing to false on swipe view if this is a refresh
+                        if (onRefresh) {
+                            SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) ((Activity)mContext).findViewById(R.id.contentView);
+                            mSwipeRefreshLayout.setRefreshing(false);
+                        }
+
+                        if (userEmotions.size() > 1) {
+                            layoutReactions.removeAllViews();
+                            for (UserEmotion userEmotion : userEmotions) {
+                                //skip expected reactions
+                                if (userEmotion.isSender()) continue;
+
+                                Log.d(TAG, "Received User Emotion from User " + userEmotion.getName());
+                                View reactionView = ((Activity)mContext).getLayoutInflater().inflate(R.layout.activity_experience_detail_reaction_item, null);
+                                TextView txtUser = (TextView) reactionView.findViewById(R.id.txt_user_name);
+                                ImageView imgReaction = (ImageView) reactionView.findViewById(R.id.img_reaction);
+                                imgReaction.setImageResource(userEmotion.getResourceId());
+                                imgReaction.setMaxHeight(60);
+                                imgReaction.setMaxWidth(60);
+                                txtUser.setText(userEmotion.getName());
+                                layoutReactions.addView(reactionView);
+                            }
                         }
                     }
                 });
@@ -82,6 +105,7 @@ public class RestExperienceReactionsTask extends RestTask {
 
     @Override
     protected Boolean doInBackground(String... urls) {
+        publishProgress(STATE_START);
         AndroidHttpClient httpclient = null;
         try {
             Log.d(TAG, "Execute: " + mUrl);

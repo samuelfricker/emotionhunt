@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -14,6 +15,7 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
+import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 import ch.fhnw.ip5.emotionhunt.helpers.DbHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
@@ -49,7 +51,7 @@ public class SentExperience extends Experience {
         contentValues.put(Experience.ExperienceDbContract.COL_ID, id);
         contentValues.put(Experience.ExperienceDbContract.COL_LAT, lat);
         contentValues.put(Experience.ExperienceDbContract.COL_LON, lon);
-        contentValues.put(Experience.ExperienceDbContract.COL_IS_PUBLIC, isPublic);
+        contentValues.put(Experience.ExperienceDbContract.COL_IS_PUBLIC, isPublic ? 1 : 0);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_LOCATION_BASED, isLocationBased ? 1 : 0);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_SENT, 1);
         contentValues.put(Experience.ExperienceDbContract.COL_IS_READ, 1);
@@ -82,12 +84,15 @@ public class SentExperience extends Experience {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
 
         //set current location for this experience
-        LocationHistory lh = LocationHistory.getLastPositionHistory(context);
-        if (lh == null) return;
-        String lat = String.valueOf(lh.lat);
-        String lon = String.valueOf(lh.lon);
-        nameValuePairs.add(new BasicNameValuePair("lat", lat));
-        nameValuePairs.add(new BasicNameValuePair("lon", lon));
+        LocationHistory lh = LocationHistory.getLastPositionHistory(context,"fused");
+        if (lh == null && isLocationBased) {
+            Log.e(TAG, "No valid GPS location found in history!");
+            Toast.makeText(context,context.getString(R.string.no_gps),Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        nameValuePairs.add(new BasicNameValuePair("lat", String.valueOf(lh != null ? lh.lat : 0.0)));
+        nameValuePairs.add(new BasicNameValuePair("lon", String.valueOf(lh != null ? lh.lon : 0.0)));
         nameValuePairs.add(new BasicNameValuePair("isLocationBased", isLocationBased ? "1" : "0"));
 
         //set the experience's text

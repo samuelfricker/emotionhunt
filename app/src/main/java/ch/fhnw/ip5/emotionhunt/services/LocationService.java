@@ -53,7 +53,7 @@ public class LocationService extends Service implements LocationListener {
         if (PermissionHelper.checkLocationPermission(mContext)) {
             locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(
-                    LocationManager.GPS_PROVIDER,
+                    LocationManager.PASSIVE_PROVIDER,
                     MIN_TIME_BW_UPDATES,
                     MIN_DISTANCE_CHANGE_FOR_UPDATES,
                     this);
@@ -73,24 +73,12 @@ public class LocationService extends Service implements LocationListener {
      */
     public static boolean insertLocation (Location loc, Context context) {
         if (loc == null) return false;
-
-        SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
-        ContentValues locationValues = new ContentValues();
-        locationValues.put(LocationHistory.LocationDbContract.COL_LAT, loc.getLatitude());
-        locationValues.put(LocationHistory.LocationDbContract.COL_LON, loc.getLongitude());
-        locationValues.put(LocationHistory.LocationDbContract.COL_CREATED_AT, System.currentTimeMillis() / 1000L);
-
-        boolean validation = db.insertWithOnConflict(LocationHistory.LocationDbContract.TABLE_NAME, null, locationValues, SQLiteDatabase.CONFLICT_IGNORE) != -1;
-
-        if (validation) {
-            Log.d(TAG, "location stored into sql lite db.");
-            LocationService.cleanUpEntries(db);
-        } else {
-            db.close();
-            Log.d(TAG, "location couldn't be stored into sql lite db.");
-        }
-
-        return validation;
+        LocationHistory lh = new LocationHistory();
+        lh.lat = loc.getLatitude();
+        lh.lon = loc.getLongitude();
+        lh.provider = loc.getProvider();
+        lh.accuracy = loc.getAccuracy();
+        return lh.saveDb(context);
     }
 
     /**

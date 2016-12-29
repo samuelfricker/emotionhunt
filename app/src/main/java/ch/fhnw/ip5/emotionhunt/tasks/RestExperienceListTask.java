@@ -69,6 +69,7 @@ public class RestExperienceListTask extends RestTask {
                 for (Experience experience : experiences) {
                     //convert int to boolean from API
                     experience.isPublic = experience.isPublicApi == 1;
+                    experience.isLocationBased = experience.isLocationBasedApi == 1;
                     experience.isRead = false;
                     experience.saveDb(mContext);
                 }

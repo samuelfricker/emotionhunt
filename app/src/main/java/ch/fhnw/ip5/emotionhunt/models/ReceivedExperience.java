@@ -121,7 +121,7 @@ public class ReceivedExperience extends Experience {
         String url = Params.getApiActionUrl(context, "experience.get");
 
         List<NameValuePair> nameValuePairs = new ArrayList<>();
-        LocationHistory lh = LocationHistory.getLastPositionHistory(context);
+        LocationHistory lh = LocationHistory.getLastPositionHistory(context,"");
         if (lh == null) return;
         String lat = String.valueOf(lh.lat);
         String lon = String.valueOf(lh.lon);

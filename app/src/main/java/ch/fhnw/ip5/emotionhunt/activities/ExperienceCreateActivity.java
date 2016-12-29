@@ -108,23 +108,26 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.btn_create_experience_send:
                 if (validateExperience()) {
-                    android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ExperienceCreateActivity.this);
-                    builder.setTitle(R.string.location_based_title);
-                    builder.setMessage(R.string.location_based_text);
-                    // Add the buttons
-                    builder.setPositiveButton(R.string.location_based_button_label, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            sendExperience(true);
-                        }
-                    });
-                    // Add the buttons
-                    builder.setNeutralButton(R.string.not_location_based_button_label, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            sendExperience(false);
-                        }
-                    });
-                    android.app.AlertDialog dialog = builder.create();
-                    dialog.show();
+                    if (isPublic) {
+                        //public experiences are always location based
+                        sendExperience(true);
+                    } else {
+                        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(ExperienceCreateActivity.this);
+                        builder.setTitle(R.string.location_based_title);
+                        builder.setMessage(R.string.location_based_text);
+                        builder.setPositiveButton(R.string.location_based_button_label, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                sendExperience(true);
+                            }
+                        });
+                        builder.setNeutralButton(R.string.not_location_based_button_label, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                sendExperience(false);
+                            }
+                        });
+                        android.app.AlertDialog dialog = builder.create();
+                        dialog.show();
+                    }
                 }
                 return true;
             case android.R.id.home:
@@ -273,7 +276,6 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         switch (requestCode) {
             case CroperinoConfig.REQUEST_TAKE_PHOTO:
                 if (resultCode == ExperienceCreateActivity.RESULT_OK) {
-                    /* Parameters of runCropImage = File, Activity Context, Image is Scalable or Not, Aspect Ratio X, Aspect Ratio Y, Button Bar Color, Background Color */
                     Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), ExperienceCreateActivity.this, true, 1, 1, 0, 0);
                 }
                 break;
@@ -295,19 +297,6 @@ public class ExperienceCreateActivity extends AppCompatActivity {
             default:
                 break;
         }
-
-        /*if (requestCode == REQUEST_CODE_IMAGE_PICKER && resultCode == RESULT_OK && data != null) {
-            Log.d(TAG, "onActivityResult");
-            ArrayList<Image> images = data.getParcelableArrayListExtra(ImagePickerActivity.INTENT_EXTRA_SELECTED_IMAGES);
-            for (Image image : images) {
-                File imageFile = new File(image.getPath());
-                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-                Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getAbsolutePath(),bmOptions);
-                experienceImage = bitmap;
-                imgPreview.setImageBitmap(bitmap);
-            }
-            // do your logic ....
-        }*/
     }
 
     /**
@@ -370,14 +359,10 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         sentExperience.createdAt = (int) (System.currentTimeMillis() / 1000L);
         sentExperience.text = textView.getText().toString();
         sentExperience.recipients = getRecipients();
+        sentExperience.isLocationBased = isLocationBased;
+        sentExperience.isPublic = isPublic;
 
-        //get location from last stored location
-        LocationHistory location = LocationHistory.getLastPositionHistory(getApplicationContext());
         try{
-            sentExperience.lat = location.lat;
-            sentExperience.lon = location.lon;
-            sentExperience.isPublic = isPublic;
-            sentExperience.isLocationBased = isLocationBased;
             sentExperience.image = experienceImage;
         } catch (Exception e){
             Log.e(TAG, e.getMessage());
@@ -387,9 +372,7 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         //set expected emotion
         sentExperience.expectedEmotion = getExpectedEmotion();
 
-        //TODO confirm dialog check if isLocationBased true / false
-        // onclick yes => sentExperience.isLocationBased = true, onclick false => sentExperience.isLocationBased = false,
-        // ... sentExperience.sendApi(this);
+        //send to API
         sentExperience.sendApi(this);
     }
 

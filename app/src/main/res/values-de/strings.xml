@@ -142,7 +142,7 @@
     <string name="leave_without_reaction">Möchtest du tatsächlich keine Reaktion hinterlassen?</string>
     <string name="no_umlauts">Umlaute sind nicht erlaubt.</string>
     <string name="location_based_title">Standortbezug</string>
-    <string name="location_based_text">Hinterlege diese Experience standortbezogen, wenn du möchtest, dass der Empfänger die Experience nur nahe deiner aktuellen Position öffnen kann.</string>
+    <string name="location_based_text">Hinterlege diese Experience standortbezogen, wenn du möchtest, dass der Empfänger diese Experience nur in der Nähe deiner aktuellen Position öffnen kann.</string>
     <string name="location_based_button_label">Standortbezogen</string>
     <string name="not_location_based_button_label">Ohne Standort</string>
     <string name="emotion_disgust">Ekel</string>
@@ -153,6 +153,9 @@
     <string name="emotion_neutral">Neutral</string>
     <string name="emotion_sadness">Traurigkeit</string>
     <string name="emotion_fear">Angst</string>
+    <string name="txt_emotion_strength">Wie stark fühlst du \"%1$s\"?</string>
+    <string name="no_gps">Keine gültige GPS Position gefunden.</string>
+    <string name="waiting_for_reactions">Noch keine Reaktionen vorhanden.</string>
 
 </resources>
 

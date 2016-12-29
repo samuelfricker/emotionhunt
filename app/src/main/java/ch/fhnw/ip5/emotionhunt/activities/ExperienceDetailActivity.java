@@ -2,8 +2,10 @@ package ch.fhnw.ip5.emotionhunt.activities;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
@@ -42,6 +45,11 @@ public class ExperienceDetailActivity extends AppCompatActivity {
     private Emotion mMyReaction;
     private LinearLayout layoutReactions;
     private LinearLayout layoutMyReaction;
+    private LinearLayout layoutStrength;
+    private SeekBar sbEmotionStrength;
+    private TextView txtEmotionStrength;
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    private int emotionStrength = 50;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,11 +78,39 @@ public class ExperienceDetailActivity extends AppCompatActivity {
      */
     private void initView() {
         mTxtExperienceText = (TextView) findViewById(R.id.text_experience_detail_comment);
+        TextView txtDate = (TextView) findViewById(R.id.txt_date);
         TextView txtSenderName = (TextView) findViewById(R.id.txt_sender_name);
         mImageView = (ImageView) findViewById(R.id.img_experience_preview);
         layoutMyReaction = (LinearLayout) findViewById(R.id.activity_experience_detail_my_reaction);
         layoutReactions = (LinearLayout) findViewById(R.id.activity_experience_detail_reaction_view);
+        layoutStrength = (LinearLayout) findViewById(R.id.activity_experience_detail_emotion_strength);
+        sbEmotionStrength = (SeekBar) findViewById(R.id.sb_emotion_strength);
+        txtEmotionStrength = (TextView) findViewById(R.id.txt_emotion_strength);
+        mImageViewMyReaction = (ImageView) findViewById(R.id.img_experience_icon);
 
+        sbEmotionStrength.setProgress(emotionStrength);
+        sbEmotionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                // TODO Auto-generated method stub
+                emotionStrength = progress;
+                mImageViewMyReaction.setAlpha(((float) emotionStrength/100) + 0.1f);
+                Log.d(TAG, "SeekBar value : " + progress);
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                // TODO Auto-generated method stub
+            }
+        });
+
+        layoutStrength.setVisibility(View.GONE);
         if (mExperience.isRead) {
             layoutMyReaction.setVisibility(View.INVISIBLE);
             layoutReactions.setVisibility(View.VISIBLE);
@@ -83,9 +119,9 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             layoutReactions.setVisibility(View.INVISIBLE);
         }
 
-        txtSenderName.setText(mExperience.senderName);
+        txtSenderName.setText(mExperience.isSent ? getString(R.string.me) : mExperience.senderName);
+        txtDate.setText(mExperience.getCreatedAt());
 
-        mImageViewMyReaction = (ImageView) findViewById(R.id.img_experience_icon);
         mImageViewMyReaction.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,6 +129,7 @@ public class ExperienceDetailActivity extends AppCompatActivity {
                 new EmotionPickerDialog(ExperienceDetailActivity.this) {
                     @Override
                     public void onImgClick(int emotion) {
+                        layoutStrength.setVisibility(View.VISIBLE);
                         mMyReaction = new Emotion();
                         double expValue = 0.9999999999999;
                         switch (emotion) {
@@ -133,6 +170,9 @@ public class ExperienceDetailActivity extends AppCompatActivity {
                                 mMyReaction = null;
                                 break;
                         }
+                        String emotionLabel = getString(mMyReaction.getEmotionLabelResId());
+                        txtEmotionStrength.setText(getString(R.string.txt_emotion_strength, emotionLabel));
+                        mImageViewMyReaction.setAlpha(((float) emotionStrength/100) + 0.1f);
                         dismiss();
                     }
                 }.show();
@@ -159,15 +199,29 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             restExperienceMediaTask.execute();
         }
 
-        //execute async task to load reactions
-        url = Params.getApiActionUrl(getApplicationContext(), "experience.reactions");
-        nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(mExperience.id)));
-        RestExperienceReactionsTask restExperienceReactionsTask = new RestExperienceReactionsTask(this,url,nameValuePairs);
-        restExperienceReactionsTask.execute();
+        loadReactions(false);
+
+        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.contentView);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.colorPrimary);
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadReactions(true);
+            }
+        });
 
         Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isRead ? "is read" : "is not read"));
         Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isSent ? "is sent" : "is received"));
+    }
+
+    private void loadReactions(boolean onRefresh) {
+        //execute async task to load reactions
+        String url = Params.getApiActionUrl(getApplicationContext(), "experience.reactions");
+        List<NameValuePair> nameValuePairs = new ArrayList<>();
+        nameValuePairs = new ArrayList<>();
+        nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(mExperience.id)));
+        RestExperienceReactionsTask restExperienceReactionsTask = new RestExperienceReactionsTask(this,url,nameValuePairs,true);
+        restExperienceReactionsTask.execute();
     }
 
     private void checkConfirmDialogOnLeave() {
@@ -217,6 +271,7 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             List<NameValuePair> nameValuePairs = new ArrayList<>();
             nameValuePairs.add(new BasicNameValuePair("androidId", DeviceHelper.getDeviceId(getApplicationContext())));
             nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(mExperience.id)));
+            nameValuePairs.add(new BasicNameValuePair("strength", String.valueOf(emotionStrength/100.0)));
             nameValuePairs.add(new BasicNameValuePair("emotion", mMyReaction != null ? mMyReaction.toString() : ""));
             RestExperienceCreateReactionTask restTask = new RestExperienceCreateReactionTask(this,url, nameValuePairs);
             restTask.execute();

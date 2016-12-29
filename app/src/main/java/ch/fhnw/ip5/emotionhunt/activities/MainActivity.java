@@ -18,6 +18,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.LocationListener;
@@ -51,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private ArrayList<ReceivedExperience> mExperiences;
     private ArrayList<Marker> mMarkers;
     private Thread mExperienceListenerThread;
+    private FrameLayout layoutCounter;
+    private TextView txtCounter;
     private FloatingActionButton fabToggle;
     public static final int ONBAORDING_CODE = 1;
 
@@ -79,12 +83,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     PermissionHelper.MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
         }
 
+        layoutCounter = (FrameLayout) findViewById(R.id.layout_counter);
+        txtCounter = (TextView) findViewById(R.id.txt_counter);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setIcon(R.drawable.ic_logo_medium_main);
-
 
         fabToggle = (FloatingActionButton) findViewById(R.id.btn_toggle_public_private);
         fabToggle.setOnClickListener(new View.OnClickListener() {
@@ -211,6 +217,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.e(TAG, e.getMessage());
         }
 
+        //move camera when location has speed
+        if (location.hasSpeed() && location.getSpeed() > 2.0f) isCameraMoved = false;
 
         //zoom to current position:
         if (!isCameraMoved) {
@@ -229,9 +237,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG,"onConnected permissions granted");
             mLocationRequest = new LocationRequest();
             mLocationRequest.setInterval(5000); //5 seconds
-            mLocationRequest.setFastestInterval(3000); //3 seconds
+            mLocationRequest.setFastestInterval(1000); //3 seconds
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-            //mLocationRequest.setSmallestDisplacement(0.1F); //1/10 meter
+            mLocationRequest.setSmallestDisplacement(0.5F); //1/10 meter
 
             if (mGoogleApiClient.isConnected()) {
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
@@ -285,7 +293,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      */
     public boolean addExperience(ReceivedExperience experience) {
         //do not show not-location based experiences on map
-        if (!experience.isLocationBased) return false;
+        if (!experience.isLocationBased) {
+            Log.d(TAG, String.format("Experience %1$s is not location based", experience.text));
+            return false;
+        }
+
+        layoutCounter.setVisibility(View.VISIBLE);
 
         //prevent adding sent experiences
         if (experience.isSent && experience.isPrivate()) return false;
@@ -321,11 +334,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * Starts the experience listener and update or initializes the marker.
      */
     public void startExperienceListener() {
+        layoutCounter.setVisibility(View.INVISIBLE);
         mExperiences = new ArrayList<>();
         mMarkers = new ArrayList<>();
         mExperienceListenerThread = new Thread(new Runnable() {
             public void run() {
-                while (true) {
+                while (true && !mExperienceListenerThread.isInterrupted()) {
                     if (mMap == null) {
                         Log.d(TAG, Thread.currentThread().getId() + ": Map is not ready for listener...");
                         try {
@@ -335,7 +349,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
 
                     ArrayList<ReceivedExperience> receivedExperiences = Experience.getAll(getApplicationContext(), null, null);
+                    int countUnreadPublic = 0;
+                    int countUnreadPrivate = 0;
                     for (final ReceivedExperience receivedExperience : receivedExperiences) {
+                        if (!receivedExperience.isSent && !receivedExperience.isRead) {
+                            if (receivedExperience.isPublic) {
+                                countUnreadPublic++;
+                            } else {
+                                countUnreadPrivate++;
+                            }
+                        }
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -344,6 +367,24 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                 }
                             }
                         });
+                    }
+                    if ((countUnreadPublic == 0 && isPublic) || (countUnreadPrivate == 0 && !isPublic)) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                layoutCounter.setVisibility(View.INVISIBLE);
+                            }
+                        });
+                    } else {
+                        final int finalCount = isPublic ? countUnreadPublic : countUnreadPrivate;
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                txtCounter.setText(String.valueOf(finalCount));
+                                layoutCounter.setVisibility(View.VISIBLE);
+                            }
+                        });
+
                     }
                     try {
                         Thread.sleep(5000);
