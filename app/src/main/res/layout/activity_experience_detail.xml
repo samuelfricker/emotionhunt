@@ -2,7 +2,6 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -16,11 +15,75 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             >
+
             <ch.fhnw.ip5.emotionhunt.helpers.SquareImageView
                 android:id="@+id/img_experience_preview"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                android:layout_weight="1"/>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-40dp"
+                android:layout_marginBottom="-10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:id="@+id/layout_avatar"
+                    android:layout_gravity="bottom"
+                    android:layout_weight="1"
+                    >
+
+                    <agency.tango.android.avatarview.views.AvatarView
+                        android:layout_width="80dp"
+                        app:av_border_color="@color/white"
+                        app:av_border_width="2dp"
+                        app:av_text_size_percentage="35"
+                        android:elevation="30dp"
+                        android:id="@+id/avatar_view"
+                        android:layout_marginLeft="15dp"
+                        android:layout_height="80dp"/>
+
+                    <TextView
+                        android:text="@string/by"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textView4"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="5dp"/>
+
+                    <TextView
+                        android:text="Dimitri"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txt_sender_name"
+                        android:textColor="@color/colorPrimary"
+                        android:layout_weight="1"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginLeft="5dp"/>
+
+                    <TextView
+                        android:text="01.01.2017 13:12"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txt_date"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:textSize="12sp"
+                        android:paddingBottom="5dp"
+                        android:layout_weight="1"
+                        android:layout_marginLeft="15dp"
+                        android:textAlignment="textEnd"
+                        android:layout_marginTop="15dp"
+                        android:layout_marginRight="15dp"/>
+
+                </LinearLayout>
+            </FrameLayout>
+
 
             <LinearLayout
                 android:orientation="vertical"
@@ -33,25 +96,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp">
-
-                    <TextView
-                        android:text="Dimitri"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txt_sender_name"
-                        android:textStyle="normal|bold"/>
-
-                    <TextView
-                        android:text="01.01.2017 13:12"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/txt_date"
-                        android:fontFamily="sans-serif-smallcaps"
-                        android:textSize="12sp"
-                        android:paddingBottom="5dp"
-                        android:layout_weight="1"
-                        android:layout_marginLeft="15dp"
-                        android:textAlignment="textEnd"/>
 
                     <TextView
                         android:text="@string/mark_as_spam"
@@ -79,6 +123,7 @@
                         android:fontFamily="casual"/>
                 </LinearLayout>
             </LinearLayout>
+
         </LinearLayout>
     </android.support.v4.widget.SwipeRefreshLayout>
 
@@ -108,7 +153,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/text_experience_detail_reaction"
                 android:textStyle="normal|bold"
-                android:textSize="14sp"/>
+                android:textSize="14sp"
+                android:textColorLink="@color/colorPrimary"/>
 
             <HorizontalScrollView
                 android:layout_width="match_parent"

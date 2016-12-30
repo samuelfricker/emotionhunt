@@ -1,5 +1,6 @@
 package ch.fhnw.ip5.emotionhunt.activities;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -12,10 +13,16 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.github.florent37.diagonallayout.DiagonalLayout;
+import com.google.android.gms.vision.text.Line;
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -23,13 +30,17 @@ import org.apache.http.message.BasicNameValuePair;
 import java.util.ArrayList;
 import java.util.List;
 
+import agency.tango.android.avatarview.views.AvatarView;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.EmotionPickerDialog;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
+import ch.fhnw.ip5.emotionhunt.helpers.SquareImageView;
+import ch.fhnw.ip5.emotionhunt.helpers.UserList;
 import ch.fhnw.ip5.emotionhunt.models.Emotion;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
+import ch.fhnw.ip5.emotionhunt.models.User;
 import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceCreateReactionTask;
 import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceMediaTask;
 import ch.fhnw.ip5.emotionhunt.tasks.RestExperienceReactionsTask;
@@ -42,7 +53,9 @@ public class ExperienceDetailActivity extends AppCompatActivity {
     private TextView mTxtExperienceText;
     private ImageView mImageView;
     private ImageView mImageViewMyReaction;
+    private DiagonalLayout diagonalLayout;
     private Emotion mMyReaction;
+    private SquareImageView squareImageView;
     private LinearLayout layoutReactions;
     private LinearLayout layoutMyReaction;
     private LinearLayout layoutStrength;
@@ -50,6 +63,7 @@ public class ExperienceDetailActivity extends AppCompatActivity {
     private TextView txtEmotionStrength;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private int emotionStrength = 50;
+    private AvatarView avatarView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +92,7 @@ public class ExperienceDetailActivity extends AppCompatActivity {
      */
     private void initView() {
         mTxtExperienceText = (TextView) findViewById(R.id.text_experience_detail_comment);
+        avatarView = (AvatarView) findViewById(R.id.avatar_view);
         TextView txtDate = (TextView) findViewById(R.id.txt_date);
         TextView txtSenderName = (TextView) findViewById(R.id.txt_sender_name);
         mImageView = (ImageView) findViewById(R.id.img_experience_preview);
@@ -87,6 +102,26 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         sbEmotionStrength = (SeekBar) findViewById(R.id.sb_emotion_strength);
         txtEmotionStrength = (TextView) findViewById(R.id.txt_emotion_strength);
         mImageViewMyReaction = (ImageView) findViewById(R.id.img_experience_icon);
+        diagonalLayout = (DiagonalLayout) findViewById(R.id.diagonalLayout);
+        squareImageView = (SquareImageView) findViewById(R.id.img_experience_preview);
+
+        String avatarUrl = User.getAvatarURLByUserId(ExperienceDetailActivity.this, mExperience.senderId);
+        if (mExperience.isSent) avatarUrl = User.getOwnAvatarURL(ExperienceDetailActivity.this);
+        Log.d(TAG, "Load avatar from " + avatarUrl);
+        //load avatar
+        Picasso.with(getApplicationContext())
+                .load(avatarUrl)
+                .into(avatarView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        Log.d(TAG, "Successfully loaded image");
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.v(TAG,"Could not fetch image");
+                    }
+                });
 
         sbEmotionStrength.setProgress(emotionStrength);
         sbEmotionStrength.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
@@ -119,7 +154,7 @@ public class ExperienceDetailActivity extends AppCompatActivity {
             layoutReactions.setVisibility(View.INVISIBLE);
         }
 
-        txtSenderName.setText(mExperience.isSent ? getString(R.string.me) : mExperience.senderName);
+        txtSenderName.setText((mExperience.isSent ? UserList.getInstance().getMyName() : mExperience.senderName));
         txtDate.setText(mExperience.getCreatedAt());
 
         mImageViewMyReaction.setOnClickListener(new View.OnClickListener() {

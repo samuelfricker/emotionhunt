@@ -156,6 +156,8 @@
     <string name="txt_emotion_strength">Wie stark fühlst du \"%1$s\"?</string>
     <string name="no_gps">Keine gültige GPS Position gefunden.</string>
     <string name="waiting_for_reactions">Noch keine Reaktionen vorhanden.</string>
+    <string name="avatar_successfully_created">Profilbild erfolgreich gespeichert.</string>
+    <string name="by">von</string>
 
 </resources>
 

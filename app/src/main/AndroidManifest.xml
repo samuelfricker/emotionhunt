@@ -1,24 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="ch.fhnw.ip5.emotionhunt">
+<manifest package="ch.fhnw.ip5.emotionhunt"
+          xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-feature android:name="android.hardware.camera"/>
+    <uses-feature android:name="android.hardware.camera.autofocus"/>
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <!-- To auto-complete the email text field in the login form with the user's emails -->
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.READ_PROFILE"/>
 
     <application
         android:allowBackup="true"
@@ -30,37 +31,43 @@
         <!-- API URLs -->
         <meta-data
             android:name="api.url"
-            android:value="http://emotionhunt.com/api/?action=" />
+            android:value="http://emotionhunt.com/api/?action="/>
+        <meta-data
+            android:name="api.action.avatar"
+            android:value="avatar"/>
+        <meta-data
+            android:name="api.action.avatar.create"
+            android:value="avatar/create"/>
         <meta-data
             android:name="api.action.experience.create"
-            android:value="experience/create" />
+            android:value="experience/create"/>
         <meta-data
             android:name="api.action.experience.get"
-            android:value="experience/list" />
+            android:value="experience/list"/>
         <meta-data
             android:name="api.action.experience.public.create"
-            android:value="experience/public/create" />
+            android:value="experience/public/create"/>
         <meta-data
             android:name="api.action.experience.public.get"
-            android:value="experience/public/get" />
+            android:value="experience/public/get"/>
         <meta-data
             android:name="api.action.experience.media"
-            android:value="experience/media" />
+            android:value="experience/media"/>
         <meta-data
             android:name="api.action.experience.reactions"
-            android:value="experience/reactions" />
+            android:value="experience/reactions"/>
         <meta-data
             android:name="api.action.experience.reaction.create"
-            android:value="experience/reaction/create" />
+            android:value="experience/reaction/create"/>
         <meta-data
             android:name="api.action.user.get"
-            android:value="user/list" />
+            android:value="user/list"/>
         <meta-data
             android:name="api.action.user.login"
-            android:value="user/login" />
+            android:value="user/login"/>
         <meta-data
             android:name="api.action.user.register"
-            android:value="user/register" />
+            android:value="user/register"/>
 
         <activity
             android:name=".activities.MainActivity"
@@ -77,7 +84,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" />
+            android:value="@string/google_maps_key"/>
 
         <activity
             android:name=".activities.ExperienceCreateActivity"
@@ -88,7 +95,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".activities.MainActivity"/>
         </activity>
         <activity
             android:name=".activities.ExperienceListActivity"
@@ -99,7 +106,7 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".activities.MainActivity"/>
         </activity>
         <activity
             android:name=".activities.ExperienceDetailActivity"
@@ -111,7 +118,18 @@
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activities.MainActivity" />
+                android:value=".activities.MainActivity"/>
+        </activity>
+
+        <activity android:name=".activities.ProfileActivity"
+                  android:parentActivityName=".activities.MainActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/AppTheme.NoActionBar">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity"/>
         </activity>
         <activity
             android:name=".activities.SettingsActivity"
@@ -119,44 +137,42 @@
             android:parentActivityName=".activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="ch.fhnw.ip5.emotionhunt.activities.MainActivity" />
+                android:value="ch.fhnw.ip5.emotionhunt.activities.MainActivity"/>
         </activity>
         <activity
             android:name=".activities.OnBoardActivity"
             android:label="@string/title_activity_on_board">
         </activity>
-
         <activity
             android:name=".activities.SplashScreenActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:label="@string/app_name"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
 
         <service
             android:name=".services.ApiService"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/service_name"/>
         <service
             android:name=".services.LocationService"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/service_name"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/service_name"/>
 
         <receiver android:name=".receivers.BootBroadcastReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
         </receiver>
-
-
     </application>
 
 </manifest>

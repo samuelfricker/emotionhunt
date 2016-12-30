@@ -17,12 +17,10 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,7 +33,6 @@ import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
-import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
 
 /**
@@ -44,18 +41,18 @@ import ch.fhnw.ip5.emotionhunt.models.SentExperience;
  * @author Benjamin Bur
  */
 
-public class RestExperienceCreateTask extends RestTask {
-    private static final String TAG = RestExperienceCreateTask.class.getSimpleName();
+public class RestAvatarCreateTask extends RestTask {
+    private static final String TAG = RestAvatarCreateTask.class.getSimpleName();
     private static final int STATE_SHOW_PROGRESS_DIALOG = 1;
     private static final int STATE_SUCCESSFULL = 2;
     private static final int STATE_FAIL = 3;
-    SentExperience experience;
+    Bitmap avatar;
     private ProgressDialog mProgressDialog;
 
-    public RestExperienceCreateTask(Context context, String url, List<NameValuePair> nameValuePairs, SentExperience experience)
+    public RestAvatarCreateTask(Context context, String url, List<NameValuePair> nameValuePairs, Bitmap avatar)
     {
         super(context, url, nameValuePairs);
-        this.experience = experience;
+        this.avatar = avatar;
         mProgressDialog = new ProgressDialog(mContext);
         mProgressDialog.setMessage(mContext.getString(R.string.please_wait));
     }
@@ -76,7 +73,7 @@ public class RestExperienceCreateTask extends RestTask {
             case STATE_SUCCESSFULL:
                 handler.post(new Runnable() {
                     public void run() {
-                        Toast.makeText(mContext, R.string.experience_successfully_created, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(mContext, R.string.avatar_successfully_created, Toast.LENGTH_SHORT).show();
                     }
                 });
                 break;
@@ -102,9 +99,9 @@ public class RestExperienceCreateTask extends RestTask {
             MultipartEntity entity = new MultipartEntity(HttpMultipartMode.BROWSER_COMPATIBLE);
             HttpPost httppost = new HttpPost(mUrl);
             ByteArrayOutputStream bao = new ByteArrayOutputStream();
-            experience.image.compress(Bitmap.CompressFormat.JPEG, 80, bao);
+            avatar.compress(Bitmap.CompressFormat.JPEG, 100, bao);
             byte [] ba = bao.toByteArray();
-            entity.addPart("media", new ByteArrayBody(ba, "emo-upload.jpg"));
+            entity.addPart("media", new ByteArrayBody(ba, "avatar.jpg"));
 
             for (NameValuePair nvp : this.mNameValuePairs) {
                 entity.addPart(nvp.getName(), new StringBody(nvp.getValue(), Charset.forName("UTF-8")));
@@ -121,32 +118,7 @@ public class RestExperienceCreateTask extends RestTask {
 
             if (status == 201 || status == 200) {
                 publishProgress(STATE_SUCCESSFULL);
-                HttpEntity hentity = response.getEntity();
-                JSONObject jsonObject = new JSONObject(EntityUtils.toString(hentity));
-                JSONArray jData = jsonObject.getJSONArray("data");
-
-                String data = jData.toString();
-
-                //read json values from response
-                GsonBuilder gsonBuilder = new GsonBuilder();
-                Gson gson = gsonBuilder.create();
-                List<SentExperience> experiences = Arrays.asList(gson.fromJson(data, SentExperience[].class));
-
-                //save all received experiences into db
-                for (SentExperience e : experiences) {
-                    if (experience.isPublic) e.isPublic = true;
-                    e.isLocationBased = experience.isLocationBased;
-                    e.emotion = experience.getExpectedEmotionJSON();
-                    e.isSent = true;
-                    e.saveDb(mContext);
-                    try {
-                        DeviceHelper.saveBitmap(experience.image,mContext,e.filename);
-                    } catch (Exception ex) {
-                        ex.printStackTrace();
-                    }
-                }
                 httpclient.close();
-                ((Activity)mContext).finish();
                 return true;
             } else if (status == 415) {
                 publishProgress(STATE_FAIL);

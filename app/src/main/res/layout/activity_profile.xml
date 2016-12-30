@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/activity_profile"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ch.fhnw.ip5.emotionhunt.activities.ProfileActivity"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:diagonal="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="280dp">
+        <agency.tango.android.avatarview.views.AvatarView
+            android:layout_width="115dp"
+            android:layout_height="115dp"
+            app:av_border_color="@color/white"
+            app:av_border_width="2dp"
+            app:av_text_size_percentage="35"
+            android:layout_marginTop="150dp"
+            android:layout_marginLeft="50dp"
+            android:elevation="30dp"
+            android:id="@+id/avatar_view"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="195dp"
+            android:layout_marginLeft="180dp"
+            android:text="Hans Muster"
+            android:id="@+id/txt_username"
+            android:textColor="@color/colorPrimary"
+            android:textSize="20sp"/>
+        <com.github.florent37.diagonallayout.DiagonalLayout
+            android:id="@+id/diagonalLayout"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            diagonal:diagonal_angle="20"
+            diagonal:diagonal_gravity="left"
+            android:elevation="10dp"
+            >
+            <com.flaviofaria.kenburnsview.KenBurnsView
+                android:id="@+id/burns_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@color/colorPrimary"
+                />
+        </com.github.florent37.diagonallayout.DiagonalLayout>
+    </FrameLayout>
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/profile_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@drawable/background_toolbar_translucent"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+        android:fitsSystemWindows="true"
+
+        />
+</RelativeLayout>

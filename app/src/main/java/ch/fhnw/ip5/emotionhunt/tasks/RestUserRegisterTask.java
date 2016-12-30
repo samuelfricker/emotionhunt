@@ -23,6 +23,8 @@ import java.util.List;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 import ch.fhnw.ip5.emotionhunt.activities.OnBoardActivity;
+import ch.fhnw.ip5.emotionhunt.helpers.UserList;
+import ch.fhnw.ip5.emotionhunt.models.User;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
@@ -79,6 +81,8 @@ public class RestUserRegisterTask extends RestTask {
             Log.d(TAG, "Status: " + status);
 
             if ( status == 201 ) {
+                User user = User.getFirstUserFromResponse(response);
+                UserList.getInstance().me = user;
                 publishProgress(1);
             } else if ( status == 500 ) {
                 publishProgress(2);

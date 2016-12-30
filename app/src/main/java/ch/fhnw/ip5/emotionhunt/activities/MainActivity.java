@@ -188,13 +188,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onOptionsItemSelected(MenuItem item) {
         try{
             switch (item.getItemId()) {
-                case R.id.btn_main_profile:
+                case R.id.btn_main_settings:
                     Intent intentDetail = new Intent(getApplicationContext(), SettingsActivity.class);
                     startActivity(intentDetail);
                     return true;
                 case R.id.btn_main_experience_list:
                     Intent intentList = new Intent(getApplicationContext(), ExperienceListActivity.class);
                     startActivity(intentList);
+                    return true;
+                case R.id.btn_main_profile:
+                    Intent intentProfile = new Intent(getApplicationContext(), ProfileActivity.class);
+                    intentProfile.putExtra(ProfileActivity.EXTRA_IS_OWN_USER,true);
+                    startActivity(intentProfile);
                     return true;
                 default:
                     throw new IllegalArgumentException("Invalid Action Menu Item");
