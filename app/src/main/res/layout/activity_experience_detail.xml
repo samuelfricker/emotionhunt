@@ -31,7 +31,7 @@
                 <LinearLayout
                     android:orientation="horizontal"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp">
 
                     <TextView
@@ -75,7 +75,8 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/text_experience_detail_comment"
                         android:layout_weight="1"
-                        android:textSize="24sp"/>
+                        android:textSize="18sp"
+                        android:fontFamily="casual"/>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

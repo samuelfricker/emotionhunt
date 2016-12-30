@@ -221,7 +221,8 @@ public abstract class Experience {
     /**
      * Returns all Experiences instances from the experience sql lite database.
      * @param context
-     * @param isSent
+     * @param isSent true if is_sent = 1, false if: is_sent = 0
+     * @param isRead true if: is_read = 1 OR is_location_based = 0, false if: is_read = 0
      * @return List of experiences
      */
     public static ArrayList<ReceivedExperience> getAll(Context context, Boolean isSent, Boolean isRead) {
@@ -229,7 +230,7 @@ public abstract class Experience {
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
         Cursor c = db.rawQuery("SELECT * FROM " + ExperienceDbContract.TABLE_NAME + " WHERE 1=1 " +
                 (isSent != null ? " AND " + ExperienceDbContract.COL_IS_SENT + " = " + (isSent ? 1 : 0) : "") +
-                (isRead != null ? " AND " + ExperienceDbContract.COL_IS_READ + " = " + (isRead ? 1 : 0) : "") +
+                (isRead != null ? " AND (" + ExperienceDbContract.COL_IS_READ + " = " + (isRead ? "1 OR " + ExperienceDbContract.COL_IS_LOCATION_BASED + "=0)" : "0)") : "") +
                 " ORDER BY " + ExperienceDbContract.COL_CREATED_AT + " DESC"
                 , null);
         if(c.moveToFirst()){

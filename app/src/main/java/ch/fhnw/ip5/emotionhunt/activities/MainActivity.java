@@ -224,7 +224,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (!isCameraMoved || hasSpeed) {
             CameraPosition cameraPosition = new CameraPosition.Builder().target(latLng).zoom(18).build();
             if (isCameraMoved) {
-                cameraPosition = new CameraPosition.Builder().target(latLng).build();
+                cameraPosition = new CameraPosition.Builder().target(latLng).zoom(mMap.getCameraPosition().zoom).build();
             }
             mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             isCameraMoved = true;
@@ -237,8 +237,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (PermissionHelper.checkLocationPermission(this)) {
             Log.d(TAG,"onConnected permissions granted");
             mLocationRequest = new LocationRequest();
-            mLocationRequest.setInterval(3000); //3 seconds
-            mLocationRequest.setFastestInterval(500); //0.5 seconds
+            mLocationRequest.setInterval(5000); //5 seconds
+            mLocationRequest.setFastestInterval(1000); //1 second
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
             mLocationRequest.setSmallestDisplacement(0.5F); //1/2 meter
 
