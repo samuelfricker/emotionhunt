@@ -295,7 +295,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean addExperience(ReceivedExperience experience) {
         //do not show not-location based experiences on map
         if (!experience.isLocationBased) {
-            Log.d(TAG, String.format("Experience %1$s is not location based", experience.text));
             return false;
         }
 
