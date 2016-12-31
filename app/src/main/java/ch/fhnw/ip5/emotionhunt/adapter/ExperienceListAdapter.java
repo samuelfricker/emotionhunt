@@ -12,14 +12,19 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
+import agency.tango.android.avatarview.views.AvatarView;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.ExperienceDetailActivity;
 import ch.fhnw.ip5.emotionhunt.models.Emotion;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
+import ch.fhnw.ip5.emotionhunt.models.User;
 
 /**
  * Created by dimitri on 09.12.2016.
@@ -46,6 +51,7 @@ public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAd
         public ImageView mImgAvatar;
         public ImageView mImgPublicPrivate;
         public ImageView mImgGps;
+        public AvatarView mAvatarView;
         private Context mContext;
 
         public MyViewHolder(View v) {
@@ -68,6 +74,7 @@ public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAd
             mImgAvatar = (ImageView) v.findViewById(R.id.iv_image);
             mImgPublicPrivate = (ImageView) v.findViewById(R.id.iv_public_private);
             mImgGps = (ImageView) v.findViewById(R.id.iv_gps);
+            mAvatarView = (AvatarView) v.findViewById(R.id.avatar_view);
         }
     }
 
@@ -102,6 +109,24 @@ public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAd
         if (isSent && experience.getExpectedEmotion() != null) {
             Log.d(TAG, "Set expected emotion as avatar img");
             holder.mImgAvatar.setImageResource(experience.getExpectedEmotion().getResourceId());
+        }
+
+        if (!isSent) {
+            holder.mImgAvatar.setVisibility(View.GONE);
+            holder.mAvatarView.setVisibility(View.VISIBLE);
+            String avatarUrl = User.getAvatarURLByUserId(mContext, experience.senderId);
+            Log.d(TAG, "Load avatar from " + avatarUrl);
+            //load avatar
+            Picasso.with(mContext).load(avatarUrl).into(holder.mAvatarView, new Callback() {
+                @Override
+                public void onSuccess() {
+                            Log.d(TAG, "Successfully loaded image");
+                        }
+                @Override
+                public void onError() {
+                            Log.v(TAG,"Could not fetch image");
+                        }
+            });
         }
 
         if (experience.isPublic) {

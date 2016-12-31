@@ -3,6 +3,7 @@
                 xmlns:app2="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                xmlns:app="http://schemas.android.com/tools"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp">
 
@@ -22,12 +23,23 @@
 
             <ImageView
                 android:id="@+id/iv_image"
-                android:layout_marginTop="13dp"
                 android:layout_marginRight="10dp"
                 app2:srcCompat="@drawable/ic_user_black_24dp"
                 android:paddingTop="5dp"
                 android:layout_width="30dp"
-                android:layout_height="30dp"/>
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"/>
+
+            <agency.tango.android.avatarview.views.AvatarView
+                android:layout_marginRight="10dp"
+                app:av_border_color="@color/white"
+                app:av_border_width="0dp"
+                app:av_text_size_percentage="35"
+                android:id="@+id/avatar_view"
+                android:visibility="gone"
+                android:layout_gravity="center_vertical"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
 
             <FrameLayout
                 android:layout_width="match_parent"

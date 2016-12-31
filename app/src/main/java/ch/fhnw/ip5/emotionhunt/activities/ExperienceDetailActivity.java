@@ -106,7 +106,10 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         squareImageView = (SquareImageView) findViewById(R.id.img_experience_preview);
 
         String avatarUrl = User.getAvatarURLByUserId(ExperienceDetailActivity.this, mExperience.senderId);
-        if (mExperience.isSent) avatarUrl = User.getOwnAvatarURL(ExperienceDetailActivity.this);
+        if (mExperience.isSent) {
+            Log.d(TAG, "Load own avatar");
+            avatarUrl = User.getOwnAvatarURL(ExperienceDetailActivity.this);
+        }
         Log.d(TAG, "Load avatar from " + avatarUrl);
         //load avatar
         Picasso.with(getApplicationContext())

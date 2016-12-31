@@ -25,8 +25,6 @@ public class ExperiencesReceivedFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -44,7 +42,5 @@ public class ExperiencesReceivedFragment extends Fragment {
         rv.setLayoutManager(llm);
 
         return rootView;
-
-
     }
 }

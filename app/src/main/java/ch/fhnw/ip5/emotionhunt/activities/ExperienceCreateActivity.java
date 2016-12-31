@@ -8,18 +8,19 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TabHost;
@@ -29,9 +30,6 @@ import android.widget.Toast;
 import com.mikelau.croperino.Croperino;
 import com.mikelau.croperino.CroperinoConfig;
 import com.mikelau.croperino.CroperinoFileUtil;
-import com.nguyenhoanglam.imagepicker.activity.ImagePicker;
-import com.nguyenhoanglam.imagepicker.activity.ImagePickerActivity;
-import com.nguyenhoanglam.imagepicker.model.Image;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,10 +37,8 @@ import java.util.ArrayList;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.EmotionPickerDialog;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
-import ch.fhnw.ip5.emotionhunt.helpers.UserList;
+import ch.fhnw.ip5.emotionhunt.helpers.UserAdapter;
 import ch.fhnw.ip5.emotionhunt.models.Emotion;
-import ch.fhnw.ip5.emotionhunt.models.Experience;
-import ch.fhnw.ip5.emotionhunt.models.LocationHistory;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
 import ch.fhnw.ip5.emotionhunt.models.User;
 import ch.fhnw.ip5.emotionhunt.tasks.RestUserListTask;
@@ -53,11 +49,15 @@ public class ExperienceCreateActivity extends AppCompatActivity {
     TabHost mTabHost;
     ImageView imgPreview;
     ImageView imgIcon;
-    LinearLayout linearLayoutPrivate;
     ArrayList<User> users;
     TextView textView;
     Bitmap experienceImage;
     boolean isPublic = false;
+
+    //recycler view
+    public RecyclerView mRecyclerView;
+    public UserAdapter mAdapter;
+    public RecyclerView.LayoutManager mLayoutManager;
 
     private Emotion mExpectedEmotion;
 
@@ -141,8 +141,9 @@ public class ExperienceCreateActivity extends AppCompatActivity {
     private void initView() {
         imgIcon = (ImageView) findViewById(R.id.img_experience_icon);
         imgPreview = (ImageView) findViewById(R.id.img_experience_preview);
-        linearLayoutPrivate = (LinearLayout) findViewById(R.id.layout_experience_private);
         textView = (TextView) findViewById(R.id.txt_experience_create_text);
+
+        initRecyclerView();
 
         imgIcon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -202,6 +203,22 @@ public class ExperienceCreateActivity extends AppCompatActivity {
                 callImagePicker();
             }
         });
+
+    }
+
+    /**
+     * Initializes the recycler view
+     */
+    private void initRecyclerView() {
+        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        mRecyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 
         initUserList();
     }
@@ -306,6 +323,9 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         users = new ArrayList<>();
         Context context = getApplicationContext();
         String url = Params.getApiActionUrl(context, "user.get");
+        mAdapter = new UserAdapter(new ArrayList<User>(), ExperienceCreateActivity.this);
+        mRecyclerView.setAdapter(mAdapter);
+
         RestUserListTask restTask = new RestUserListTask(context,url,null,this);
         restTask.execute();
     }
@@ -382,12 +402,9 @@ public class ExperienceCreateActivity extends AppCompatActivity {
      */
     private ArrayList<Integer> getRecipients() {
         ArrayList<Integer> recipients = new ArrayList<>();
-        if (isPublic) return recipients;
-        UserList userList = UserList.getInstance();
-        for (User user : userList.recipients) {
-            recipients.add((int) user.id);
+        for (User u : mAdapter.getSelectedUsers()) {
+            recipients.add((int) u.id);
         }
-
         return recipients;
     }
 
@@ -398,4 +415,6 @@ public class ExperienceCreateActivity extends AppCompatActivity {
     private Emotion getExpectedEmotion() {
         return mExpectedEmotion;
     }
+
+
 }

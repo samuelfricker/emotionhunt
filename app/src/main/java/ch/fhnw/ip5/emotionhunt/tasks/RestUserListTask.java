@@ -1,22 +1,13 @@
 package ch.fhnw.ip5.emotionhunt.tasks;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
 import android.net.http.AndroidHttpClient;
-import android.support.v4.content.ContextCompat;
+import android.os.Handler;
 import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
-import com.squareup.picasso.Callback;
-import com.squareup.picasso.Picasso;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -26,18 +17,11 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.io.IOException;
-import java.lang.ref.WeakReference;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import agency.tango.android.avatarview.views.AvatarView;
-import ch.fhnw.ip5.emotionhunt.R;
-import ch.fhnw.ip5.emotionhunt.activities.ExperienceDetailActivity;
-import ch.fhnw.ip5.emotionhunt.helpers.UserList;
+import ch.fhnw.ip5.emotionhunt.activities.ExperienceCreateActivity;
 import ch.fhnw.ip5.emotionhunt.models.User;
 
 /**
@@ -47,16 +31,36 @@ import ch.fhnw.ip5.emotionhunt.models.User;
  */
 
 public class RestUserListTask extends RestTask {
-    WeakReference<Activity> mWeakActivity;
     public static final String TAG = "RestUserListTask";
+    public static final int STATE_READY = 1;
 
-    public RestUserListTask(Context context, String url, List<NameValuePair> nameValuePairs, Activity activity)
+    ExperienceCreateActivity mActivity;
+    private List<User> users;
+
+    public RestUserListTask(Context context, String url, List<NameValuePair> nameValuePairs, ExperienceCreateActivity activity)
     {
         super(context, url, nameValuePairs);
-        mWeakActivity = new WeakReference<Activity>(activity);
+        mActivity = activity;
     }
 
-
+    @Override
+    protected void onProgressUpdate(Integer... progress) {
+        Log.d(TAG, "onProgressUpdate " + progress[0]);
+        Handler handler =  new Handler(mContext.getMainLooper());
+        switch (progress[0]) {
+            case STATE_READY:
+                Log.d(TAG, "STATE READY");
+                if (this.users == null || this.users.size() == 0) return;
+                handler.post(new Runnable() {
+                    public void run() {
+                        //update dataset on activity's adapter
+                        mActivity.mAdapter.updateDataset(users);
+                        mActivity.mAdapter.notifyDataSetChanged();
+                    }
+                });
+                break;
+        }
+    }
 
     @Override
     protected Boolean doInBackground(String... urls) {
@@ -83,62 +87,9 @@ public class RestUserListTask extends RestTask {
                 //read json values from response
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 Gson gson = gsonBuilder.create();
-                List<User> users = Arrays.asList(gson.fromJson(data, User[].class));
+                this.users = Arrays.asList(gson.fromJson(data, User[].class));
 
-                final Activity activity = mWeakActivity.get();
-                final LinearLayout linearLayout = (LinearLayout) activity.findViewById(R.id.layout_experience_private);
-
-                final UserList userList = UserList.getInstance();
-                userList.users = new ArrayList<>();
-                userList.recipients = new ArrayList<>();
-
-                //save all received experiences into db
-                for (final User user : users) {
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            View v = activity.getLayoutInflater().inflate(R.layout.activity_experience_create_contact_item, null);
-                            final LinearLayout innerLayout = (LinearLayout) v.findViewById(R.id.layout_inner);
-                            TextView tvUser = (TextView) v.findViewById(R.id.txt_username);
-                            final AvatarView avatarView = (AvatarView) v.findViewById(R.id.avatar_view);
-                            tvUser.setText(user.name);
-                            v.setOnClickListener(new View.OnClickListener() {
-
-                                @Override
-                                public void onClick(View view) {
-                                    if (!userList.recipients.contains(user)) {
-                                        userList.recipients.add(user);
-                                        innerLayout.setBackgroundColor(Color.argb(20,0,0,0));
-                                    } else {
-                                        innerLayout.setBackgroundColor(Color.argb(0,0,0,0));
-                                        try {
-                                            userList.recipients.remove(user);
-                                        } catch (Exception e) {
-                                            Log.e(TAG, "Could not remove user from recipients ... \n" + e.toString());
-                                        }
-                                    }
-                                }
-                            });
-
-                            UserList userList = UserList.getInstance();
-                            userList.users.add(user);
-
-                            //load avatar
-                            Picasso.with(mContext).load(user.getAvatarURL(mContext)).into(avatarView, new Callback() {
-                                @Override
-                                public void onSuccess() {
-                                    Log.d(TAG, "Successfully loaded image for user " + user.name);
-                                }
-                                @Override
-                                public void onError() {
-                                    Log.v(TAG,"Could not fetch image");
-                                }
-                            });
-
-                            linearLayout.addView(v);
-                        }
-                    });
-                }
+                publishProgress(STATE_READY);
                 httpclient.close();
                 return true;
             }

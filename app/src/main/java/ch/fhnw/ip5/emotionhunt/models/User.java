@@ -52,8 +52,12 @@ public class User {
 
     public String getAvatarURL(Context context) {
         String apiUrl = Params.getApiActionUrl(context,"avatar");
-        String user = Params.md5(androidId);
-        return apiUrl + "&user=" + user + "&apiKey=" + RestTask.API_KEY;
+        return apiUrl + "&id=" + id + "&apiKey=" + RestTask.API_KEY;
+    }
+
+    public String getAvatarURLByAndroidId(Context context) {
+        String apiUrl = Params.getApiActionUrl(context,"avatar");
+        return apiUrl + "&user=" + androidId + "&apiKey=" + RestTask.API_KEY;
     }
 
     public static String getAvatarURLByUserId(Context context, long senderId) {
@@ -64,7 +68,7 @@ public class User {
     public static String getOwnAvatarURL(Context context) {
         User u = new User();
         u.androidId = DeviceHelper.getDeviceId(context);
-        return u.getAvatarURL(context);
+        return u.getAvatarURLByAndroidId(context);
     }
 
     public static User getFirstUserFromResponse(HttpResponse response) {
