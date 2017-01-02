@@ -3,7 +3,6 @@
                 xmlns:app2="http://schemas.android.com/apk/res-auto"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                xmlns:app="http://schemas.android.com/tools"
                 android:layout_marginTop="2dp"
                 android:layout_marginBottom="2dp">
 
@@ -32,9 +31,9 @@
 
             <agency.tango.android.avatarview.views.AvatarView
                 android:layout_marginRight="10dp"
-                app:av_border_color="@color/white"
-                app:av_border_width="0dp"
-                app:av_text_size_percentage="35"
+                app2:av_border_color="@color/white"
+                app2:av_border_width="0dp"
+                app2:av_text_size_percentage="35"
                 android:id="@+id/avatar_view"
                 android:visibility="gone"
                 android:layout_gravity="center_vertical"

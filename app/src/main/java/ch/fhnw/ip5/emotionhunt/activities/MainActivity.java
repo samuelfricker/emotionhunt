@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.database.sqlite.SQLiteDatabase;
-import android.graphics.Color;
 import android.location.Location;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -303,7 +302,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return false;
         }
 
-        layoutCounter.setVisibility(View.VISIBLE);
+        //layoutCounter.setVisibility(View.VISIBLE);
 
         //prevent adding sent experiences
         if (experience.isSent && experience.isPrivate()) return false;

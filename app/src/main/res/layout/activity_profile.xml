@@ -11,6 +11,24 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="280dp">
+
+        <com.github.florent37.diagonallayout.DiagonalLayout
+            android:id="@+id/diagonalLayout"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            diagonal:diagonal_angle="20"
+            diagonal:diagonal_gravity="left"
+            android:elevation="10dp"
+            >
+            <com.flaviofaria.kenburnsview.KenBurnsView
+                android:id="@+id/burns_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="centerCrop"
+                android:src="@color/colorPrimary"
+                />
+        </com.github.florent37.diagonallayout.DiagonalLayout>
+
         <agency.tango.android.avatarview.views.AvatarView
             android:layout_width="115dp"
             android:layout_height="115dp"
@@ -30,22 +48,6 @@
             android:id="@+id/txt_username"
             android:textColor="@color/colorPrimary"
             android:textSize="20sp"/>
-        <com.github.florent37.diagonallayout.DiagonalLayout
-            android:id="@+id/diagonalLayout"
-            android:layout_width="match_parent"
-            android:layout_height="250dp"
-            diagonal:diagonal_angle="20"
-            diagonal:diagonal_gravity="left"
-            android:elevation="10dp"
-            >
-            <com.flaviofaria.kenburnsview.KenBurnsView
-                android:id="@+id/burns_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                android:src="@color/colorPrimary"
-                />
-        </com.github.florent37.diagonallayout.DiagonalLayout>
     </FrameLayout>
 
     <android.support.v7.widget.Toolbar
