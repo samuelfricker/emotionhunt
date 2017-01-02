@@ -22,6 +22,12 @@ function handleRequest() {
 		case 'reset' :
 			resetDb();
 			break;
+		case 'avatar':
+			avatar();
+			break;
+		case 'avatar/create':
+			createAvatar();
+			break;
 		case 'user/login' :
 			login();
 			break;
@@ -98,6 +104,41 @@ function login() {
 	} else {
 		printResult(null, 403);
 	}
+}
+
+/**
+ * TODO describe header
+ */
+function avatar() {
+	$user = $_GET['user'];
+	$id = $_GET['id'];
+	//test hash: ae205979be4cb7ceaa1978ab96a44b41
+
+	if (empty($id)) {
+		if (!preg_match('/^[a-f0-9]*$/i', $user)) {
+			return printResult([],405,'','Not allowed call: Invalid request value for user: ' . $user);
+		}
+		$user = md5($user);
+	} else {
+		if (!is_numeric($id)) {
+			return printResult([],405,'','Not allowed call: Invalid request value for id: ' . $id);
+		}
+		$user = md5(dbGetAndroidIdByUserId($_GET['id']));
+	}
+
+	$params = include('_params.php');
+	$filename = './' .$params['avatarDir'] . '/small/' . $user . '.jpg';
+
+	if (file_exists($filename)) {
+		return printMedia($filename);
+	} else {
+		return printMedia('./' .$params['avatarDir'] . '/noavatar.jpg');
+	}
+}
+
+function createAvatar() {
+	validateAndMoveMediaFile(true);
+	return printResult([],201,'');
 }
 
 /**

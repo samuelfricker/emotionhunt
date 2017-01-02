@@ -1,3 +1,6 @@
 .idea
 php/_myconfig.php
 uploads/*
+avatar/*
+!avatar/noavatar.jpg
+!avatar/small/

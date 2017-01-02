@@ -43,6 +43,35 @@ function dbGetUserByAndroidId($androidId = null) {
 }
 
 /**
+ * Returns the android id by a given user id
+ * @param $id
+ * @return null|string
+ */
+function dbGetAndroidIdByUserId($id) {
+	$rows = dbGetUserById($id);
+	$androidId = '';
+	if (empty($rows)) {
+		return null;
+	} else {
+		$androidId = $rows[0]['android_id'];
+	}
+	return $androidId;
+}
+
+/**
+ * Returns the user row from db by a given android id
+ * @return string[]
+ */
+function dbGetUserById($id) {
+	$db = new Db();
+
+	$query = "SELECT * FROM `user` WHERE id = " . $id . " LIMIT 1";
+	$rows = $db->select($query);
+
+	return $rows;
+}
+
+/**
  * Returns all public experiences.
  * @return mixed
  */
@@ -299,7 +328,7 @@ function dbCreateExperienceReaction() {
  */
 function dbGetUsers() {
 	$db = new Db();
-	$rows = $db->select('SELECT id, android_id, name, profile_picture FROM user');
+	$rows = $db->select('SELECT id, android_id, name, profile_picture FROM user ORDER BY `name`');
 	return $rows;
 }
 
@@ -356,8 +385,10 @@ function dbCreateEmotion($userExperienceId, $emotionValues, $isEmpty = false, $d
 
 /**
  * Validates an uploaded media file.
+ * @param bool $isAvatar
+ * @return string
  */
-function validateAndMoveMediaFile() {
+function validateAndMoveMediaFile($isAvatar = false) {
 	$params = include('_params.php');
 	$errorMessage = [];
 
@@ -392,19 +423,40 @@ function validateAndMoveMediaFile() {
 		throwDbException('Media file validation error:', join('. ', $errorMessage), 415);
 	}
 
-	return moveMediaFile($ext);
+	return moveMediaFile($ext,$isAvatar);
 }
 
 /**
  * @param $ext
+ * @param bool $isAvatar
  * @return string filename of moved file
  */
-function moveMediaFile($ext) {
+function moveMediaFile($ext, $isAvatar = false) {
 	$params = include('_params.php');
 	//TODO resize picture for performance reasons
 	$filename = sprintf('%s.%s', sha1($_FILES['media']['tmp_name'] . time()), $ext);
-	if (!move_uploaded_file($_FILES['media']['tmp_name'], sprintf('./' . $params['uploadDir'] . '/%s', $filename))) {
+	$uploadDir =  $params['uploadDir'];
+
+	if ($isAvatar) {
+		$filename = sprintf('%s.%s', md5($_POST['androidId']), 'jpg');
+		$uploadDir = $params['avatarDir'];
+	}
+
+	if (!move_uploaded_file($_FILES['media']['tmp_name'], sprintf('./' . $uploadDir . '/%s', $filename))) {
 		throwDbException('Media Upload.','Failed to move uploaded file.');
+	}
+
+	if ($isAvatar) {
+		//resize
+		// *** Include the class
+		include("resize-class.php");
+
+		// *** 1) Initialise / load image
+		$resizeObj = new resize(sprintf('./' . $uploadDir . '/%s', $filename));
+		// *** 2) Resize image (options: exact, portrait, landscape, auto, crop)
+		$resizeObj -> resizeImage(150, 150, 'crop');
+		// *** 3) Save image
+		$resizeObj -> saveImage(sprintf('./' . $uploadDir . '/small/%s', $filename), 1000);
 	}
 	return $filename;
 }
