@@ -75,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="@dimen/fab_margin"
                 android:layout_marginRight="@dimen/fab_margin"
-                app:srcCompat="@drawable/ic_private_white_24dp"
+                app:srcCompat="@drawable/ic_public_white_24dp"
                 app:backgroundTint="@color/colorPrimary"
                 android:layout_marginTop="-5dp"/>
 

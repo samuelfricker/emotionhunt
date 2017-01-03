@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LatLng latLng;
     boolean isCameraMoved = false;
-    boolean isPublic = false;
+    boolean isPublic = true;
 
 
     @Override
@@ -302,8 +302,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return false;
         }
 
-        //layoutCounter.setVisibility(View.VISIBLE);
-
         //prevent adding sent experiences
         if (experience.isSent && experience.isPrivate()) return false;
 
@@ -422,10 +420,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (isPublic) {
             fabToggle.setImageResource(R.drawable.ic_public_white_24dp);
-            //Toast.makeText(this, R.string.show_public_experiences, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.show_public_experiences, Toast.LENGTH_SHORT).show();
         } else {
             fabToggle.setImageResource(R.drawable.ic_private_white_24dp);
-            //Toast.makeText(this, R.string.show_private_experiences, Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.show_private_experiences, Toast.LENGTH_SHORT).show();
         }
     }
 

@@ -7,7 +7,7 @@
     <string name="action_settings">Einstellungen</string>
     <string name="title_activity_scrolling">ScrollingActivity</string>
     <string name="title_activity_main">Karte</string>
-    <string name="profile">Profile</string>
+    <string name="profile">Profil</string>
     <string name="experience_private">Privat</string>
     <string name="experience_public">Öffentlich</string>
     <string name="my_experiences">Meine Erlebnisse</string>
@@ -22,7 +22,7 @@
     <string name="name">Name</string>
     <string name="phone_number">Telefonnummer (0791234567)</string>
     <string name="empty_name">Name ist leer</string>
-    <string name="empty_phonenumber">Telefonnummer ist falsch</string>
+    <string name="empty_phonenumber">Telefonnummer ist ungültig</string>
     <string name="pref_previous_started">Pref Previous Started</string>
     <string name="show_public_experiences">öffentliche Erlebnisse</string>
     <string name="show_private_experiences">private Erlebnisse</string>
@@ -142,7 +142,7 @@
     <string name="leave_without_reaction">Möchtest du tatsächlich keine Reaktion hinterlassen?</string>
     <string name="no_umlauts">Umlaute sind nicht erlaubt.</string>
     <string name="location_based_title">Standortbezug</string>
-    <string name="location_based_text">Hinterlege diese Experience standortbezogen, wenn du möchtest, dass der Empfänger diese Experience nur in der Nähe deiner aktuellen Position öffnen kann.</string>
+    <string name="location_based_text">Hinterlege dieses Erlebnis standortbezogen, wenn du möchtest, dass der Empfänger es nur in der Nähe deiner aktuellen Position öffnen kann.</string>
     <string name="location_based_button_label">Standortbezogen</string>
     <string name="not_location_based_button_label">Ohne Standort</string>
     <string name="emotion_disgust">Ekel</string>
