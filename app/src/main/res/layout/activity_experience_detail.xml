@@ -191,6 +191,7 @@
         android:layout_gravity="bottom|end"
         android:gravity="center_horizontal"
         android:background="#aaffffff">
+
         <TextView
             android:text="@string/my_reaction"
             android:layout_width="wrap_content"

@@ -145,15 +145,26 @@
     <string name="location_based_text">Hinterlege dieses Erlebnis standortbezogen, wenn du möchtest, dass der Empfänger es nur in der Nähe deiner aktuellen Position öffnen kann.</string>
     <string name="location_based_button_label">Standortbezogen</string>
     <string name="not_location_based_button_label">Ohne Standort</string>
-    <string name="emotion_disgust">Ekel</string>
-    <string name="emotion_happiness">Freude</string>
-    <string name="emotion_contempt">Verachtung</string>
-    <string name="emotion_anger">Wut</string>
-    <string name="emotion_surprise">Erstaunen</string>
-    <string name="emotion_neutral">Neutral</string>
-    <string name="emotion_sadness">Traurigkeit</string>
-    <string name="emotion_fear">Angst</string>
-    <string name="txt_emotion_strength">Wie stark fühlst du \"%1$s\"?</string>
+
+
+    <string name="emotion_disgust">frustriert</string>
+
+    <string name="emotion_happiness">zufrieden</string>
+
+    <string name="emotion_contempt">besorgt</string>
+
+    <string name="emotion_anger">wütend</string>
+
+    <string name="emotion_surprise">erstaunt</string>
+
+    <string name="emotion_neutral">zufrieden</string>
+
+    <string name="emotion_sadness">traurig</string>
+
+    <string name="emotion_fear">entspannt</string>
+
+
+    <string name="txt_emotion_strength">Wie stark \"%1$s\" bist du?</string>
     <string name="no_gps">Keine gültige GPS Position gefunden.</string>
     <string name="waiting_for_reactions">Noch keine Reaktionen vorhanden.</string>
     <string name="avatar_successfully_created">Profilbild erfolgreich gespeichert.</string>
