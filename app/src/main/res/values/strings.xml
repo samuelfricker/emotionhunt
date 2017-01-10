@@ -151,11 +151,17 @@
     <!-- disgust ist neu frustrated -->
     <string name="emotion_disgust">frustrated</string>
 
-    <!-- happiness bleibt -->
-    <string name="emotion_happiness">happy</string>
-
     <!-- contempt ist neu afraid -->
     <string name="emotion_contempt">afraid</string>
+
+    <!-- neutral ist neu content -->
+    <string name="emotion_neutral">content</string>
+
+    <!-- fear ist neu relaxed -->
+    <string name="emotion_fear">relaxed</string>
+
+    <!-- happiness bleibt -->
+    <string name="emotion_happiness">happy</string>
 
     <!-- anger bleibt -->
     <string name="emotion_anger">angry</string>
@@ -163,15 +169,8 @@
     <!-- surprise bleibt -->
     <string name="emotion_surprise">surprised</string>
 
-    <!-- neutral ist neu content -->
-    <string name="emotion_neutral">content</string>
-
     <!-- sadness bleibt -->
     <string name="emotion_sadness">sad</string>
-
-    <!-- fear ist neu relaxed -->
-    <string name="emotion_fear">relaxed</string>
-
 
     <string name="txt_emotion_strength">How strong do you feel \"%1$s\"?</string>
     <string name="no_gps">No valid GPS location found.</string>
