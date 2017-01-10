@@ -332,6 +332,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         return true;
     }
 
+    @Override
+    protected void onStop() {
+        super.onStop();
+        stopExperienceListener();
+        // stop GoogleApiClient
+        if (mGoogleApiClient.isConnected()) {
+            mGoogleApiClient.disconnect();
+        }
+    }
+
     /**
      * Starts the experience listener and update or initializes the marker.
      */
@@ -364,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                if (receivedExperience.isPublic == isPublic) {
+                                if (receivedExperience.isPublic == isPublic && mGoogleApiClient.isConnected()) {
                                     addExperience(receivedExperience);
                                 }
                             }
