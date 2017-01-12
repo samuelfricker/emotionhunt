@@ -1,6 +1,5 @@
 package ch.fhnw.ip5.emotionhunt.tasks;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -9,8 +8,6 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParseException;
 
 import org.apache.http.HttpEntity;
@@ -28,12 +25,9 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
-import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
-import ch.fhnw.ip5.emotionhunt.models.SentExperience;
 
 /**
  * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
