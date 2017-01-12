@@ -34,6 +34,11 @@ public abstract class RestTask extends AsyncTask<String, Integer, Boolean> {
 
     public HttpPost setHeaderHttpPost(HttpPost httpPost) {
         httpPost.setHeader("Accept","application/json");
+        httpPost.setHeader("Host", "emotionhunt.com");
+        httpPost.setHeader("Keep-Alive", "timeout=5, max 15");
+        httpPost.setHeader("Cookie","_ga=GA1.2.445309305.1484040632; _gat=1");
+        httpPost.setHeader("Cache-Control", "max-age=0");
+        //httpPost.setHeader("Content-Type","application/json");
         httpPost.setHeader("User-Agent","Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.99 Safari/537.36");
         return httpPost;
     }
