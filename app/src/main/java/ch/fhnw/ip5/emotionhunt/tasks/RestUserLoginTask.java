@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.List;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
 import ch.fhnw.ip5.emotionhunt.activities.OnBoardActivity;
+import ch.fhnw.ip5.emotionhunt.activities.SplashScreenActivity;
 import ch.fhnw.ip5.emotionhunt.helpers.UserList;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
 import ch.fhnw.ip5.emotionhunt.models.User;
@@ -64,6 +65,7 @@ public class RestUserLoginTask extends RestTask {
 
                 Intent intent = new Intent(mContext, MainActivity.class);
                 mContext.startActivity(intent);
+                ((SplashScreenActivity) mContext).finish();
 
             } else if ( status == 403 ) {
                 Intent intent = new Intent(mContext, OnBoardActivity.class);
