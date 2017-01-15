@@ -274,7 +274,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
      * @param experience
      * @return
      */
-    public boolean updateMarkerIcon (Experience experience) {
+    public boolean updateMarkerIcon (ReceivedExperience experience) {
         int markerIndex = mExperiences.indexOf(experience);
 
         //assert that there is a matching experience found
@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(Marker m) {
         int index = Integer.valueOf(m.getTitle());
-        Experience experience = ReceivedExperience.findById(this,index);
+        ReceivedExperience experience = ReceivedExperience.findById(this,index);
 
         Log.d(TAG, "Experience '" + experience.id + "' clicked.");
         if (experience.isRead || experience.isCatchable(getApplicationContext())) {

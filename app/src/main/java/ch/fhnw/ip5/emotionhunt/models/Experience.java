@@ -27,7 +27,6 @@ import ch.fhnw.ip5.emotionhunt.helpers.Params;
  */
 public abstract class Experience {
     private static final String TAG = Experience.class.getSimpleName();
-    private static final int CATCHABLE_WITHIN_METERS = 50;
 
     public Emotion expectedEmotion;
 
@@ -122,22 +121,6 @@ public abstract class Experience {
     }
 
     /**
-     * Returns the marker icon
-     * @return
-     */
-    public BitmapDescriptor getMarkerIcon(Context context) {
-        if(this.isRead()){
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_location);
-        }else if(this.isCatchable(context)){
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_location_checked);
-        } else if (!this.isRead() && !this.isCatchable(context)){
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_location_cross);
-        } else{
-            return BitmapDescriptorFactory.fromResource(R.drawable.img_location);
-        }
-    }
-
-    /**
      * Updates an existing experience as isRead
      * @param context
      * @return
@@ -161,20 +144,6 @@ public abstract class Experience {
         ContentValues contentValues = new ContentValues();
         contentValues.put(ExperienceDbContract.COL_EMOTION, emotion);
         return db.update(ExperienceDbContract.TABLE_NAME, contentValues, "id=" + id, null) != -1;
-    }
-
-    /**
-     * Returns whether an experience is ready to be opened or not.
-     * That depends on the "isRead" and "isSent" and on the distance.
-     * @return whether this experience is catchable or not
-     */
-    public boolean isCatchable(Context context) {
-        //read or sent experiences are not catchable because they are already catched or self-created
-        if (isRead || this instanceof SentExperience) return false;
-
-        //validate distance from the experience and the current location
-        LocationHistory currentLocation = LocationHistory.getLastPositionHistory(context,"fused");
-        return currentLocation != null && currentLocation.getLocation().distanceTo(getLocation()) < CATCHABLE_WITHIN_METERS;
     }
 
     public String getCreatedAt() {

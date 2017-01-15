@@ -96,6 +96,15 @@ public class LocationService extends Service implements LocationListener {
         db.close();
     }
 
+    /**
+     * Removes all location history entries from database.
+     * @param db
+     */
+    public static void cleanUpAllEntries(SQLiteDatabase db) {
+        db.execSQL(LocationHistory.LocationDbContract.SQL_DELETE_ALL);
+        db.close();
+    }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {

@@ -59,9 +59,6 @@ public class DbHelper  extends SQLiteOpenHelper {
         mCount.close();
 
         //count locations
-        mCount = db.rawQuery(LocationHistory.LocationDbContract.SQL_COUNT_ITEMS, null);
-        mCount.moveToFirst();
-        Log.d(TAG, LocationHistory.LocationDbContract.TABLE_NAME + ": " + mCount.getInt(0));
-        mCount.close();
+        Log.d(TAG, LocationHistory.LocationDbContract.TABLE_NAME + ": " + LocationHistory.count(db));
     }
 }

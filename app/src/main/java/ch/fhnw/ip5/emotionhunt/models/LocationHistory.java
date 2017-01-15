@@ -50,6 +50,20 @@ public class LocationHistory {
         return null;
     }
 
+    /**
+     * Count all entries from Location History
+     * @param db
+     * @return
+     */
+    public static int count(SQLiteDatabase db) {
+        //count locations
+        Cursor mCount = db.rawQuery(LocationHistory.LocationDbContract.SQL_COUNT_ITEMS, null);
+        mCount.moveToFirst();
+        int count = mCount.getInt(0);
+        mCount.close();
+        return count;
+    }
+
     public boolean saveDb(Context context) {
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
 
@@ -58,7 +72,7 @@ public class LocationHistory {
         locationValues.put(LocationHistory.LocationDbContract.COL_LON, lon);
         locationValues.put(LocationHistory.LocationDbContract.COL_PROVIDER, provider);
         locationValues.put(LocationHistory.LocationDbContract.COL_ACCURACY, accuracy);
-        locationValues.put(LocationHistory.LocationDbContract.COL_CREATED_AT, System.currentTimeMillis() / 1000L);
+        locationValues.put(LocationHistory.LocationDbContract.COL_CREATED_AT, createdAt == 0 ? System.currentTimeMillis() / 1000L : createdAt);
 
         boolean validation = db.insertWithOnConflict(LocationHistory.LocationDbContract.TABLE_NAME, null, locationValues, SQLiteDatabase.CONFLICT_IGNORE) != -1;
 
@@ -113,6 +127,7 @@ public class LocationHistory {
 
         public static final String SQL_DROP_TABLE = "DROP TABLE IF EXISTS " + TABLE_NAME;
         public static final String SQL_COUNT_ITEMS = "SELECT COUNT(*) FROM " + TABLE_NAME;
+        public static final String SQL_DELETE_ALL = "DELETE FROM " + TABLE_NAME;
         public static final String SQL_DELETE_LAST_50 = "DELETE FROM " + TABLE_NAME + " WHERE " + COL_CREATED_AT +
                 " IN (SELECT " + COL_CREATED_AT + " FROM " + TABLE_NAME + " ORDER BY " + COL_CREATED_AT + " ASC LIMIT 50)";
     }
