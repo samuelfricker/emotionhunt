@@ -34,8 +34,6 @@ public class OnBoardActivity extends AppCompatActivity {
     public String phoneNumber;
     public RestUserRegisterTask restTask;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d(TAG,"onCreate");
@@ -71,22 +69,22 @@ public class OnBoardActivity extends AppCompatActivity {
      * errors are presented and no actual login attempt is made.
      */
     private void attemptRegistration() {
-        // Reset errors.
+        //reset errors.
         mName.setError(null);
         mPhoneNumber.setError(null);
 
-        // Store values at the time of the login attempt.
+        //store values at the time of the login attempt.
         name = mName.getText().toString();
         phoneNumber = mPhoneNumber.getText().toString();
 
         boolean cancel = false;
 
-        // Check for a valid name, if the user entered one.
+        //check for a valid name, if the user entered one.
         if (!isNameValid(name)) {
             cancel = true;
         }
 
-        // Check for a valid email address.
+        //check for a valid email address.
         if (!isPhoneNumberValid(phoneNumber)) {
             Toast.makeText(this, R.string.empty_phonenumber, Toast.LENGTH_SHORT).show();
             cancel = true;
@@ -96,6 +94,10 @@ public class OnBoardActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * Creates a new user on the API by a given name and phone number and the
+     * device id.
+     */
     private void createNewUser() {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         androidId = DeviceHelper.getDeviceId(getApplicationContext());
@@ -108,18 +110,27 @@ public class OnBoardActivity extends AppCompatActivity {
         restTask.execute();
     }
 
-
-    private boolean isPhoneNumberValid(String phonenumber) {
-        return phonenumber.length() == 10;
+    /**
+     * Validates the phone number
+     * @param phoneNumber
+     * @return either the number is valid or not
+     */
+    private boolean isPhoneNumberValid(String phoneNumber) {
+        return phoneNumber.length() == 10;
     }
 
-    private boolean isNameValid(String password) {
+    /**
+     * Validates the user name
+     * @param name
+     * @return either the user name is valid or not (allowed chars: a-zA-Z0-9)
+     */
+    private boolean isNameValid(String name) {
         Pattern p = Pattern.compile("[a-zA-Z0-9]+");
-        if(!p.matcher(password).matches()){
+        if(!p.matcher(name).matches()){
             Toast.makeText(this, R.string.no_umlauts, Toast.LENGTH_SHORT).show();
             return false;
         }
-        if(password.length() < 1 || password.length() > 10){
+        if(name.length() < 1 || name.length() > 10){
             Toast.makeText(this, R.string.empty_name, Toast.LENGTH_SHORT).show();
             return false;
         }

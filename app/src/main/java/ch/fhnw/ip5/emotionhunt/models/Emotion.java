@@ -10,7 +10,6 @@ import ch.fhnw.ip5.emotionhunt.R;
  *
  * @author Benjamin Bur
  */
-
 public class Emotion {
     /** double value as percent within the range [0,1) that indicates anger */
     private double anger;
@@ -195,7 +194,6 @@ public class Emotion {
         }
         if (surprise > value) {
             resId = R.drawable.img_emotion_surprise;
-            value = surprise;
         }
         return resId;
     }

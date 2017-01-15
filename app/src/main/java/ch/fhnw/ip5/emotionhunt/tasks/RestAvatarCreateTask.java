@@ -34,7 +34,6 @@ import ch.fhnw.ip5.emotionhunt.R;
  *
  * @author Benjamin Bur
  */
-
 public class RestAvatarCreateTask extends RestTask {
     private static final String TAG = RestAvatarCreateTask.class.getSimpleName();
     private static final int STATE_SHOW_PROGRESS_DIALOG = 1;

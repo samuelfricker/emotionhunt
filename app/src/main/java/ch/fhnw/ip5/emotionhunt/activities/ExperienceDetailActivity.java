@@ -75,7 +75,6 @@ public class ExperienceDetailActivity extends AppCompatActivity {
         setSupportActionBar(myToolbar);
 
         // Get a support ActionBar corresponding to this toolbar
-        //TODO Remove hacks
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -243,16 +242,12 @@ public class ExperienceDetailActivity extends AppCompatActivity {
                 loadReactions(true);
             }
         });
-
-        Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isRead ? "is read" : "is not read"));
-        Log.d(TAG, "Experience " + mExperience.id + " " + (mExperience.isSent ? "is sent" : "is received"));
     }
 
     private void loadReactions(boolean onRefresh) {
         //execute async task to load reactions
         String url = Params.getApiActionUrl(getApplicationContext(), "experience.reactions");
         List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("id", String.valueOf(mExperience.id)));
         RestExperienceReactionsTask restExperienceReactionsTask = new RestExperienceReactionsTask(this,url,nameValuePairs,true);
         restExperienceReactionsTask.execute();

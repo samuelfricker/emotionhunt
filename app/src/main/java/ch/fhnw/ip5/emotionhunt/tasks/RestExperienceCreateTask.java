@@ -17,12 +17,10 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.entity.mime.HttpMultipartMode;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.ByteArrayBody;
 import org.apache.http.entity.mime.content.StringBody;
-import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -35,15 +33,11 @@ import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
-import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
- *
- * @author Benjamin Bur
+ * This Class creates a new experience via the server's API.
  */
-
 public class RestExperienceCreateTask extends RestTask {
     private static final String TAG = RestExperienceCreateTask.class.getSimpleName();
     private static final int STATE_SHOW_PROGRESS_DIALOG = 1;
@@ -52,6 +46,13 @@ public class RestExperienceCreateTask extends RestTask {
     SentExperience experience;
     private ProgressDialog mProgressDialog;
 
+    /**
+     * C'tor
+     * @param context Context
+     * @param url API Url
+     * @param nameValuePairs NameValuePairs (params)
+     * @param experience experience to create on server
+     */
     public RestExperienceCreateTask(Context context, String url, List<NameValuePair> nameValuePairs, SentExperience experience)
     {
         super(context, url, nameValuePairs);
@@ -71,7 +72,6 @@ public class RestExperienceCreateTask extends RestTask {
                         mProgressDialog.show();
                     }
                 });
-
                 break;
             case STATE_SUCCESSFULL:
                 handler.post(new Runnable() {
@@ -146,6 +146,8 @@ public class RestExperienceCreateTask extends RestTask {
                     }
                 }
                 httpclient.close();
+
+                //finish the create form activity
                 ((Activity)mContext).finish();
                 return true;
             } else if (status == 415) {
@@ -176,7 +178,6 @@ public class RestExperienceCreateTask extends RestTask {
         } finally {
             if (httpclient != null) httpclient.close();
         }
-
         return false;
     }
 

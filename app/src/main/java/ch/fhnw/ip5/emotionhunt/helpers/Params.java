@@ -15,11 +15,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.helpers
- *
- * @author Benjamin Bur
+ * This class gives you params that are defined in the android manifest.
  */
-
 public class Params {
 
     /**
@@ -60,9 +57,5 @@ public class Params {
         String apiUrl = getApiUrl(context);
         String action = getBundle(context).getString("api.action." + actionString);
         return apiUrl + action;
-    }
-
-    public static Date getDateFromTime(long time) {
-        return new java.util.Date(time);
     }
 }

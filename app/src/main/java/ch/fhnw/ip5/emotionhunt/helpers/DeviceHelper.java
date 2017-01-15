@@ -9,10 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.StrictMode;
-import android.preference.Preference;
 import android.provider.Settings;
-import android.telephony.TelephonyManager;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -20,23 +17,27 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import static java.security.AccessController.getContext;
-
-
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.helper
- *
- * @author Benjamin Bur
+ * Helper class for device logic (e.g. device id, network status,...)
  */
-
 public class DeviceHelper {
     private static final String PATH_EXPERIENCES_PHOTO = "experiences";
 
+    /**
+     * Returns the current android device id
+     * @param context
+     * @return
+     */
     public static String getDeviceId (Context context) {
         String androidId = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         return androidId;
     }
 
+    /**
+     * Returns the current app version
+     * @param activity
+     * @return
+     */
     public static String getAppVersion (Activity activity) {
         PackageManager manager = activity.getPackageManager();
         PackageInfo info = null;
@@ -49,6 +50,11 @@ public class DeviceHelper {
         return version;
     }
 
+    /**
+     * Returns either there is network available or not.
+     * @param context
+     * @return
+     */
     public static boolean isNetworkAvailable(Context context) {
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();

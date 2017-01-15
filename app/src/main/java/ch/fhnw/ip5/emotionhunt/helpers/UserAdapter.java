@@ -23,11 +23,8 @@ import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.models.User;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.helpers
- *
- * @author Benjamin Bur
+ * This adapter class is required by the user list in the create experience view.
  */
-
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
     private final static String TAG = "UserAdapter";
     private List<User> mDataset;
@@ -98,7 +95,6 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder> {
         holder.mCardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO add user to recipients
                 if (!mSelectedDataset.contains(user)) {
                     mSelectedDataset.add(user);
                     holder.mCardView.setBackgroundColor(Color.argb(20,0,0,0));

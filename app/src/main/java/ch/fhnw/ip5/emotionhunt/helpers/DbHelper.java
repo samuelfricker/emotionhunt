@@ -6,17 +6,12 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.io.Console;
-
 import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.LocationHistory;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.helper
- *
- * @author Benjamin Bur
+ * Helper class for the android SQLite database.
  */
-
 public class DbHelper  extends SQLiteOpenHelper {
     /** Tag for logging */
     public static final String TAG = "DbHelper";
@@ -52,6 +47,10 @@ public class DbHelper  extends SQLiteOpenHelper {
         onUpgrade(db, oldVersion, newVersion);
     }
 
+    /**
+     * Logs the quantity of entries by all tables from the app database.
+     * @param db
+     */
     public static void getStatus(SQLiteDatabase db) {
         //count experiences
         Cursor mCount = db.rawQuery(Experience.ExperienceDbContract.SQL_COUNT_ITEMS, null);

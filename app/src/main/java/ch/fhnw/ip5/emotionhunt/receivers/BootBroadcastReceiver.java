@@ -8,6 +8,9 @@ import ch.fhnw.ip5.emotionhunt.helpers.PermissionHelper;
 import ch.fhnw.ip5.emotionhunt.services.ApiService;
 import ch.fhnw.ip5.emotionhunt.services.LocationService;
 
+/**
+ * This Receiver is required to start the background service after a device restart.
+ */
 public class BootBroadcastReceiver extends WakefulBroadcastReceiver {
 
     @Override

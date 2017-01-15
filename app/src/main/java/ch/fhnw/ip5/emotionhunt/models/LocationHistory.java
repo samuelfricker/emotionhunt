@@ -15,7 +15,6 @@ import ch.fhnw.ip5.emotionhunt.services.LocationService;
  *
  * @author Benjamin Bur
  */
-
 public class LocationHistory {
     public static final String TAG = "LocationHistory";
 

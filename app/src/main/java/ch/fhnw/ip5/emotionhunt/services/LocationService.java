@@ -20,9 +20,10 @@ import ch.fhnw.ip5.emotionhunt.models.LocationHistory;
 
 
 /**
- * Created by dimitri on 28.11.2016.
+ * This LocationService is a background Service which is listening as a passive location
+ * provider for new locations. New locations will be stored and are used by the ApiService to
+ * fetch new experiences by the last stored position.
  */
-
 public class LocationService extends Service implements LocationListener {
     private static final String TAG = LocationService.class.getSimpleName();
     //the minimum distance to change Updates in meters

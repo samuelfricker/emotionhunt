@@ -2,18 +2,14 @@ package ch.fhnw.ip5.emotionhunt.helpers;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.view.View;
 import android.widget.ImageView;
 
 import ch.fhnw.ip5.emotionhunt.R;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.helpers
- *
- * @author Benjamin Bur
+ * Helper class for the emotion picker dialog.
  */
-
 public abstract class EmotionPickerDialog extends Dialog {
 
     public static final int EMOTION_ANGER = 1;
@@ -34,6 +30,11 @@ public abstract class EmotionPickerDialog extends Dialog {
     ImageView mImgSadness;
     ImageView mImgSurprise;
 
+    /**
+     * Initializes a new emotion picker dialog with all emotions and all
+     * emotion click listeners.
+     * @param context
+     */
     public EmotionPickerDialog(Context context) {
         super(context);
         setContentView(R.layout.dialog_emotion_picker);

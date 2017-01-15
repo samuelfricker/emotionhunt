@@ -29,19 +29,13 @@ import ch.fhnw.ip5.emotionhunt.tasks.RestTask;
  *
  * @author Benjamin Bur
  */
-
 public class SentExperience extends Experience {
     private static final String TAG = SentExperience.class.getSimpleName();
-
     public Bitmap image;
     public ArrayList<Integer> recipients;
 
     public SentExperience() {
         recipients = new ArrayList<>();
-    }
-
-    public static SentExperience findById(Context context, int id) {
-        return null;
     }
 
     public boolean saveDb(Context context) {
@@ -68,17 +62,10 @@ public class SentExperience extends Experience {
         return validation;
     }
 
-    public static void loadExperiencesFromApi(Context context) {
-        String url = Params.getApiActionUrl(context, "experience.get");
-
-        List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("lat", "8.00"));
-        nameValuePairs.add(new BasicNameValuePair("lon", "43.00"));
-
-        RestTask task = new RestExperienceListTask(context, url, nameValuePairs);
-        task.execute();
-    }
-
+    /**
+     * Sends this experience to the server API.
+     * @param context
+     */
     public void sendApi(Context context) {
         String url = Params.getApiActionUrl(context, isPublic ? "experience.public.create" : "experience.create");
         List<NameValuePair> nameValuePairs = new ArrayList<>();
@@ -116,6 +103,11 @@ public class SentExperience extends Experience {
         experienceCreateTask.execute();
     }
 
+    /**
+     * Returns all sent experiences.
+     * @param context
+     * @return
+     */
     public static ArrayList<ReceivedExperience> getAll(Context context){
         ArrayList<ReceivedExperience> experiences = Experience.getAll(context, true, null);
         Log.d(TAG, experiences.size() + " SentExperiences found in local db.");

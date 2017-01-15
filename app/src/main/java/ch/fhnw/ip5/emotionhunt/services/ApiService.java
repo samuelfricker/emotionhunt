@@ -9,6 +9,11 @@ import android.util.Log;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 
+/**
+ * The ApiService is a background service which is frequently looking for new
+ * experiences. Therefor it uses the last known (locally stored) position from the user and
+ * makes a Server API Call. New experiences will be shown as Push Notification on the device.
+ */
 public class ApiService extends Service {
     private static final String TAG = ApiService.class.getSimpleName();
     private static final long REPEAT_TIME = 15 * 1000;
@@ -48,7 +53,6 @@ public class ApiService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        //TODO for communication return IBinder implementation
         return null;
     }
 }

@@ -32,7 +32,6 @@ import ch.fhnw.ip5.emotionhunt.tasks.RestTask;
  *
  * @author Benjamin Bur
  */
-
 public class ReceivedExperience extends Experience {
     private static final String TAG = ReceivedExperience.class.getSimpleName();
 

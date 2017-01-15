@@ -6,11 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.DecelerateInterpolator;
-import android.view.animation.LinearInterpolator;
-import android.view.animation.RotateAnimation;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
@@ -23,19 +19,17 @@ import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 import ch.fhnw.ip5.emotionhunt.helpers.Params;
 import ch.fhnw.ip5.emotionhunt.helpers.PermissionHelper;
-import ch.fhnw.ip5.emotionhunt.models.User;
 import ch.fhnw.ip5.emotionhunt.services.ApiService;
 import ch.fhnw.ip5.emotionhunt.services.LocationService;
 import ch.fhnw.ip5.emotionhunt.tasks.RestUserLoginTask;
 
 /**
- * An example full-screen activity that shows and hides the system UI (i.e.
- * status bar and navigation/system bar) with user interaction.
+ * Full-screen activity which is shown when the app is started.
  */
 public class SplashScreenActivity extends AppCompatActivity {
 
-    ArrayList<User> users;
     private View mContentView;
+    private TextView mTxtVersion;
     private final static long sleepTime = 1000*1;
 
     @Override
@@ -43,7 +37,7 @@ public class SplashScreenActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash_screen);
-        mContentView = (ImageView) findViewById(R.id.fullscreen_content);
+        mContentView = findViewById(R.id.fullscreen_content);
         mContentView.setSystemUiVisibility(
                         View.SYSTEM_UI_FLAG_LAYOUT_STABLE
                         | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
@@ -61,8 +55,8 @@ public class SplashScreenActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-        ((TextView) findViewById(R.id.txt_app_version)).setText("V." + DeviceHelper.getAppVersion(SplashScreenActivity.this));
+        mTxtVersion = (TextView) findViewById(R.id.txt_app_version);
+        mTxtVersion.setText("V." + DeviceHelper.getAppVersion(SplashScreenActivity.this));
 
         Animation fadeIn = new AlphaAnimation(0, 1);
         fadeIn.setInterpolator(new DecelerateInterpolator()); //add this
@@ -81,7 +75,7 @@ public class SplashScreenActivity extends AppCompatActivity {
             public void run() {
             try {
                 Thread.sleep(sleepTime);
-                checkUserId();
+                login();
             } catch (InterruptedException e) {
 
             }
@@ -91,7 +85,10 @@ public class SplashScreenActivity extends AppCompatActivity {
 
     }
 
-    private void checkUserId() {
+    /**
+     * Validates the users android id with the Server API.
+     */
+    private void login() {
         List<NameValuePair> nameValuePairs = new ArrayList<>();
         nameValuePairs.add(new BasicNameValuePair("androidId", DeviceHelper.getDeviceId(getApplicationContext())));
         String url = Params.getApiActionUrl(getApplicationContext(), "user.login");

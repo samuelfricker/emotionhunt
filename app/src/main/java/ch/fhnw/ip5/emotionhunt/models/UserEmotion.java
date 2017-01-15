@@ -1,6 +1,5 @@
 package ch.fhnw.ip5.emotionhunt.models;
 
-import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 /**
@@ -8,7 +7,6 @@ import com.google.gson.annotations.SerializedName;
  *
  * @author Benjamin Bur
  */
-
 public class UserEmotion extends Emotion {
     private String name;
     @SerializedName("profile_picture")

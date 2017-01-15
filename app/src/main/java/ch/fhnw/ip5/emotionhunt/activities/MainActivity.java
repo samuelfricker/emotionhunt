@@ -46,7 +46,8 @@ import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 import ch.fhnw.ip5.emotionhunt.services.LocationService;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
-        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnMarkerClickListener, LocationListener {
+        GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,
+        GoogleMap.OnMarkerClickListener, LocationListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private GoogleMap mMap;
     private ArrayList<ReceivedExperience> mExperiences;
@@ -55,7 +56,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private FrameLayout layoutCounter;
     private TextView txtCounter;
     private FloatingActionButton fabToggle;
-    public static final int ONBAORDING_CODE = 1;
 
     LocationRequest mLocationRequest;
     GoogleApiClient mGoogleApiClient;
@@ -121,7 +121,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //setup map styles
         try {
             // Customise the styling of the base map using a JSON object defined in a raw resource file.
-            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json));
+            boolean success = googleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this,
+                    R.raw.style_json));
             if (!success) {
                 Log.e(TAG, "Style parsing failed.");
             }
@@ -156,14 +157,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         buildGoogleApiClient();
                         mGoogleApiClient.connect();
                     }
-                } else {
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
                 }
                 return;
             }
-            // other 'case' lines to check for other
-            // permissions this app might request
         }
     }
 
@@ -360,7 +356,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         continue;
                     }
 
-                    ArrayList<ReceivedExperience> receivedExperiences = Experience.getAll(getApplicationContext(), null, null);
+                    ArrayList<ReceivedExperience> receivedExperiences =
+                            Experience.getAll(getApplicationContext(), null, null);
                     int countUnreadPublic = 0;
                     int countUnreadPrivate = 0;
                     for (final ReceivedExperience receivedExperience : receivedExperiences) {
@@ -437,6 +434,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    /**
+     * Handles the event when the user clicks on a marker icon.
+     * Either the user will be redirected to the experience's detail view or a toast will be
+     * shown if the clicked experience is too far away from the user's current position.
+     * @param m clicked marker
+     * @return
+     */
     @Override
     public boolean onMarkerClick(Marker m) {
         int index = Integer.valueOf(m.getTitle());
@@ -448,7 +452,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             intent.putExtra(ExperienceDetailActivity.EXTRA_EXPERIENCE_ID, experience.id);
             startActivity(intent);
         } else {
-            Toast.makeText(this, R.string.not_catchable, Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.not_catchable,
+                    Toast.LENGTH_LONG).show();
         }
 
         return true;

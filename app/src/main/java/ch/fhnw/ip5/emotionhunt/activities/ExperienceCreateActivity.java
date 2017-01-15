@@ -75,12 +75,9 @@ public class ExperienceCreateActivity extends AppCompatActivity {
 
         mTabHost = (TabHost)findViewById(R.id.tab_host_experience);
         mTabHost.setup();
-
         mTabHost.addTab(mTabHost.newTabSpec("tab_private").setIndicator(getString(R.string.experience_private)).setContent(R.id.tab_experience_private));
         mTabHost.addTab(mTabHost.newTabSpec("tab_public").setIndicator(getString(R.string.experience_public)).setContent(R.id.tab_experience_public));
-
         mTabHost.setCurrentTab(0);
-
         mTabHost.setOnTabChangedListener(new TabHost.OnTabChangeListener() {
             @Override
             public void onTabChanged(String s) {
@@ -131,7 +128,6 @@ public class ExperienceCreateActivity extends AppCompatActivity {
                 finish();
                 return true;
         }
-
         return true;
     }
 
@@ -220,6 +216,9 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         initUserList();
     }
 
+    /**
+     * Prepares the camera and checks the permissions.
+     */
     private void prepareCamera() {
         int hasWriteCameraPermission = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
@@ -229,13 +228,11 @@ public class ExperienceCreateActivity extends AppCompatActivity {
                 return;
             }
         }
-
         try {
             Croperino.prepareCamera(ExperienceCreateActivity.this);
         } catch(Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -254,6 +251,10 @@ public class ExperienceCreateActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Generates and shows an alert dialog to select a photo either
+     * from camera or from the device's gallery.
+     */
     private void callImagePicker() {
         new CroperinoConfig("IMG_" + System.currentTimeMillis() + ".jpg", "/emotionhunt/Pictures", "/sdcard/emotionhunt/Pictures");
         CroperinoFileUtil.verifyStoragePermissions(ExperienceCreateActivity.this);
@@ -295,8 +296,8 @@ public class ExperienceCreateActivity extends AppCompatActivity {
                 break;
             case CroperinoConfig.REQUEST_PICK_FILE:
                 if (resultCode == ExperienceCreateActivity.RESULT_OK) {
-                    CroperinoFileUtil.newGalleryFile(data, ExperienceCreateActivity.this);
-                    Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), ExperienceCreateActivity.this, true, 1, 1, 0, 0);
+                    File f = CroperinoFileUtil.newGalleryFile(data, ExperienceCreateActivity.this);
+                    Croperino.runCropImage(f, ExperienceCreateActivity.this, true, 1, 1, 0, 0);
                 }
                 break;
             case CroperinoConfig.REQUEST_CROP_PHOTO:

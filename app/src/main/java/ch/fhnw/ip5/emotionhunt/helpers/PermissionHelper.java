@@ -7,11 +7,8 @@ import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.helper
- *
- * @author Benjamin Bur
+ * Helper class for android permissions
  */
-
 public abstract class PermissionHelper {
 
     public static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 1;

@@ -62,7 +62,6 @@ public class ProfileActivity extends AppCompatActivity {
         Toolbar myToolbar = (Toolbar) findViewById(R.id.profile_toolbar);
         setSupportActionBar(myToolbar);
 
-        //TODO Remove hacks
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -70,6 +69,10 @@ public class ProfileActivity extends AppCompatActivity {
         initView();
     }
 
+    /**
+     * Initializes the passed params (extras)
+     * @param savedInstanceState
+     */
     private void initExtras(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
@@ -83,6 +86,9 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Initializes the view and its children incl. required listeners.
+     */
     private void initView() {
         kenBurnsView = (KenBurnsView) findViewById(R.id.burns_view);
         avatarView = (AvatarView) findViewById(R.id.avatar_view);
@@ -114,17 +120,26 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Gets the last sent experience to replace the diagonal header's background image.
+     */
     private void loadLastSentExperienceHeader() {
         ArrayList<ReceivedExperience> experiences = SentExperience.getAll(getApplicationContext());
         if (experiences.size() > 0) {
             ReceivedExperience experience = experiences.get(0);
-            Bitmap mediaBitmap = DeviceHelper.loadImageFromStorage(experience.filename, ProfileActivity.this);
+            Bitmap mediaBitmap = DeviceHelper.loadImageFromStorage(experience.filename,
+                    ProfileActivity.this);
             if (mediaBitmap != null) kenBurnsView.setImageBitmap(mediaBitmap);
         }
     }
 
+    /**
+     * Generates and shows an alert dialog to select a photo either
+     * from camera or from the device's gallery.
+     */
     private void callImagePicker() {
-        new CroperinoConfig("IMG_" + System.currentTimeMillis() + ".jpg", "/emotionhunt/Pictures", "/sdcard/emotionhunt/Pictures");
+        new CroperinoConfig("IMG_" + System.currentTimeMillis() + ".jpg", "/emotionhunt/Pictures",
+                "/sdcard/emotionhunt/Pictures");
         CroperinoFileUtil.verifyStoragePermissions(ProfileActivity.this);
         CroperinoFileUtil.setupDirectory(ProfileActivity.this);
 
@@ -153,22 +168,24 @@ public class ProfileActivity extends AppCompatActivity {
         builder.show();
     }
 
+    /**
+     * Prepares the camera and checks the required camera permissions.
+     */
     private void prepareCamera() {
         int hasWriteCameraPermission = 0;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
             hasWriteCameraPermission = checkSelfPermission(Manifest.permission.CAMERA);
             if (hasWriteCameraPermission != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[] {Manifest.permission.CAMERA}, REQUEST_CODE_ASK_PERMISSIONS);
+                requestPermissions(new String[] {Manifest.permission.CAMERA},
+                        REQUEST_CODE_ASK_PERMISSIONS);
                 return;
             }
         }
-
         try {
             Croperino.prepareCamera(ProfileActivity.this);
         } catch(Exception e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -190,13 +207,15 @@ public class ProfileActivity extends AppCompatActivity {
         switch (requestCode) {
             case CroperinoConfig.REQUEST_TAKE_PHOTO:
                 if (resultCode == ExperienceCreateActivity.RESULT_OK) {
-                    Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), ProfileActivity.this, true, 1, 1, 0, 0);
+                    Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), ProfileActivity.this,
+                            true, 1, 1, 0, 0);
                 }
                 break;
             case CroperinoConfig.REQUEST_PICK_FILE:
                 if (resultCode == ExperienceCreateActivity.RESULT_OK) {
                     CroperinoFileUtil.newGalleryFile(data, ProfileActivity.this);
-                    Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), ProfileActivity.this, true, 1, 1, 0, 0);
+                    Croperino.runCropImage(CroperinoFileUtil.getmFileTemp(), ProfileActivity.this,
+                            true, 1, 1, 0, 0);
                 }
                 break;
             case CroperinoConfig.REQUEST_CROP_PHOTO:
@@ -213,11 +232,18 @@ public class ProfileActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Sends the profile picture to the server API and updates the current
+     * profile picture.
+     * @param bitmap
+     */
     private void sendApi(Bitmap bitmap) {
         String url = Params.getApiActionUrl(ProfileActivity.this, "avatar.create");
         List<NameValuePair> nameValuePairs = new ArrayList<>();
-        nameValuePairs.add(new BasicNameValuePair("androidId", String.valueOf(DeviceHelper.getDeviceId(ProfileActivity.this))));
-        RestAvatarCreateTask restTask = new RestAvatarCreateTask(ProfileActivity.this, url, nameValuePairs, bitmap);
+        nameValuePairs.add(new BasicNameValuePair("androidId",
+                String.valueOf(DeviceHelper.getDeviceId(ProfileActivity.this))));
+        RestAvatarCreateTask restTask = new RestAvatarCreateTask(ProfileActivity.this,
+                url, nameValuePairs, bitmap);
         restTask.execute();
     }
 }

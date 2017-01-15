@@ -26,7 +26,6 @@ import ch.fhnw.ip5.emotionhunt.tasks.RestTask;
  *
  * @author Benjamin Bur
  */
-
 public class User {
     private static final String TAG = User.class.getSimpleName();
 
@@ -40,6 +39,11 @@ public class User {
     @SerializedName("profile_picture")
     public String profilePicture;
 
+    /**
+     * Either a given object is equal to the current instance or not.
+     * @param object object to compare with this
+     * @return is equal
+     */
     @Override
     public boolean equals(Object object)
     {
@@ -50,32 +54,63 @@ public class User {
         return isEqual;
     }
 
+    /**
+     * Returns the URL of this user's avatar.
+     * @param context
+     * @return
+     */
     public String getAvatarURL(Context context) {
         String apiUrl = Params.getApiActionUrl(context,"avatar");
         return apiUrl + "&id=" + id + "&apiKey=" + RestTask.API_KEY;
     }
 
+    /**
+     * Returns the avatar URL by a given Android device id.
+     * @param context
+     * @return
+     */
     public String getAvatarURLByAndroidId(Context context) {
         String apiUrl = Params.getApiActionUrl(context,"avatar");
         return apiUrl + "&user=" + androidId + "&apiKey=" + RestTask.API_KEY;
     }
 
+    /**
+     * Returns the avatar URL by a given user id.
+     * @param context
+     * @param senderId
+     * @return
+     */
     public static String getAvatarURLByUserId(Context context, long senderId) {
         String apiUrl = Params.getApiActionUrl(context,"avatar");
         return apiUrl + "&id=" + senderId + "&apiKey=" + RestTask.API_KEY;
     }
 
+    /**
+     * Returns the current user's avatar URL.
+     * @param context
+     * @return
+     */
     public static String getOwnAvatarURL(Context context) {
         User u = new User();
         u.androidId = DeviceHelper.getDeviceId(context);
         return u.getAvatarURLByAndroidId(context);
     }
 
+    /**
+     * Returns the first User instance that is received by the server's response.
+     * @param response
+     * @return
+     */
     public static User getFirstUserFromResponse(HttpResponse response) {
         List<User> users = User.getUsersFromResponse(response);
         return users != null ? users.get(0) : null;
     }
 
+    /**
+     * Returns all User instances that are received by the server's response.
+     * @param response
+     * @return
+     */
     public static List<User> getUsersFromResponse(HttpResponse response) {
         List<User> users = null;
         HttpEntity hentity = response.getEntity();

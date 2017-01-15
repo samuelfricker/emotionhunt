@@ -25,11 +25,8 @@ import ch.fhnw.ip5.emotionhunt.models.Experience;
 import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
- *
- * @author Benjamin Bur
+ * This Class fetches all experiences for the current user via the server's API.
  */
-
 public class RestExperienceListTask extends RestTask {
 
     public RestExperienceListTask(Context context, String url, List<NameValuePair> nameValuePairs)

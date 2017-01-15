@@ -5,11 +5,8 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.helpers
- *
- * @author Benjamin Bur
+ * Special square image view for the media file on the experience's detail view
  */
-
 public class SquareImageView extends ImageView {
     public SquareImageView(Context context) {
         super(context);
@@ -26,7 +23,6 @@ public class SquareImageView extends ImageView {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
         int width = getMeasuredWidth();
         setMeasuredDimension(width, width);
     }

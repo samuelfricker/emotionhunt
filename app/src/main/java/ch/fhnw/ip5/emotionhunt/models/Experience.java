@@ -25,12 +25,10 @@ import ch.fhnw.ip5.emotionhunt.helpers.Params;
  *
  * @author Benjamin Bur
  */
-
 public abstract class Experience {
     private static final String TAG = Experience.class.getSimpleName();
     private static final int CATCHABLE_WITHIN_METERS = 50;
 
-    //TODO fix this (move to sentexperience class) & change typecasting in getAll()
     public Emotion expectedEmotion;
 
     @SerializedName("id")
@@ -58,11 +56,19 @@ public abstract class Experience {
     @SerializedName("sender_id")
     public long senderId;
 
-    public static Experience findById(Context context, long id) { return null; };
-    public static void loadExperiencesFromApi(Context context, boolean isPublic) { }
-
+    /**
+     * Stores the current instance into the local SQLite database.
+     * Parent classes must implement this method.
+     * @param context
+     * @return either the save was successful or not
+     */
     public abstract boolean saveDb (Context context);
 
+    /**
+     * Either a given object is equal to the current instance or not.
+     * @param object object to compare with this
+     * @return is equal
+     */
     @Override
     public boolean equals(Object object)
     {
@@ -144,16 +150,17 @@ public abstract class Experience {
         return db.update(ExperienceDbContract.TABLE_NAME, contentValues, "id=" + id, null) != -1;
     }
 
+    /**
+     * Updates an existing emotion on an experience.
+     * @param context
+     * @return
+     */
     public boolean updateEmotion (Context context) {
         Log.d(TAG, "updateEmotion");
         SQLiteDatabase db = new DbHelper(context).getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(ExperienceDbContract.COL_EMOTION, emotion);
         return db.update(ExperienceDbContract.TABLE_NAME, contentValues, "id=" + id, null) != -1;
-    }
-
-    public boolean isPrivate() {
-        return !isPublic;
     }
 
     /**
@@ -172,8 +179,12 @@ public abstract class Experience {
 
     public String getCreatedAt() {
         Log.d(TAG, String.format("Created at: %1$s",createdAt));
-        Date date = Params.getDateFromTime(createdAt *1000L);
+        Date date = new java.util.Date(createdAt *1000L);
         return DateFormat.getDateTimeInstance().format(date);
+    }
+
+    public boolean isPrivate() {
+        return !isPublic;
     }
 
     /**
@@ -245,14 +256,20 @@ public abstract class Experience {
         return receivedExperiences;
     }
 
-    //TODO fix this (move to sentexperience class) & change typecasting in getAll()
+    /**
+     * Returns the expected emotion as JSON string.
+     * @return expected emotion (json string)
+     */
     public String getExpectedEmotionJSON() {
         Gson gson = new Gson();
         String sExpectedEmotion = gson.toJson(expectedEmotion);
         return sExpectedEmotion;
     }
 
-    //TODO fix this (move to sentexperience class) & change typecasting in getAll()
+    /**
+     * Returns the expected Emotion.
+     * @return expected emotion
+     */
     public Emotion getExpectedEmotion() {
         Emotion emotion = Emotion.getEmotionFromJson(this.emotion);
         return emotion;

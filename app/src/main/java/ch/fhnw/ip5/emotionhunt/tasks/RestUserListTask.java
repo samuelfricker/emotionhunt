@@ -25,11 +25,8 @@ import ch.fhnw.ip5.emotionhunt.activities.ExperienceCreateActivity;
 import ch.fhnw.ip5.emotionhunt.models.User;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
- *
- * @author Benjamin Bur
+ * This Class returns a list with registered users via the server's API.
  */
-
 public class RestUserListTask extends RestTask {
     public static final String TAG = "RestUserListTask";
     public static final int STATE_READY = 1;

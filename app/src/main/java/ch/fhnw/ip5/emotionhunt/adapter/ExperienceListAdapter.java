@@ -2,7 +2,6 @@ package ch.fhnw.ip5.emotionhunt.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.CardView;
 import android.util.Log;
@@ -20,16 +19,12 @@ import java.util.ArrayList;
 import agency.tango.android.avatarview.views.AvatarView;
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.ExperienceDetailActivity;
-import ch.fhnw.ip5.emotionhunt.models.Emotion;
 import ch.fhnw.ip5.emotionhunt.models.Experience;
-import ch.fhnw.ip5.emotionhunt.models.ReceivedExperience;
-import ch.fhnw.ip5.emotionhunt.models.SentExperience;
 import ch.fhnw.ip5.emotionhunt.models.User;
 
 /**
- * Created by dimitri on 09.12.2016.
+ * Adapter class for the experience list.
  */
-
 public class ExperienceListAdapter extends RecyclerView.Adapter<ExperienceListAdapter.MyViewHolder> {
     private ArrayList experienceList;
     private static final String TAG = ExperienceListAdapter.class.getSimpleName();

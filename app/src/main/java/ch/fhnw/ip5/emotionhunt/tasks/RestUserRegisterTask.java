@@ -12,26 +12,20 @@ import com.google.gson.JsonParseException;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import java.io.IOException;
 import java.util.List;
 
 import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.activities.MainActivity;
-import ch.fhnw.ip5.emotionhunt.activities.OnBoardActivity;
 import ch.fhnw.ip5.emotionhunt.helpers.UserList;
 import ch.fhnw.ip5.emotionhunt.models.User;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
- *
- * @author Benjamin Bur
+ * This Class creates a new user on the server's API.
  */
-
 public class RestUserRegisterTask extends RestTask {
 
     public static final String TAG = RestUserRegisterTask.class.getSimpleName();

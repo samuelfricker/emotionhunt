@@ -26,11 +26,8 @@ import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.helpers.DeviceHelper;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
- *
- * @author Benjamin Bur
+ * This Class fetches the media file for a given experience via the server's API.
  */
-
 public class RestExperienceMediaTask extends RestTask {
     private static final int STATE_BITMAP_READY = 1;
     private Bitmap mImg = null;
@@ -84,7 +81,7 @@ public class RestExperienceMediaTask extends RestTask {
                     ByteArrayOutputStream baos = new ByteArrayOutputStream();
                     int bufferSize = 1024;
                     byte[] buffer = new byte[bufferSize];
-                    int len = 0;
+                    int len;
                     try {
                         while ((len = instream.read(buffer)) != -1) {
                             baos.write(buffer, 0, len);

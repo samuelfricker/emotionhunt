@@ -13,11 +13,9 @@ import ch.fhnw.ip5.emotionhunt.adapter.ExperienceListAdapter;
 import ch.fhnw.ip5.emotionhunt.models.SentExperience;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.fragments
- *
- * @author Benjamin Bur
+ * Fragment which is required by the experience list activity.
+ * This fragment contains all sent experiences.
  */
-
 public class ExperiencesSentFragment extends Fragment {
 
     public ExperiencesSentFragment() {}

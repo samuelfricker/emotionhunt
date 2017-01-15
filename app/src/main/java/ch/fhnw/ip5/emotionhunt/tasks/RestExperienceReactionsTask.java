@@ -32,11 +32,8 @@ import ch.fhnw.ip5.emotionhunt.R;
 import ch.fhnw.ip5.emotionhunt.models.UserEmotion;
 
 /**
- * EmotionHunt ch.fhnw.ip5.emotionhunt.tasks
- *
- * @author Benjamin Bur
+ * This class fetches all reactions on a given experience via the server API.
  */
-
 public class RestExperienceReactionsTask extends RestTask {
     private static final String TAG = "RestExperienceReact";
     private static final int STATE_START = 0;
@@ -58,7 +55,8 @@ public class RestExperienceReactionsTask extends RestTask {
             case STATE_START:
                 handler.post(new Runnable() {
                     public void run() {
-                        LinearLayout layoutReactions = (LinearLayout) ((Activity)mContext).findViewById(R.id.layout_reactions);
+                        LinearLayout layoutReactions =
+                                (LinearLayout) ((Activity)mContext).findViewById(R.id.layout_reactions);
                         layoutReactions.setVisibility(View.INVISIBLE);
                     }
                 });
@@ -69,12 +67,14 @@ public class RestExperienceReactionsTask extends RestTask {
                 //load reactions in view
                 handler.post(new Runnable() {
                     public void run() {
-                        LinearLayout layoutReactions = (LinearLayout) ((Activity)mContext).findViewById(R.id.layout_reactions);
+                        LinearLayout layoutReactions =
+                                (LinearLayout) ((Activity)mContext).findViewById(R.id.layout_reactions);
                         layoutReactions.setVisibility(View.VISIBLE);
 
                         //set refreshing to false on swipe view if this is a refresh
                         if (onRefresh) {
-                            SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) ((Activity)mContext).findViewById(R.id.contentView);
+                            SwipeRefreshLayout mSwipeRefreshLayout =
+                                    (SwipeRefreshLayout) ((Activity)mContext).findViewById(R.id.contentView);
                             mSwipeRefreshLayout.setRefreshing(false);
                         }
 
@@ -85,7 +85,8 @@ public class RestExperienceReactionsTask extends RestTask {
                                 if (userEmotion.isSender()) continue;
 
                                 Log.d(TAG, "Received User Emotion from User " + userEmotion.getName());
-                                View reactionView = ((Activity)mContext).getLayoutInflater().inflate(R.layout.activity_experience_detail_reaction_item, null);
+                                View reactionView = ((Activity)mContext).getLayoutInflater()
+                                        .inflate(R.layout.activity_experience_detail_reaction_item, null);
                                 TextView txtUser = (TextView) reactionView.findViewById(R.id.txt_user_name);
                                 ImageView imgReaction = (ImageView) reactionView.findViewById(R.id.img_reaction);
                                 imgReaction.setImageResource(userEmotion.getResourceId());
