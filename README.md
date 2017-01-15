@@ -20,9 +20,16 @@ selbst definiert. Kopiere hierfür die Datei `_config.php` und benenne die Kopie
 Passe nun die neue Datei mit deinen eigenen Parametern an.
 
 ##2. Abfragen
+Host: www.emotionhunt.com/api/?action=my/action
+(Beispiel: www.emotionhunt.com/api/?action=avatar&id=1.....)
+
 __WICHTIG:__ Für sämtliche Abfragen wird der `apiKey` entweder als POST oder GET Parameter mit folgendem Inhalt benötigt:
 ```
 apiKey: bENFnP63CqNFDSucAFguwj7p685Z2eh3
+```
+Ein Aufruf könnte beispielsweise wiefolgt aussehen:
+```
+http://emotionhunt.com/api/?action=avatar&id=2&apiKey=bENFnP63CqNFDSucAFguwj7p685Z2eh3
 ```
 
 ##Avatar
