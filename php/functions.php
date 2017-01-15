@@ -9,6 +9,10 @@ function getAction() {
 	return $_GET['action'] != null ? strtolower($_GET['action']) : '';
 }
 
+/**
+ * Validates the apikey provided by a GET or POST param named 'apiKey'
+ * @return bool
+ */
 function validateApiKey() {
 	$params = include('_params.php');
 	return strcmp($params['apiKey'],$_REQUEST['apiKey']) === 0;
@@ -68,7 +72,6 @@ function handleRequest() {
  * Removes all data from all tables
  */
 function resetDb() {
-	//TODO REMOVE THIS HACK!!!
 	$db = new Db();
 	$db->query("SET foreign_key_checks = 0;");
 	$db->query("TRUNCATE user;");
@@ -107,7 +110,7 @@ function login() {
 }
 
 /**
- * TODO describe header
+ * Creates a new avatar for a given user.
  */
 function avatar() {
 	$user = $_GET['user'];
@@ -136,6 +139,9 @@ function avatar() {
 	}
 }
 
+/**
+ * Creates a new avatar for a user.
+ */
 function createAvatar() {
 	validateAndMoveMediaFile(true);
 	return printResult([],201,'');
@@ -190,6 +196,9 @@ function createExperience() {
 	printResult(dbCreateExperience(), 201);
 }
 
+/**
+ * Creates a new experience reaction.
+ */
 function createExperienceReaction() {
 	printResult(dbCreateExperienceReaction(), 201);
 }
