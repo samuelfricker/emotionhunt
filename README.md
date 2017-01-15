@@ -20,13 +20,13 @@ selbst definiert. Kopiere hierfür die Datei `_config.php` und benenne die Kopie
 Passe nun die neue Datei mit deinen eigenen Parametern an.
 
 ##2. Abfragen
-<b>WICHTIG: </b> Für sämtliche Abfragen wird der <u>apiKey</u> entweder als POST oder GET Parameter mit folgendem Inhalt benötigt:
+__WICHTIG:__ Für sämtliche Abfragen wird der `apiKey` entweder als POST oder GET Parameter mit folgendem Inhalt benötigt:
 ```
-bENFnP63CqNFDSucAFguwj7p685Z2eh3
+apiKey: bENFnP63CqNFDSucAFguwj7p685Z2eh3
 ```
 
-###Avatar
-####avatar/create
+##Avatar
+###avatar/create
 Erstellt einen neuen Avatar für einen User.
 
 __WICHTIG:__ Content-Type: multipart/form-data
@@ -35,7 +35,7 @@ Params:
 media,       // File-Upload
 androidId,   // android device id
 ```
-####avatar
+###avatar
 Gibt einen Avatar eines Users als Bild zurück.
 ```
 Params: (required either 'user' or 'id')
@@ -43,12 +43,12 @@ user, // android device id
 id    // user id
 ```
 
-###User
-####user/list
+##User
+###user/list
 Liste aller User in der DB.
 
-###Experience
-####experience/create
+##Experience
+###experience/create
 Erstellt eine neue Experience.
 
 __WICHTIG:__ Content-Type: multipart/form-data
@@ -66,7 +66,7 @@ media // File-Upload
 Example-Call: experience/create
 Post-Data (raw): lat=8.00&lon=43.00&text=blabla&visibilityDuration=24&recipients=2&sender=1&expectedEmotion={"anger":0.99,"contempt":0.0,"disgust":0.0,"fear":0.0,"happiness":0.0,"neutral":0.0,"sadness":0.0,"surprise":0.0}
 ```
-####experience/public/create
+###experience/public/create
 Erstellt eine neue öffentliche Experience.
 
 __WICHTIG:__ Content-Type: multipart/form-data
@@ -81,7 +81,7 @@ androidId, //android device id
 expectedEmotions, //erwartete Emotion (JSON serialisiert)
 media // File-Upload
 ```
-####experience/list
+###experience/list
 Liste aller Experiences in der DB.
 ```
 Params: 
@@ -90,21 +90,21 @@ lat, //position
 lon, //position
 imei, //the user's device IMEI
 ```
-####experience/media
+###experience/media
 Lädt ein Foto einer Experience.
 ```
 Params: 
 
 media //filename for download (e.g. media=e81732458bda9a61300cd63162686b5cdb80b2c6.png)
 ```
-####experience/reactions
+###experience/reactions
 Liefert sämtliche Reaktionen zu einer Experience.
 ```
 Params: 
 
 id //experience id
 ```
-####experience/reaction/create
+###experience/reaction/create
 Erstellt eine Reaktion und user experience auf eine öffentlichen Experience.
 ```
 Params: 
@@ -113,8 +113,8 @@ androidId // device id
 id        // experience id
 emotion   // json serialized emotion
 ```
-###Emotion
-####emotion/create
+##Emotion
+###emotion/create
 Erstellt eine neue Emotion auf eine bestehende user-experience.
 ```
 Params: 
