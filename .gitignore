@@ -1,3 +1,4 @@
+#frontend
 *.iml
 .gradle
 /local.properties
@@ -7,3 +8,11 @@
 /build
 /captures
 .externalNativeBuild
+
+#backend
+.idea
+php/_myconfig.php
+uploads/*
+avatar/*
+!avatar/noavatar.jpg
+!avatar/small/
